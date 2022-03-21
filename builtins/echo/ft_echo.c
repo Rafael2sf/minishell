@@ -6,7 +6,7 @@
 /*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 13:55:53 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/03/21 15:37:27 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/03/21 15:48:32 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,11 @@ int	ft_echo(char *input, int fd)
 	free(output);
 	return (0);
 }
-
+/*
 int	main(void)
 {
 	char 	*input = "-na\n";
 
 	ft_echo(input, 1);
 	return (0);
-}
+}*/

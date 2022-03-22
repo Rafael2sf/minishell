@@ -6,76 +6,65 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:35:43 by rafernan          #+#    #+#             */
-/*   Updated: 2022/03/21 18:25:11 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/03/22 11:19:06 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/ast.h"
+#include "../../headers/parse.h"
 #include "../../headers/minishell.h"
 
-static t_tk	*tk_add_rd_in(t_tk **root, t_tk *new);
-static t_tk	*tk_add_rd_out(t_tk **root, t_tk *new);
+static int	ast_add_rd_in(t_tk **root, t_tk *new_token);
+static int	ast_add_rd_out(t_tk **root, t_tk *new_token);
 
-t_tk	*tk_add_rd(t_tk **root, t_tk *new)
+/*
+	Adding token of type redireciton to a ast 
+*/
+int	ast_add_rd(t_tk **root, t_tk *new_token)
 {
-	if (new->type == E_LSR || new->type == E_LLSR)
-		return (tk_add_rd_in(root, new));
+	if (!root || !*root || !new_token)
+		return (1);
+	if (new_token->type == E_LSR || new_token->type == E_LLSR)
+		return (ast_add_rd_in(root, new_token));
 	else
-		return (tk_add_rd_out(root, new));
+		return (ast_add_rd_out(root, new_token));
 }
 
-static t_tk	*tk_add_rd_in(t_tk **root, t_tk *new) // Simplify ?
+/*
+	Handle adding token of type << or < to a ast 
+*/
+static int	ast_add_rd_in(t_tk **root, t_tk *new_token)
 {
-	if (((*root)->type) == E_CMD)
-	{
-		(new->prev) = *root;
-		if ((*root)->left->left)
-		{
-			(new->left) = ((*root)->left->left);
-			(new->left->left->prev) = new;
-		}
-		((*root)->left) = new;
-		return (new);
-	}
+	if (((*root)->type) == E_CMD || ((*root)->type) == E_UNDEF)
+		return (ast_add_left(root, new_token));
 	else if (((*root)->type) == E_PIPE)
 	{
 		if (!((*root)->right))
 		{
-			((*root)->right) = tk_new(E_UNDEF, NULL);
-			((*root)->right->prev) = (*root);
-			((*root)->right->left) = new;
-			(new->prev) = ((*root)->right) ;
-			return (new);
+			((*root)->right) = tk_new_token(E_UNDEF, NULL);
+			if (!(*root)->right)
+				return (-1);
 		}
-		else
-		{
-			(new->prev) = ((*root)->right) ;
-			(new->left) = ((*root)->right->left);
-			((*root)->right->left) = new;
-			(new->left->prev) = new;
-			return (new);
-		}
+		return (ast_add_left(&((*root)->right), new_token));
 	}
-	return (NULL);
-}
-
-static t_tk	*tk_add_rd_out(t_tk **root, t_tk *new) // In reversed ...
-{
-	(void)(root);
-	(void)(new);
-	return (NULL);
+	return (1);
 }
 
 /*
-
-cmd (case 0)
-
-P		(case 1)
-new undef on right
-add
-
-P
-	cmd (case 2)
-add
-
+	Handle adding token of type >> or > to a ast 
 */
+static int	ast_add_rd_out(t_tk **root, t_tk *new_token)
+{
+	if (((*root)->type) == E_CMD || ((*root)->type) == E_UNDEF)
+		return (ast_add_right(root, new_token));
+	else if (((*root)->type) == E_PIPE)
+	{
+		if (!((*root)->right))
+		{
+			((*root)->right) = tk_new_token(E_UNDEF, NULL);
+			if (!(*root)->right)
+				return (-1);
+		}
+		return (ast_add_right(&((*root)->right), new_token));
+	}
+	return (1);
+}

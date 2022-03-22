@@ -6,29 +6,29 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 13:55:38 by rafernan          #+#    #+#             */
-/*   Updated: 2022/03/21 18:24:28 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/03/22 11:27:46 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/ast.h"
+#include "../../headers/parse.h"
 #include "../../headers/minishell.h"
 
 /*
-	Create a new token
+	Create a new_token token
 */
-t_tk	*tk_new(enum e_type type, char *data)
+t_tk	*tk_new_token(enum e_type type, char *data)
 {
-	t_tk	*new;
+	t_tk	*new_token;
 
-	new = malloc(sizeof(t_tk));
-	if (new)
+	new_token = malloc(sizeof(t_tk));
+	if (new_token)
 	{
-		(new->type) = type;
-		(new->data) = data;
-		(new->prev) = NULL;
-		(new->left) = NULL;
-		(new->right) = NULL;
-		return (new);
+		(new_token->type) = type;
+		(new_token->data) = data;
+		(new_token->prev) = NULL;
+		(new_token->left) = NULL;
+		(new_token->right) = NULL;
+		return (new_token);
 	}
 	return (NULL);
 }
@@ -36,21 +36,24 @@ t_tk	*tk_new(enum e_type type, char *data)
 /*
 	Recursively iterate the tree from left to right 
 */
-void	tk_iter(t_tk *root, void (*f)(t_tk *, int), int depth)
+void	ast_iter(t_tk *root, void (*f)(t_tk *, int), int depth)
 {
 	if (!root)
 		return ;
-	tk_iter(root->left, f, depth + 1);
+	ast_iter(root->left, f, depth + 1);
 	f(root, depth);
-	tk_iter(root->right, f, depth + 1);
+	ast_iter(root->right, f, depth + 1);
 }
 
-int		tk_is_rd(enum e_type type)
+/*
+	Returns true if type is a redirection
+*/
+int	tk_is_rd(enum e_type type)
 {
 	return (type == E_LSR || type == E_LLSR || type == E_GRT || type == E_GGRT);
 }
 
-/* ----- TEST  ------- */
+/* ----- TEST  -------
 
 void	tk_print(t_tk *tk, int depth)
 {
@@ -61,18 +64,20 @@ void	tk_print(t_tk *tk, int depth)
 
 int	main(void)
 {
-	char	*s[] = {"< in", "wc", "echo", "cat"};
+	char	*s[] = {"< in", "wc", "echo", "cat", "> out"};
 	t_tk	*tree;
 
 	tree = NULL;
-	tk_add(&tree, tk_new(E_LSR, s[0]));
-	tk_add(&tree, tk_new(E_CMD, s[1]));
-	tk_add(&tree, tk_new(E_PIPE, NULL));
-	tk_add(&tree, tk_new(E_LSR, s[0]));
-	tk_add(&tree, tk_new(E_CMD, s[2]));
-	tk_add(&tree, tk_new(E_PIPE, NULL));
-	tk_add(&tree, tk_new(E_CMD, s[3]));
+	ast_add(&tree, tk_new_token(E_LSR, s[0]));
+	ast_add(&tree, tk_new_token(E_GRT, s[4]));
+	ast_add(&tree, tk_new_token(E_CMD, s[1]));
+	ast_add(&tree, tk_new_token(E_PIPE, NULL));
+	ast_add(&tree, tk_new_token(E_LSR, s[0]));
+	ast_add(&tree, tk_new_token(E_CMD, s[2]));
+	ast_add(&tree, tk_new_token(E_PIPE, NULL));
+	ast_add(&tree, tk_new_token(E_CMD, s[3]));
 	
-	tk_iter(tree, tk_print, 0);
+	ast_iter(tree, tk_print, 0);
 	return (0);
 }
+ */

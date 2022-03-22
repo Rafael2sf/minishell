@@ -6,70 +6,111 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 14:20:31 by rafernan          #+#    #+#             */
-/*   Updated: 2022/03/21 18:25:37 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/03/22 11:17:32 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/ast.h"
+#include "../../headers/parse.h"
 #include "../../headers/minishell.h"
 
-static t_tk	*tk_add_cmd(t_tk **root, t_tk *new);
+static int	ast_add_cmd(t_tk **root, t_tk *new_token);
 
-t_tk	*tk_add(t_tk **root, t_tk *new)
+/*
+	Add a token to the ast based on it's type
+*/
+int	ast_add(t_tk **root, t_tk *new_token)
 {
-	if (!root || !new)
-		return (NULL);
+	if (!root || !new_token)
+		return (1);
 	if (!*root)
 	{
-		if (tk_is_rd(new->type)) // If is redirection and first
+		if (tk_is_rd(new_token->type))
 		{
-			(*root) = tk_new(E_UNDEF, NULL);
-			if (new->type == E_LSR || E_GRT)
-				((*root)->left) = new;
+			(*root) = tk_new_token(E_UNDEF, NULL);
+			if (!*root)
+				return (-1);
+			if (new_token->type == E_LSR || E_GRT)
+				((*root)->left) = new_token;
 			else
-				((*root)->right) = new;
+				((*root)->right) = new_token;
 		}
 		else
-			(*root) = new;
-		return (new);
+			(*root) = new_token;
+		return (0);
 	}
-	if (new->type == E_CMD || new->type == E_UNDEF)
-		return (tk_add_cmd(root, new));
-	else if (new->type == E_PIPE) // Always add on top
-		tk_add_top(root, new);
-	// <-- Add and or
-	return (tk_add_rd(root, new));
+	if (new_token->type == E_CMD || new_token->type == E_UNDEF)
+		return (ast_add_cmd(root, new_token));
+	else if (new_token->type == E_PIPE)
+		return (ast_add_top(root, new_token));
+	return (ast_add_rd(root, new_token));
 }
 
-t_tk	*tk_add_top(t_tk **root, t_tk *new)
+/*
+	Add a token on top of root
+*/
+int	ast_add_top(t_tk **root, t_tk *new_token)
 {
-	if (!root || !*root || !new)
-		return (NULL);
-	(new->left) = *root;
-	(new->prev) = ((*root)->prev);
-	((*root)->prev) = new;
-	(*root) = new;
-	return (new);
+	if (!root || !*root || !new_token)
+		return (1);
+	(new_token->left) = *root;
+	((*root)->prev) = new_token;
+	(*root) = new_token;
+	return (0);
 }
 
-static t_tk	*tk_add_cmd(t_tk **root, t_tk *new)
+/*
+	Add a token on the left of root
+*/
+int	ast_add_left(t_tk **root, t_tk *new_token)
 {
-	// If pipe
+	if (!root || !*root || !new_token)
+		return (1);
+	if ((*root)->left)
+	{
+		(new_token->left) = ((*root)->left);
+		((*root)->left->prev) = new_token;
+	}
+	((*root)->left) = new_token;
+	(new_token->prev) = (*root);
+	return (0);
+}
+
+/* 
+	Add a token on the right of root
+*/
+int	ast_add_right(t_tk **root, t_tk *new_token)
+{
+	if (!root || !*root || !new_token)
+		return (1);
+	if ((*root)->right)
+	{
+		(new_token->right) = ((*root)->right);
+		((*root)->right->prev) = new_token;
+	}
+	((*root)->right) = new_token;
+	(new_token->prev) = (*root);
+	return (0);
+}
+
+/*
+	Adding token of type E_CMD to a ast 
+*/
+static int	ast_add_cmd(t_tk **root, t_tk *new_token)
+{
 	if (((*root)->type) == E_PIPE && !((*root)->right))
 	{
-		((*root)->right) = new;
-		(new->prev) = ((*root)->right);
-		return (new);
+		((*root)->right) = new_token;
+		(new_token->prev) = ((*root)->right);
+		return (0);
 	}
-	// if command is undef substitute it
 	else if (((*root)->type) == E_UNDEF)
 	{
 		((*root)->type) = E_CMD;
-		((*root)->data) = (new->data);
-		free(new);
-		return ((*root)->right);
+		((*root)->data) = (new_token->data);
+		free(new_token);
+		return (0);
 	}
 	else if ((*root)->right)
-		return (tk_add_cmd(&(*root)->right, new));
-	return (NULL);
+		return (ast_add_cmd(&(*root)->right, new_token));
+	return (1);
 }

@@ -14,15 +14,20 @@ enum e_type
 	E_GGRT
 };
 
-// Abstract syntax tree
-typedef struct s_tk
+/*
+	Abstract syntax tree
+	note:	data is a char ** for E_CMD
+					a char * for redirections
+					and NULL for the rest
+*/
+typedef struct s_ast
 {
-	enum e_type	type;
-	char		*data;
-	struct s_tk	*prev;
-	struct s_tk	*left;
-	struct s_tk	*right;
-}	t_tk;
+	enum e_type		type;
+	void			*data;
+	struct s_ast	*prev;
+	struct s_ast	*left;
+	struct s_ast	*right;
+}					t_ast;
 
 // Variables for parsing
 typedef struct s_pvars
@@ -31,23 +36,25 @@ typedef struct s_pvars
 	int	dquote;
 	int	start;
 	int	end;
-}	t_pvars;
+}		t_pvars;
 
 void	pvars_init(t_pvars *v);
-t_tk	*tk_new_token(enum e_type type, char *data);
-
+t_ast	*tk_new_token(enum e_type type, void *ref);
 int		tk_is_rd(enum e_type type);
-int		ast_add(t_tk **root, t_tk *new_token);
-int		ast_add_top(t_tk **root, t_tk *new_token);
-int		ast_add_left(t_tk **root, t_tk *new_token);
-int		ast_add_right(t_tk **root, t_tk *new_token);
-int		ast_add_rd(t_tk **root, t_tk *new_token); // Do not use added because of file limit
-void	ast_iter(t_tk *root, void (*f)(void *));
+
+int		ast_add(t_ast **root, t_ast *new_token);
+int		ast_add_top(t_ast **root, t_ast *new_token);
+int		ast_add_left(t_ast **root, t_ast *new_token);
+int		ast_add_right(t_ast **root, t_ast *new_token);
+void	ast_iter(t_ast *root, void (*f)(void *));
 
 int		ft_is(char c, char const *set);
+char	**ms_split(char const *s, char c);
 
-int		ms_parse(t_tk **root, const char *line);
+int		ms_parse(t_ast **root, const char *line);
 int		ms_parse_error(int code, char c);
-int		ms_create_token(t_tk **root, enum e_type type, const char *ref, int size);
+int		ms_parse_token(t_ast **root, const char *line, t_pvars *v);
+int		ms_create_token(t_ast **root, enum e_type type, const char *ref, int size);
+void	ms_parse_quotes(char c, t_pvars *v);
 
 #endif /* AST_H */

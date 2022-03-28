@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 13:55:38 by rafernan          #+#    #+#             */
-/*   Updated: 2022/03/23 18:01:32 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/03/25 11:12:15 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@
 /*
 	Create a new_token token
 */
-t_tk	*tk_new_token(enum e_type type, char *data)
+t_ast	*tk_new_token(enum e_type type, void *ref)
 {
-	t_tk	*new_token;
+	t_ast	*new_token;
 
-	new_token = malloc(sizeof(t_tk));
+	new_token = malloc(sizeof(t_ast));
 	if (new_token)
 	{
 		(new_token->type) = type;
-		(new_token->data) = data;
+		(new_token->data) = ref;
 		(new_token->prev) = NULL;
 		(new_token->left) = NULL;
 		(new_token->right) = NULL;
@@ -36,13 +36,13 @@ t_tk	*tk_new_token(enum e_type type, char *data)
 /*
 	Recursively iterate the tree from left to right 
 */
-void	ast_iter(t_tk *root, void (*f)(void *))
+void	ast_iter(t_ast *root, void (*f)(void *))
 {
 	if (!root)
 		return ;
 	ast_iter(root->left, f);
-	ast_iter(root->right, f);
 	f(root);
+	ast_iter(root->right, f);
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 11:12:09 by rafernan          #+#    #+#             */
-/*   Updated: 2022/03/23 17:43:31 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/03/28 10:16:13 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,31 @@ void	pvars_init(t_pvars *v)
 	(v->end) = 0;
 }
 
-int		ms_parse_error(int code, char c)
+void	ms_parse_quotes(char c, t_pvars *v)
+{
+	if (c == '\'')
+	{
+		if (v->dquote == 0)
+		{
+			if (v->quote == 0)
+				(v->quote) += 1;
+			else
+				(v->quote) -= 1;
+		}
+	}
+	else if (c == '\"')
+	{
+		if (v->quote == 0)
+		{
+			if (v->dquote == 0)
+				(v->dquote) += 1;
+			else
+				(v->dquote) -= 1;
+		}
+	}
+}
+
+int	ms_parse_error(int code, char c)
 {
 	if (code != 0)
 		printf("minishell: parse error near `%c\'\n", c); // Not writing to stderr

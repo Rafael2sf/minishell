@@ -6,7 +6,7 @@
 /*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/27 15:45:17 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/03/25 14:05:48 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/03/29 13:41:27 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,18 +114,16 @@ char	**altered_split(char const *s, char c)
 	return (ptr_split);
 }
 
-/*int	main(void)
-{
-	char	**ptr;
-	char	*splitme = ft_strdup("This is my incredibly confusing string \"  
-	will it work?  \" looks \'   pretty good, i guess   \' \'\'");
-	int		i;
+// int	main(void)
+// {
+// 	char	**ptr;
+// 	int		i;
 
-	ptr = altered_split(splitme, ' ');
-	i = 0;
-	while (ptr[i] != NULL)
-	{
-		printf("%s\n\n", ptr[i++]);
-	}
-	return (0);
-}*/
+// 	ptr = altered_split("echo \"a\"\"b\"", ' ');
+// 	i = 0;
+// 	while (ptr[i] != NULL)
+// 	{
+// 		printf("%s\n\n", ptr[i++]);
+// 	}
+// 	return (0);
+// }

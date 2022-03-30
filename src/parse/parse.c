@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 11:03:00 by rafernan          #+#    #+#             */
-/*   Updated: 2022/03/28 10:17:14 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/03/29 10:27:41 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,59 +59,4 @@ static int	ms_parse_last(const char *line, t_pvars *v, t_ast **root)
 				v->end - v->start + 1);
 	}
 	return (0);
-}
-
-/**/
-
-void	tk_print(void *tk_ptr)
-{
-	t_ast	*tk;
-	char	**ref;
-	int		i;
-
-	i = 0;
-	tk = (t_ast *)(tk_ptr);
-	if (tk->type == E_CMD)
-	{
-		printf("(");
-		ref = (char **)(tk->data);
-		while (ref[i])
-			printf(".%s.", ref[i++]);
-	}
-	else if (tk->type == E_PIPE)
-		printf("(|");
-	else if (tk->type == E_LSR)
-		printf("(< ");
-	else if (tk->type == E_LLSR)
-		printf("(<< ");
-	else if (tk->type == E_GRT)
-		printf("(> ");
-	else if (tk->type == E_GGRT)
-		printf("(>> ");
-	if (tk_is_rd(tk->type))
-		printf(" %s", (char *)(tk->data));
-	printf(")");
-}
-
-void	tk_free(void *tk_ptr)
-{
-	t_ast	*tk;
-
-	tk = (t_ast *)(tk_ptr);
-	if (tk->data)
-		free(tk->data);
-	free(tk);
-}
-
-int	main(int argc, char **argv)
-{
-	t_ast	*ast;
-
-	if (argc == 2)
-	{
-		ast = NULL;
-		ms_parse(&ast, argv[1]);
-		ast_iter(ast, tk_print);
-		ast_iter(ast, tk_free);
-	}
 }

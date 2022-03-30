@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 11:12:09 by rafernan          #+#    #+#             */
-/*   Updated: 2022/03/28 10:16:13 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/03/30 12:19:01 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,19 +65,3 @@ int	ms_parse_error(int code, char c)
 		printf("minishell: parse error near `%c\'\n", c); // Not writing to stderr
 	return (code);
 }
-
-/*
-int	ft_is(char c, char *str)
-{
-	if (!str)
-		return (0);
-	while (*str)
-	{
-		if (*str++ == c)
-			return (1);
-	}
-	if (*str == c)
-		return (1);
-	return (0);
-}
-*/

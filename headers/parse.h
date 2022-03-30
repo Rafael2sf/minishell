@@ -1,6 +1,7 @@
 #ifndef AST_H
 # define AST_H
 
+# include <stdbool.h>
 # define t_uint	unsigned int
 
 enum e_type
@@ -56,5 +57,11 @@ int		ms_parse_error(int code, char c);
 int		ms_parse_token(t_ast **root, const char *line, t_pvars *v);
 int		ms_create_token(t_ast **root, enum e_type type, const char *ref, int size);
 void	ms_parse_quotes(char c, t_pvars *v);
+
+int		ft_strlen_m(char **s);
+int		ft_free_m(char **s);
+int		ft_memcpy_m(char **d, char **s);
+char	**ft_strjoin_m(char **a, char **b);
+char	*ms_expand(char *str);
 
 #endif /* AST_H */

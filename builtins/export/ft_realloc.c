@@ -6,13 +6,14 @@
 /*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/24 17:18:24 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/03/28 14:14:18 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/03/29 12:41:38 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
 #include "../../headers/libft.h"
 #include "ft_export.h"
+#include <stdlib.h>
 
 char	**ft_realloc(char ***ptr, size_t size)
 {

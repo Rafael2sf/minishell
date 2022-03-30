@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 12:09:01 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/03/21 12:54:45 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/03/29 12:39:03 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@
 # include <termios.h>
 # include <curses.h>
 # include <term.h>
+# include <errno.h>
 
 #endif

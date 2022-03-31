@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   altered_split.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/27 15:45:17 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/03/29 13:41:27 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/03/31 11:50:33 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
-#include "../../headers/libft.h"
 
 static int	word_count(const char *s, char c)
 {

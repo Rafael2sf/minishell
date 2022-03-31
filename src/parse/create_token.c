@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 16:26:10 by rafernan          #+#    #+#             */
-/*   Updated: 2022/03/31 11:17:14 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/03/31 11:53:20 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static t_ast	*ms_create_token_cmd(t_ast **root, char *s, int size, char c)
 	else
 	{
 		s[size] = 0;
-		cmd = ms_split(s, ' ');
+		cmd = altered_split(s, ' ');
 		s[size] = c;
 		if (!cmd)
 			return (NULL);
@@ -116,7 +116,7 @@ static int	tk_merge(t_ast *root, char *ref, int size, char c)
 	char	**new;
 
 	ref[size] = 0;
-	new = ms_split(ref, ' ');
+	new = altered_split(ref, ' ');
 	ref[size] = c;
 	if (!new)
 		return (-1);

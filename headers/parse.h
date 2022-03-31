@@ -1,5 +1,5 @@
-#ifndef AST_H
-# define AST_H
+#ifndef PARSE_H
+# define PARSE_H
 
 # include <stdbool.h>
 # define t_uint	unsigned int
@@ -14,6 +14,7 @@ enum e_type
 	E_GRT,
 	E_GGRT
 };
+typedef enum e_type t_type;
 
 /*
 	Abstract syntax tree
@@ -40,8 +41,8 @@ typedef struct s_pvars
 }		t_pvars;
 
 void	pvars_init(t_pvars *v);
-t_ast	*tk_new_token(enum e_type type, void *ref);
-int		tk_is_rd(enum e_type type);
+t_ast	*tk_new_token(t_type type, void *ref);
+int		tk_is_rd(t_type type);
 
 int		ast_add(t_ast **root, t_ast *new_token);
 int		ast_add_top(t_ast **root, t_ast *new_token);
@@ -52,10 +53,10 @@ void	ast_iter(t_ast *root, void (*f)(void *));
 int		ft_is(char c, char const *set);
 char	**ms_split(char const *s, char c);
 
-int		ms_parse(t_ast **root, const char *line);
-int		ms_parse_error(int code, char c);
-int		ms_parse_token(t_ast **root, const char *line, t_pvars *v);
-int		ms_create_token(t_ast **root, enum e_type type, const char *ref, int size);
+int		ms_parse(t_ast **root, char *line);
+int		ms_parse_error(int code, char c, bool use_perror);
+int		ms_parse_token(t_ast **root, char *line, t_pvars *v);
+int		ms_create_token(t_ast **root, t_type type, char *ref, int size);
 void	ms_parse_quotes(char c, t_pvars *v);
 
 int		ft_strlen_m(char **s);

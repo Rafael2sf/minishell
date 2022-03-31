@@ -6,18 +6,18 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 10:41:02 by rafernan          #+#    #+#             */
-/*   Updated: 2022/03/30 12:19:03 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/03/31 11:21:10 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/parse.h"
 #include "../../headers/minishell.h"
 
-static int	ms_parse_pipe(t_ast **root, const char *line, t_pvars *v);
-static int	ms_parse_rd(t_ast **root, const char *line, t_pvars *v);
-static int	ms_get_rd_word(t_pvars *v, const char *line, int *err_loc);
+static int	ms_parse_pipe(t_ast **root, char *line, t_pvars *v);
+static int	ms_parse_rd(t_ast **root, char *line, t_pvars *v);
+static int	ms_get_rd_word(t_pvars *v, char *line, int *err_loc);
 
-int	ms_parse_token(t_ast **root, const char *line, t_pvars *v)
+int	ms_parse_token(t_ast **root, char *line, t_pvars *v)
 {
 	int	tmp;
 	int	ret;
@@ -39,7 +39,7 @@ int	ms_parse_token(t_ast **root, const char *line, t_pvars *v)
 	return (ret);
 }
 
-static int	ms_parse_pipe(t_ast **root, const char *line, t_pvars *v)
+static int	ms_parse_pipe(t_ast **root, char *line, t_pvars *v)
 {
 	int	tmp;
 
@@ -47,15 +47,15 @@ static int	ms_parse_pipe(t_ast **root, const char *line, t_pvars *v)
 	while (line[tmp] == ' ')
 		tmp++;
 	if (line[tmp] == '|' || line[tmp] == '\0')
-		return (ms_parse_error(-1, '|'));
+		return (ms_parse_error(-1, '|', 0));
 	(v->end) += 1;
 	return (ms_create_token(root, E_PIPE, NULL, 0));
 }
 
-static int	ms_parse_rd(t_ast **root, const char *line, t_pvars *v)
+static int	ms_parse_rd(t_ast **root, char *line, t_pvars *v)
 {
-	enum e_type	type;
-	int			err_loc;
+	t_type	type;
+	int		err_loc;
 
 	if (line[v->end] == '<')
 		type = E_LSR;
@@ -74,18 +74,18 @@ static int	ms_parse_rd(t_ast **root, const char *line, t_pvars *v)
 	while (line[v->end] && line[v->end] == ' ')
 		(v->end)++;
 	if (ft_is(line[v->end], "<|>") || line[v->end] == '\0')
-		return (ms_parse_error(-1, line[err_loc]));
+		return (ms_parse_error(-1, line[err_loc], 0));
 	if (ms_get_rd_word(v, line, &err_loc) != 0)
-		return (ms_parse_error(-1, line[err_loc]));
+		return (ms_parse_error(-1, line[err_loc], 0));
 	return (ms_create_token(root, type, &line[v->start], v->end - v->start));
 }
 
-static int	ms_get_rd_word(t_pvars *v, const char *line, int *err_loc)
+static int	ms_get_rd_word(t_pvars *v, char *line, int *err_loc)
 {
 	(v->start) = (v->end);
 	while (1)
 	{
-		if (v->quote == 0 && v->dquote == 0 
+		if (v->quote == 0 && v->dquote == 0
 			&& (ft_is(line[v->end], " <|>") || !line[v->end]))
 			break ;
 		if (!line[v->end])

@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 11:12:09 by rafernan          #+#    #+#             */
-/*   Updated: 2022/03/30 12:19:01 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/03/31 10:20:48 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,11 @@ void	ms_parse_quotes(char c, t_pvars *v)
 	}
 }
 
-int	ms_parse_error(int code, char c)
+int	ms_parse_error(int code, char c, bool use_perror)
 {
-	if (code != 0)
+	if (use_perror)
+		perror("minishell: ");
+	else if (code != 0)
 		printf("minishell: parse error near `%c\'\n", c); // Not writing to stderr
 	return (code);
 }

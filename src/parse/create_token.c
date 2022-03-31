@@ -6,79 +6,110 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 16:26:10 by rafernan          #+#    #+#             */
-/*   Updated: 2022/03/30 12:23:38 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/03/31 11:17:14 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/parse.h"
 #include "../../headers/minishell.h"
 
-static t_ast	*ms_create_token_cmd(t_ast **root, char *str, int size, char c);
-static int		tk_merge(t_ast *root, char *ref, int size, char c);
-static char		*ms_get_str(char *ref, int size, t_ast **root, enum e_type type);
-static int		ms_perror(int code, char *message);
+static t_ast	*ms_create_token_cmd(t_ast **root, char *s, int size, char c);
+static t_ast	*ms_expand_cmd(t_ast *new_t);
+static t_ast	*ms_create_token_any(t_ast **root, char *s, int size, t_type t);
+static int		tk_merge(t_ast *root, char *s, int size, char c);
 
-int	ms_create_token(t_ast **root, enum e_type type, const char *ref, int size)
+int	ms_create_token(t_ast **root, t_type type, char *s, int size)
 {
 	t_ast	*new_t;
-	char	*str;
-	
-	str = NULL;
+
+	new_t = NULL;
 	if (type == E_CMD)
-		new_t = ms_create_token_cmd(root, (char *)ref, size, ref[size]);
+		new_t = ms_create_token_cmd(root, s, size, s[size]);
 	else
-	{
-		if (tk_is_rd(type))
-		{
-			str = strndup(ref, size); // Forbbiden
-			if (!str)
-				return (-1);
-		}
-		new_t = tk_new_token(type, str);
-	}
+		new_t = ms_create_token_any(root, s, size, type);
 	if (!new_t)
-	{
-		if (str)
-			free(str);
-		return (ms_perror(-1, "minishell: "));
-	}
+		return (ms_parse_error(-1, '-', 1));
 	if (new_t != *root && ast_add(root, new_t) != 0)
-		return (ms_parse_error(-1, '?')); // This should never hapen !
+		return (ms_parse_error(-1, '-', 1)); // This should never hapen ! Remove later
 	return (0);
 }
 
-static t_ast	*ms_create_token_cmd(t_ast **root, char *ref, int size, char c)
+static t_ast	*ms_create_token_cmd(t_ast **root, char *s, int size, char c)
 {
-	t_ast	*new_t;
+	t_ast	*base;
 	char	**cmd;
 
+	base = NULL;
 	if (*root && (*root)->type == E_CMD)
-	{
-		if (tk_merge(*root, ref, size, ref[size]) != 0)
-			return (NULL);
-		return (*root);
-	}
+		base = *root;
 	else if (*root && (*root)->type == E_PIPE && (*root)->right)
+		base = (*root)->right;
+	if (base)
 	{
-		if (tk_merge((*root)->right, ref, size, ref[size]) != 0)
+		if (tk_merge((*root)->right, s, size, s[size]) != 0)
 			return (NULL);
-		return (*root);
+		return (ms_expand_cmd(base));
 	}
 	else
 	{
-		ref[size] = 0;
-		cmd = ms_split(ref, ' ');
-		ref[size] = c;
+		s[size] = 0;
+		cmd = ms_split(s, ' ');
+		s[size] = c;
 		if (!cmd)
 			return (NULL);
-		new_t = tk_new_token(E_CMD, cmd);
+	}
+	return (ms_expand_cmd(tk_new_token(E_CMD, cmd)));
+}
+
+static t_ast	*ms_expand_cmd(t_ast *new_t)
+{
+	char	**ref;
+	char	*tmp;
+	bool	*req_expand;
+	int		i;
+
+	i = -1;
+	if (!new_t)
+		return (NULL);
+	ref = (new_t->data);
+	while (ref[++i])
+	{
+		tmp = ms_expand(ref[i]);
+		if (!tmp)
+		{
+			ft_free_m(ref);
+			free(new_t);
+			return (NULL);
+		}
+		if (tmp != ref[i])
+		{
+			free(ref[i]);
+			ref[i] = tmp;
+		}
 	}
 	return (new_t);
 }
 
-/*
-	Strjoin both data, set type to given type and free old memory
-*/
+static t_ast	*ms_create_token_any(t_ast **root, char *s, int size, t_type t)
+{
+	char	*tmp;
+	char	c;
+
+	c = s[size];
+	tmp = NULL;
+	if (s)
+	{
+		s[size] = 0;
+		tmp = ms_expand(s);
+		s[size] = c;
+		if (!tmp)
+			return (NULL);
+		if (tmp == s)
+			tmp = strndup(s, size); // forbbiden
+	}
+	return (tk_new_token(t, tmp));
+}
+
 static int	tk_merge(t_ast *root, char *ref, int size, char c)
 {
 	char	**tmp;
@@ -97,10 +128,4 @@ static int	tk_merge(t_ast *root, char *ref, int size, char c)
 	}
 	(root->data) = tmp;
 	return (0);
-}
-
-static int	ms_perror(int code, char *message) // Not writing to stderr
-{
-	perror(message);
-	return (code);
 }

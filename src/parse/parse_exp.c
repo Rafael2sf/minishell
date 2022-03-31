@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 12:23:50 by rafernan          #+#    #+#             */
-/*   Updated: 2022/03/30 17:25:20 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/03/31 11:16:45 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static char	*ms_get_env(char *s, int *i);
 static int	ms_expand_len(char *s, bool *req_expand);
 static int	ms_get_env_len(char *s, int *i);
 
-// READ // MUST DO $?
+/* READ --> MUST DO $? */
 
 char	*ms_expand(char *str)
 {
@@ -37,14 +37,14 @@ char	*ms_expand(char *str)
 		ms_expand_str(str, buf);
 		return (buf);
 	}
-	return (NULL);
+	return (str);
 }
 
 static void	ms_expand_str(char *s, char *buf)
 {
 	t_pvars	v;
 	char	*envar;
-	
+
 	pvars_init(&v);
 	while (s[v.start])
 	{
@@ -66,8 +66,7 @@ static void	ms_expand_str(char *s, char *buf)
 		}
 		else
 			buf[v.end++] = s[v.start];
-		if (s[v.start])
-			(v.start) += 1;
+		(v.start) += 1;
 	}
 }
 
@@ -78,7 +77,7 @@ static char	*ms_get_env(char *s, int *i)
 	char	c;
 
 	ptr = &s[*i];
-	while (s[*i] && !ft_is(s[*i], "\'\"/ "))
+	while (s[*i] && !ft_is(s[*i], "\'\"/$ "))
 		(*i) += 1;
 	c = s[*i];
 	s[*i] = '\0';
@@ -112,8 +111,7 @@ static int	ms_expand_len(char *s, bool *req_expand)
 		}
 		else
 			(v.end) += 1;
-		if (s[v.start])
-			(v.start) += 1;
+		(v.start) += 1;
 	}
 	return (v.end);
 }
@@ -125,7 +123,7 @@ static int	ms_get_env_len(char *s, int *i)
 	char	c;
 
 	ptr = &s[*i];
-	while (s[*i] && !ft_is(s[*i], "\'\"/ "))
+	while (s[*i] && !ft_is(s[*i], "\'\"/$ "))
 		(*i) += 1;
 	c = s[*i];
 	s[*i] = '\0';

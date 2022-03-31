@@ -6,16 +6,16 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 11:03:00 by rafernan          #+#    #+#             */
-/*   Updated: 2022/03/29 10:27:41 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/03/31 11:09:41 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/parse.h"
 #include "../../headers/minishell.h"
 
-static int	ms_parse_last(const char *line, t_pvars *v, t_ast **root);
+static int	ms_parse_last(char *line, t_pvars *v, t_ast **root);
 
-int	ms_parse(t_ast **root, const char *line)
+int	ms_parse(t_ast **root, char *line)
 {
 	t_pvars	v;
 
@@ -23,7 +23,7 @@ int	ms_parse(t_ast **root, const char *line)
 	while (*line && *line == ' ')
 		line++;
 	if (*line == '|')
-		return (ms_parse_error(-1, '|'));
+		return (ms_parse_error(-1, '|', 0));
 	while (1)
 	{
 		if (line[v.end] == '\0')
@@ -41,16 +41,16 @@ int	ms_parse(t_ast **root, const char *line)
 	return (0);
 }
 
-static int	ms_parse_last(const char *line, t_pvars *v, t_ast **root)
+static int	ms_parse_last(char *line, t_pvars *v, t_ast **root)
 {
 	if (line[v->end] == '\0')
 	{
 		if (v->quote != 0 || v->dquote != 0)
 		{
 			if (v->quote >= v->dquote)
-				return (ms_parse_error(-1, '\''));
+				return (ms_parse_error(-1, '\'', 0));
 			else
-				return (ms_parse_error(-1, '\"'));
+				return (ms_parse_error(-1, '\"', 0));
 		}
 		while (--v->end >= v->start && line[v->end] == ' ')
 			;

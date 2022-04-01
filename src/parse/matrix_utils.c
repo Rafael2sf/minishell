@@ -6,11 +6,10 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 10:52:12 by rafernan          #+#    #+#             */
-/*   Updated: 2022/03/31 11:13:09 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/03/31 13:40:10 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/parse.h"
 #include "../../headers/minishell.h"
 
 int	ft_strlen_m(char **s)

@@ -6,11 +6,10 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 11:12:09 by rafernan          #+#    #+#             */
-/*   Updated: 2022/03/31 10:20:48 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/03/31 14:22:40 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/parse.h"
 #include "../../headers/minishell.h"
 
 int	ft_is(char c, char const *set)
@@ -62,7 +61,7 @@ void	ms_parse_quotes(char c, t_pvars *v)
 int	ms_parse_error(int code, char c, bool use_perror)
 {
 	if (use_perror)
-		perror("minishell: ");
+		perror("minishell");
 	else if (code != 0)
 		printf("minishell: parse error near `%c\'\n", c); // Not writing to stderr
 	return (code);

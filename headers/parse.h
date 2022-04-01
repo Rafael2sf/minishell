@@ -26,6 +26,8 @@ typedef struct s_ast
 {
 	enum e_type		type;
 	void			*data;
+	pid_t			pid;
+	int				p[2];
 	struct s_ast	*prev;
 	struct s_ast	*left;
 	struct s_ast	*right;

@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 12:09:01 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/03/31 11:52:46 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/01 11:51:53 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,17 @@
 # include <curses.h>
 # include <term.h>
 # include <errno.h>
+
+# include "parse.h"
+# include "../src/libft/libft.h"
+
+typedef struct	s_mshell
+{
+	char	*prompt;
+	t_ast	*tokens;
+	int		stat;
+	char	**env;
+}	t_mshell;
 
 char	**altered_split(char const *s, char c);
 

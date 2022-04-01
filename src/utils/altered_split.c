@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/27 15:45:17 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/03/31 11:50:33 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/03/31 14:24:17 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,17 +112,3 @@ char	**altered_split(char const *s, char c)
 		return (NULL);
 	return (ptr_split);
 }
-
-// int	main(void)
-// {
-// 	char	**ptr;
-// 	int		i;
-
-// 	ptr = altered_split("echo \"a\"\"b\"", ' ');
-// 	i = 0;
-// 	while (ptr[i] != NULL)
-// 	{
-// 		printf("%s\n\n", ptr[i++]);
-// 	}
-// 	return (0);
-// }

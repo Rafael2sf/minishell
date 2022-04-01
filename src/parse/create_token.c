@@ -6,16 +6,15 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 16:26:10 by rafernan          #+#    #+#             */
-/*   Updated: 2022/03/31 11:53:20 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/03/31 16:38:03 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/parse.h"
 #include "../../headers/minishell.h"
 
 static t_ast	*ms_create_token_cmd(t_ast **root, char *s, int size, char c);
 static t_ast	*ms_expand_cmd(t_ast *new_t);
-static t_ast	*ms_create_token_any(t_ast **root, char *s, int size, t_type t);
+static t_ast	*ms_create_token_any(char *s, int size, t_type t);
 static int		tk_merge(t_ast *root, char *s, int size, char c);
 
 int	ms_create_token(t_ast **root, t_type type, char *s, int size)
@@ -26,7 +25,7 @@ int	ms_create_token(t_ast **root, t_type type, char *s, int size)
 	if (type == E_CMD)
 		new_t = ms_create_token_cmd(root, s, size, s[size]);
 	else
-		new_t = ms_create_token_any(root, s, size, type);
+		new_t = ms_create_token_any(s, size, type);
 	if (!new_t)
 		return (ms_parse_error(-1, '-', 1));
 	if (new_t != *root && ast_add(root, new_t) != 0)
@@ -65,7 +64,6 @@ static t_ast	*ms_expand_cmd(t_ast *new_t)
 {
 	char	**ref;
 	char	*tmp;
-	bool	*req_expand;
 	int		i;
 
 	i = -1;
@@ -90,15 +88,15 @@ static t_ast	*ms_expand_cmd(t_ast *new_t)
 	return (new_t);
 }
 
-static t_ast	*ms_create_token_any(t_ast **root, char *s, int size, t_type t)
+static t_ast	*ms_create_token_any(char *s, int size, t_type t)
 {
 	char	*tmp;
 	char	c;
 
-	c = s[size];
 	tmp = NULL;
 	if (s)
 	{
+		c = s[size];
 		s[size] = 0;
 		tmp = ms_expand(s);
 		s[size] = c;

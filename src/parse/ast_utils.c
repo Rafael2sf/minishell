@@ -6,11 +6,10 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 13:55:38 by rafernan          #+#    #+#             */
-/*   Updated: 2022/03/31 11:04:45 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/01 11:56:20 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/parse.h"
 #include "../../headers/minishell.h"
 
 /*

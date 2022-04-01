@@ -6,11 +6,10 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 12:23:50 by rafernan          #+#    #+#             */
-/*   Updated: 2022/03/31 11:16:45 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/03/31 15:39:00 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/parse.h"
 #include "../../headers/minishell.h"
 
 static void	ms_expand_str(char *s, char *b);

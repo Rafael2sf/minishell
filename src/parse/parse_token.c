@@ -6,16 +6,15 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 10:41:02 by rafernan          #+#    #+#             */
-/*   Updated: 2022/03/31 11:21:10 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/03/31 14:22:37 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/parse.h"
 #include "../../headers/minishell.h"
 
 static int	ms_parse_pipe(t_ast **root, char *line, t_pvars *v);
 static int	ms_parse_rd(t_ast **root, char *line, t_pvars *v);
-static int	ms_get_rd_word(t_pvars *v, char *line, int *err_loc);
+static int	ms_get_rd_word(t_pvars *v, char *line);
 
 int	ms_parse_token(t_ast **root, char *line, t_pvars *v)
 {
@@ -75,12 +74,12 @@ static int	ms_parse_rd(t_ast **root, char *line, t_pvars *v)
 		(v->end)++;
 	if (ft_is(line[v->end], "<|>") || line[v->end] == '\0')
 		return (ms_parse_error(-1, line[err_loc], 0));
-	if (ms_get_rd_word(v, line, &err_loc) != 0)
+	if (ms_get_rd_word(v, line) != 0)
 		return (ms_parse_error(-1, line[err_loc], 0));
 	return (ms_create_token(root, type, &line[v->start], v->end - v->start));
 }
 
-static int	ms_get_rd_word(t_pvars *v, char *line, int *err_loc)
+static int	ms_get_rd_word(t_pvars *v, char *line)
 {
 	(v->start) = (v->end);
 	while (1)

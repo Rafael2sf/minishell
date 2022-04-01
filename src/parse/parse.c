@@ -6,11 +6,10 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 11:03:00 by rafernan          #+#    #+#             */
-/*   Updated: 2022/03/31 11:09:41 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/03/31 13:47:19 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/parse.h"
 #include "../../headers/minishell.h"
 
 static int	ms_parse_last(char *line, t_pvars *v, t_ast **root);

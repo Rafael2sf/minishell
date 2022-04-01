@@ -6,11 +6,10 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:35:43 by rafernan          #+#    #+#             */
-/*   Updated: 2022/03/28 11:35:50 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/01 12:17:44 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/parse.h"
 #include "../../headers/minishell.h"
 
 static int	ast_add_cmd(t_ast **root, t_ast *new_token);
@@ -32,10 +31,11 @@ int	ast_add(t_ast **root, t_ast *new_token)
 			(*root) = tk_new_token(E_UNDEF, NULL);
 			if (!*root)
 				return (-1);
-			if (new_token->type == E_LSR || E_GRT)
+			if (new_token->type == E_LSR || new_token->type == E_LLSR)
 				((*root)->left) = new_token;
 			else
 				((*root)->right) = new_token;
+			(new_token->prev) = (*root);
 		}
 		else
 			(*root) = new_token;

@@ -76,13 +76,3 @@ char	**ft_split(char const *s, char *set)
 	ft_split_helper(tmp, s, set, size);
 	return (tmp);
 }
-
-int	main(void)
-{
-	char	s[] = "\t    \t   hi   \t   \"def\"\n";
-	char	**a = ft_split(s, "\t ");
-
-	int		i = 0;
-	while (a[i])
-		printf("%s", a[i++]);
-}

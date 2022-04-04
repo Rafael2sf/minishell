@@ -6,13 +6,12 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:50:08 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/03/31 14:58:57 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/04 17:42:57 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/minishell.h"
-#include "../../headers/libft.h"
-#include "../export/ft_export.h"
+#include "../../../headers/minishell.h"
+#include "../../../headers/builtins.h"
 
 static void	error_message(char *input)
 {
@@ -26,7 +25,7 @@ static int	null_input_check(char **input, char **env)
 {
 	int		i;
 
-	if (!*input || !(*input)[0])
+	if (!*input)
 	{
 		i = 0;
 		while (env[i] != NULL)
@@ -47,37 +46,79 @@ static int	null_input_check(char **input, char **env)
 	return (1);
 }
 
-char	**ft_cd(char **input, int fd, char **env)		//fd?????
+static int	change_pwd_vars(char *var_id, int fd, char ***env, char *buf)
+{
+	int		err_val;
+	char	*pwd_change[3];
+
+	err_val = 0;
+	pwd_change[0] = "export";
+	pwd_change[1] = ft_strjoin(var_id, buf);
+	pwd_change[2] = NULL;
+	if (!pwd_change[1])
+		return (errno);
+	err_val = ft_export(pwd_change, fd, env);
+	if (err_val)
+		return (err_val);
+	free(pwd_change[1]);
+	return (0);
+}
+
+static int	pwd_change(int fd, char ***env)
+{
+	int		err_val;
+	char	buf[1024];
+
+	if (getcwd(buf, 1024) == NULL)
+	{
+		perror("getcwd failed");
+		return (errno);
+	}
+	err_val = change_pwd_vars("PWD=", fd, env, buf);
+	if (err_val)
+		return (err_val);
+	return (0);
+}
+
+int	ft_cd(char **input, int fd, char ***env)
 {
 	char	buf[1024];
-	char	*pwd_change;
+	int		err_val;
 
-	if (null_input_check(&input[1], env) == 0)
-		return (env);
-	getcwd(buf, 1024);
+	if (null_input_check(&input[1], *env) == 0)
+		return (-1);
+	else if (!input[1][0])
+		return (0);
+	if (getcwd(buf, 1024) == NULL)
+	{
+		perror("getcwd failed");
+		return (errno);
+	}
 	if (chdir(input[1]) == -1)
 	{
 		error_message(input[1]);
-		return (env);
+		return (errno);
 	}
-	pwd_change = ft_strjoin("OLDPWD=", buf);
-	env = ft_export(pwd_change, fd, env);
-	free(pwd_change);
-	getcwd(buf, 1024);
-	pwd_change = ft_strjoin("PWD=", buf);
-	env = ft_export(pwd_change, fd, env);
-	free(pwd_change);
-	return (env);
+	err_val = change_pwd_vars("OLDPWD=", fd, env, buf);
+	if (err_val)
+		return (err_val);
+	return (pwd_change(fd, env));
 }
 
-int	main(int ac, char **av, char **env)
-{
-	char	**env_cpy;
-	(void) ac;
-	(void) av;
-
-	env_cpy = creat_copy(env);
-	ft_cd(NULL, 1, env_cpy);
-	ptr_ptr_free((void **) env_cpy);
-	return (0);
-}
+// int	main(int ac, char **av, char **env)
+// {
+// 	char	**env_cpy;
+// 	int		i =0;
+// 	char	*test[3] = {"cd", "", NULL};
+// 	(void) ac;
+// 	(void) av;
+//
+// 	env_cpy = creat_copy(env);
+// 	ft_cd(test, 1, &env_cpy);
+// 	while (env_cpy[i])
+// 	{
+// 		printf("%s\n",env_cpy[i++]);
+// 	}
+// 	ptr_ptr_free((void **) env_cpy);
+// 	return (0);
+// }

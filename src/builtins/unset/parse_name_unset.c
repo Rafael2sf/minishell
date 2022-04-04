@@ -3,20 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   parse_name_unset.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:38:49 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/03/30 12:01:51 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/04 17:42:19 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/minishell.h"
-#include "../../headers/libft.h"
-#include "ft_export.h"
+#include "../../../headers/minishell.h"
+#include "../../../headers/builtins.h"
 
 static int	check_first_c(char *input)
 {
-	if (ft_isdigit(input[0]))
+	if (ft_isdigit(input[0]) || input[0] == '\0')
 	{
 		ft_putstr_fd("unset: ", 2);
 		ft_putchar_fd('`', 2);

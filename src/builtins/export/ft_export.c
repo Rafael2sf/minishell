@@ -3,18 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 16:03:43 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/03/30 12:19:22 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/04 17:43:09 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/minishell.h"
-#include "../../headers/libft.h"
-#include "ft_export.h"
+#include "../../../headers/minishell.h"
+#include "../../../headers/builtins.h"
 
-static char	**set_variables(char *input, char **env)
+static int	set_variables(char *input, char ***env)
 {
 	int			name_variable_index;
 	int			i;
@@ -22,11 +21,11 @@ static char	**set_variables(char *input, char **env)
 	i = 0;
 	name_variable_index = parsing_input_name_export(input);
 	if (!name_variable_index)
-		return (env);
-	env = prep_output(input, env, name_variable_index);
-	if (!env)
-		return (NULL);
-	return (env);
+		return (-1);
+	*env = prep_output(input, *env, name_variable_index);
+	if (!*env)
+		return (errno);
+	return (0);
 }
 
 static void	print_export(char **env_cpy, int fd, char *ptr)
@@ -72,24 +71,29 @@ static void	env_to_export(char **env, int fd)
 	ptr_ptr_free((void **) env_cpy);
 }
 
-char	**ft_export(char **input, int fd, char **env)
+int	ft_export(char **input, int fd, char ***env)
 {
 	int	i;
+	int	err_val;
 
 	i = 1;
-	if (!env)
+	if (!*env)
 	{
 		ft_putendl_fd("error: env does not exist", 2);
-		return (NULL);
+		return (-1);
 	}
-	while (input[i] != NULL && input[i][0] != '\0')
-		env = set_variables(input[i++], env);
+	while (input[i] != NULL)
+	{
+		err_val = set_variables(input[i++], env);
+		if (err_val)
+			return (err_val);
+	}
 	if (input[1] == NULL)
-		env_to_export(env, fd);
-	return (env);
+		env_to_export(*env, fd);
+	return (0);
 }
 
-/*int	main(int ac, char **av, char **env)
+int	main(int ac, char **av, char **env)
 {
 	int		i;
 	char	**env_cpy;
@@ -99,22 +103,20 @@ char	**ft_export(char **input, int fd, char **env)
 	(void) ac;
 	(void) av;
 	input[0] = "export";
-	input[1] = "TE1ST=12345 just+-!/? playing";
-	input[2] = "TEST2=";
+	input[1] = "TEST= 14";
+	input[2] = "TEST2";
 	input[3] = NULL;
 	input2[0] = "export";
 	input2[1] = NULL;
 	i = 0;
 	env_cpy = creat_copy(env);
-	env_cpy = ft_export(input, 1, env_cpy);
-	env_cpy = ft_export(input2, 1, env_cpy);
+	ft_export(input, 1, &env_cpy);
+	ft_export(input2, 1, &env_cpy);
 	printf("\n\n\n");
-	// sleep(3);
-	// input[0] = "unset";
-	// input[1] = "TE1ST";
-	// input[2] = "TEST2";
-	// env_cpy = ft_unset(input, 1, env_cpy);
-	// env_cpy = ft_export(input2, 1, env_cpy);
+	sleep(3);
+	input[0] = "unset";
+	env_cpy = export_at_start_process(env_cpy);
+	ft_export(input2, 1, &env_cpy);
 	ptr_ptr_free((void **) env_cpy);
 	return (0);
-}*/
+}

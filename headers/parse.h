@@ -53,7 +53,6 @@ int		ast_add_right(t_ast **root, t_ast *new_token);
 void	ast_iter(t_ast *root, void (*f)(void *));
 
 int		ft_is(char c, char const *set);
-char	**ms_split(char const *s, char c);
 
 int		ms_parse(t_ast **root, char *line);
 int		ms_parse_error(int code, char c, bool use_perror);

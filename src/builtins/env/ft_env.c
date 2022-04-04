@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 10:18:36 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/03/30 15:00:55 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/04 17:42:51 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/minishell.h"
-#include "../../headers/libft.h"
+#include "../../../headers/minishell.h"
+#include "../../../headers/builtins.h"
 
 int	ft_env(char **input, char **env, int fd)
 {
@@ -20,7 +20,11 @@ int	ft_env(char **input, char **env, int fd)
 	(void) input;
 	i = 0;
 	while (env[i] != NULL)
-		ft_putendl_fd(env[i++], fd);
+	{
+		if (ft_strchr(env[i], '=') != NULL)
+			ft_putendl_fd(env[i], fd);
+		i++;
+	}
 	return (1);
 }
 

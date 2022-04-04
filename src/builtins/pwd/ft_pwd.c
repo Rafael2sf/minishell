@@ -3,31 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 16:05:27 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/03/29 16:28:31 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/04 17:42:29 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/minishell.h"
-#include "../../headers/libft.h"
+#include "../../../headers/minishell.h"
+#include "../../../headers/builtins.h"
 
-int	ft_pwd(char *input, int fd, char **env)
+int	ft_pwd(char **input, int fd, char **env)
 {
-	int	i;
-	char	*pwd;
+	char	buf[1024];
 
-	i = 0;
-	while (env[i] != NULL)
+	(void) env;
+	(void) input;
+	if (getcwd(buf, 1024) == NULL)
 	{
-		if (ft_strncmp("PWD=", env[i], 4) == 0)
-		{
-			pwd = &env[i][5];
-			break ;
-		}
-		i++;
+		perror("getcwd failed");
+		return (errno);
 	}
-	write(fd, pwd, ft_strlen(pwd) + 1);
+	ft_putendl_fd(buf, fd);
 	return (0);
 }

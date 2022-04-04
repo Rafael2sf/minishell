@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_realloc_unset.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:41:36 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/03/28 16:43:56 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/04 17:42:26 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/minishell.h"
-#include "../../headers/libft.h"
-#include "ft_export.h"
+#include "../../../headers/minishell.h"
+#include "../../../headers/builtins.h"
 
 static void	ft_rlc_unset_copy(char **ptr, char *existing_var, char ***new_ptr)
 {

@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parse_name_export.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:50:01 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/03/30 11:33:51 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/04 17:42:32 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/minishell.h"
-#include "../../headers/libft.h"
-#include "ft_export.h"
+#include "../../../headers/minishell.h"
+#include "../../../headers/builtins.h"
 
 static int	error_printing(char *input, char c_check)
 {
@@ -38,7 +37,7 @@ int	parsing_input_name_export(char *input)
 
 	i = 0;
 	j = 0;
-	if (ft_isdigit(input[0]))
+	if (ft_isdigit(input[0]) || input[0] == '\0')
 	{
 		ft_putstr_fd("export: ", 2);
 		ft_putchar_fd('`', 2);

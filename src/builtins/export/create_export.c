@@ -1,18 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_export.c                                     :+:      :+:    :+:   */
+/*   create_export.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 16:55:02 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/03/30 12:09:14 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/04 17:42:45 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/minishell.h"
-#include "../../headers/libft.h"
-#include "ft_export.h"
+#include "../../../headers/minishell.h"
+#include "../../../headers/builtins.h"
 
 void	ptr_ptr_free(void **ptr)
 {

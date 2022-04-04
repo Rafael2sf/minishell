@@ -6,12 +6,12 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 13:55:53 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/03/31 14:50:01 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/04 17:42:54 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/minishell.h"
-#include "../../headers/libft.h"
+#include "../../../headers/minishell.h"
+#include "../../../headers/builtins.h"
 
 int	ft_echo(char **input, int fd)
 {

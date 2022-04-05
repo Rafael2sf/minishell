@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 10:41:02 by rafernan          #+#    #+#             */
-/*   Updated: 2022/03/31 14:22:37 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/05 15:00:38 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ms_parse_token(t_ast **root, char *line, t_pvars *v)
 
 	ret = 0;
 	tmp = (v->end) - 1;
-	while (tmp >= 0 && line[tmp] == ' ')
+	while (tmp >= 0 && ft_is(line[tmp], " \t"))
 		tmp--;
 	if (tmp - v->start >= 0)
 		ret = ms_create_token(root, E_CMD, &line[v->start], tmp - v->start + 1);
@@ -33,7 +33,7 @@ int	ms_parse_token(t_ast **root, char *line, t_pvars *v)
 		ret += ms_parse_pipe(root, line, v);
 	else
 		ret += ms_parse_rd(root, line, v);
-	while (line[v->end] && line[v->end] == ' ')
+	while (line[v->end] && ft_is(line[v->end], " \t"))
 		(v->end)++;
 	return (ret);
 }
@@ -70,7 +70,7 @@ static int	ms_parse_rd(t_ast **root, char *line, t_pvars *v)
 			type = E_GGRT;
 			(v->end) += 1;
 	}
-	while (line[v->end] && line[v->end] == ' ')
+	while (line[v->end] && ft_is(line[v->end], " \t"))
 		(v->end)++;
 	if (ft_is(line[v->end], "<|>") || line[v->end] == '\0')
 		return (ms_parse_error(-1, line[err_loc], 0));

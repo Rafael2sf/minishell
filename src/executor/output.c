@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 14:59:46 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/05 10:19:59 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/05 15:57:02 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	ms_get_ofiles(t_ast *tmp, int *o_fd, bool *error)
 		}
 		if (tmp->prev->type == E_CMD || tmp->prev->type == E_UNDEF)
 			(*o_fd) = fd;
-		else
+		else if (fd > 2)
 			close(fd);
 		tmp = (tmp->prev);
 	}

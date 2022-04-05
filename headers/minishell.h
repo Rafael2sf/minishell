@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 12:09:01 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/04 17:44:13 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/05 15:42:19 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@
 # include "parse.h"
 # include "../libft/libft.h"
 
+# ifndef DEBUG
+#  define DEBUG 0
+# endif
+
 typedef struct	s_mshell
 {
 	char	*prompt;
@@ -42,9 +46,13 @@ typedef struct	s_mshell
 	char	**env;
 }	t_mshell;
 
+void	tk_print(void *tk_ptr);
+void	tk_free(void *tk_ptr);
+
 char	**altered_split(char const *s, char c);
 char	**change_shlvl(char ***env);
 void	ptr_ptr_free(void **ptr);
 char	**creat_copy(char **env);
+char	**export_at_start_process(char **env);
 
 #endif

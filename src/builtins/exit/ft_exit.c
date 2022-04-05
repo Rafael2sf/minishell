@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 16:03:52 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/04 17:42:48 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/05 16:41:58 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	ft_exit(char **input, int fd, char **env, int stat)
 	int	i;
 
 	i = 0;
-	(void) fd;
+	close(fd);
 	ft_putendl_fd("exit", 1);
 	if (input[1] != NULL && input[2] != NULL)
 	{
@@ -28,6 +28,10 @@ int	ft_exit(char **input, int fd, char **env, int stat)
 	ptr_ptr_free((void **)env);
 	if (input[1] == NULL)
 		exit(stat);
+	while (ft_is(input[1][i], " \t"))
+		i++;
+	if (ft_is(input[1][i], "-+"))
+		i++;
 	while (input[1][i] != '\0')
 	{
 		if (!ft_isdigit(input[1][i++]))

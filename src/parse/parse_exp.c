@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 12:23:50 by rafernan          #+#    #+#             */
-/*   Updated: 2022/03/31 15:39:00 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/05 15:01:15 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static char	*ms_get_env(char *s, int *i)
 	char	c;
 
 	ptr = &s[*i];
-	while (s[*i] && !ft_is(s[*i], "\'\"/$ "))
+	while (s[*i] && !ft_is(s[*i], "\'\"/$ \t"))
 		(*i) += 1;
 	c = s[*i];
 	s[*i] = '\0';
@@ -122,7 +122,7 @@ static int	ms_get_env_len(char *s, int *i)
 	char	c;
 
 	ptr = &s[*i];
-	while (s[*i] && !ft_is(s[*i], "\'\"/$ "))
+	while (s[*i] && !ft_is(s[*i], "\'\"/$ \t"))
 		(*i) += 1;
 	c = s[*i];
 	s[*i] = '\0';

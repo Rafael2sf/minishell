@@ -6,28 +6,39 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 16:37:53 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/05 10:40:46 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/05 15:42:24 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
 #include "../../headers/builtins.h"
 
-char	**reset_oldpwd(char **env)
+static char	**reset_oldpwd(char ***env)
 {
 	int		i;
-
+	char	*tmp;
+	
 	i = 0;
-	while (env[i] != NULL)
+	while ((*env)[i] != NULL)
 	{
-		if (ft_strncmp(env[i], "OLDPWD=", 7) == 0)
+		if (ft_strncmp((*env)[i], "OLDPWD=", 7) == 0)
 		{
-			ft_bzero(env[i], ft_strlen(env[i]));
-			ft_strlcpy(env[i], "OLDPWD", 7);
+			tmp = ft_strdup("OLDPWD");
+			if (tmp)
+			{
+				free((*env)[i]);
+				(*env)[i] = tmp;
+				break ;
+			}
+			else
+			{
+				perror("");
+				return (NULL);
+			}
 		}
 		i++;
 	}
-	return (env);
+	return (*env);
 }
 
 char	**export_at_start_process(char **env)
@@ -48,6 +59,6 @@ char	**export_at_start_process(char **env)
 		}
 		i++;
 	}
-	env = reset_oldpwd(env);
+	env = reset_oldpwd(&env);
 	return (env);
 }

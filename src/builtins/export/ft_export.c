@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 16:03:43 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/05 10:34:36 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/05 17:10:48 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	set_variables(char *input, char ***env)
 	i = 0;
 	name_variable_index = parsing_input_name_export(input);
 	if (!name_variable_index)
-		return (-1);
+		return (1);
 	*env = prep_output(input, *env, name_variable_index);
 	if (!*env)
 		return (errno);
@@ -80,7 +80,7 @@ int	ft_export(char **input, int fd, char ***env)
 	if (!*env)
 	{
 		ft_putendl_fd("error: env does not exist", 2);
-		return (-1);
+		return (1);
 	}
 	while (input[i] != NULL)
 	{

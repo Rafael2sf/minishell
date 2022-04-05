@@ -6,15 +6,17 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 15:04:54 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/05 10:20:09 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/05 17:51:33 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
 #include "../../headers/executor.h"
+#include "../../headers/builtins.h"
 
 int	tk_exec(t_exc *data);
 int	test_exec(t_exc *data);
+int	ms_is_builtin(char *s);
 
 int	ast_executor(t_ast *tokens, int *stat, char **env)
 {
@@ -50,15 +52,13 @@ int	tk_exec(t_exc *data)
 		}
 		if (data->token->type == E_PIPE)
 			tmp = (data->token->right);
-		if (tmp->type != E_UNDEF)
+		(data->stat) = ms_is_builtin(((char **)(tmp->data))[0]);
+		if (data->stat == -1 && tmp->type != E_UNDEF && ms_newcmd(&((char **)(tmp->data))[0], data->paths))
 		{
-			if (ms_newcmd(&((char **)(tmp->data))[0], data->paths))
-			{
-				(data->cmd) = (char **)(tmp->data);
-				test_exec(data);
-			}
+			(data->cmd) = (char **)(tmp->data);
+			test_exec(data);
 		}
-		else
+		else if (data->stat == -1)
 		{
 			close(data->i_fd);
 			close(data->o_fd);
@@ -72,7 +72,7 @@ int	tk_exec(t_exc *data)
 int	test_exec(t_exc *data)
 {
 	t_ast	*cur;
-
+	
 	cur = data->token;
 	if (data->token->type != E_CMD)
 		cur = data->token->right;
@@ -83,10 +83,10 @@ int	test_exec(t_exc *data)
 	{
 		dup2(data->i_fd, STDIN_FILENO);
 		dup2(data->o_fd, STDOUT_FILENO);
+		execve((data->cmd)[0], data->cmd, data->envp);
 		close(data->i_fd);
 		close(data->o_fd);
-		execve((data->cmd)[0], data->cmd, data->envp);
-		exit(0);
+		exit(0); // free stuff
 	}
 	else
 	{
@@ -95,6 +95,14 @@ int	test_exec(t_exc *data)
 		wait(0);
 	}
 	return (0);
+}
+
+int	ms_is_builtin(char *s)
+{
+	close(data->i_fd);
+	if (ft_strncmp(s, "exit", 5) == 0)
+		return (ft_exit());
+	return (-1);
 }
 
 /*

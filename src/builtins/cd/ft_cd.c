@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:50:08 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/05 10:32:21 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/05 17:09:04 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	ft_cd(char **input, int fd, char ***env)
 
 	close(fd);
 	if (null_input_check(&input[1], *env) == 0)
-		return (-1);
+		return (1);
 	else if (!input[1][0])
 		return (0);
 	if (getcwd(buf, 1024) == NULL)

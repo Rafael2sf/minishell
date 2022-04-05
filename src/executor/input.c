@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 11:08:28 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/05 10:20:04 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/05 15:56:34 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	ms_get_llsr(t_ast *tmp, int *i_fd, bool *error, t_ast *last)
 			}
 			if (tmp == last)
 				(*i_fd) = fd;
-			else
+			else if (fd > 2)
 				close(fd);
 		}
 		tmp = (tmp->prev);
@@ -83,7 +83,7 @@ static void	ms_get_lsr(t_ast *tmp, int *i_fd, bool *error, t_ast *last)
 			}
 			if (tmp == last)
 				(*i_fd) = fd;
-			else
+			else if (fd > 2)
 				close(fd);
 		}
 		tmp = (tmp->prev);

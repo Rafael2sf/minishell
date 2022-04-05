@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 09:48:40 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/05 10:38:40 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/05 17:12:08 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ int	ft_unset(char **input, int fd, char ***env)
 	close(fd);
 	if (!*env)
 	{
-		ft_putendl_fd("error: env does not exist", 2);
-		return (-1);
+		ft_putendl_fd("error: env is empity", 2);
+		return (1);
 	}
 	if (!input[1])
 		return (0);

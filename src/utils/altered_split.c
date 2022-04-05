@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/27 15:45:17 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/03/31 14:24:17 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/05 15:26:10 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ static int	word_count(const char *s, char c)
 	nb_words = 0;
 	while (s[i])
 	{
-		while (s[i] == c)
+		while (s[i] == c || s[i] == 9)
 			i++;
 		if (s[i] == '\0')
 			break ;
 		quotes = 0;
-		while ((s[i] != c || quotes != 0) && s[i] != '\0')
+		while (((s[i] != c && s[i] != 9) || quotes != 0) && s[i] != '\0')
 		{
 			if ((s[i] == '\'' || s[i] == '\"') && quotes == 0)
 				quotes = s[i];
@@ -48,12 +48,12 @@ static int	get_next_word(const char *s, char c)
 	i = 0;
 	while (s)
 	{
-		while (*s == c)
+		while (*s == c || *s == 9)
 			s++;
 		if (*s == '\0')
 			return (0);
 		quotes = 0;
-		while ((s[i] != c || quotes != 0) && s[i] != '\0')
+		while (((s[i] != c && s[i] != 9) || quotes != 0) && s[i] != '\0')
 		{
 			if ((s[i] == '\'' || s[i] == '\"') && quotes == 0)
 				quotes = s[i];
@@ -79,10 +79,10 @@ static char	**fill_splits(char **ptr_split, int k, char const *s, char c)
 		ptr_split[i] = malloc(sizeof(char) * (get_next_word(s, c) + 1));
 		if (!ptr_split[i])
 			return (NULL);
-		while (*s == c)
+		while (*s == c || *s == 9)
 			s++;
 		quotes = 0;
-		while ((*s != c || quotes != 0) && *s != '\0')
+		while (((*s != c && *s != 9) || quotes != 0) && *s != '\0')
 		{
 			if ((*s == '\'' || *s == '\"') && quotes == 0)
 				quotes = *s;

@@ -1,23 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ptr_ptr_free.c                                     :+:      :+:    :+:   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/31 16:28:35 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/05 10:50:35 by rafernan         ###   ########.fr       */
+/*   Created: 2021/10/21 15:23:11 by daalmeid          #+#    #+#             */
+/*   Updated: 2022/04/05 10:36:38 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/minishell.h"
+#include <unistd.h>
 
-void	ptr_ptr_free(void **ptr)
+void	ft_putchar_fd(char c, int fd)
 {
-	int	i;
-
-	i = 0;
-	while (ptr[i] != NULL)
-		free (ptr[i++]);
-	free(ptr);
+	write(fd, &c, 1);
 }
+
+/*
+int	main(void)
+{
+	char	c;
+	int		fd;
+
+	c = 'a';
+	fd = 1;
+	ft_putchar_fd(c, fd);
+	return (0);
+}
+*/

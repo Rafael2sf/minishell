@@ -1,23 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ptr_ptr_free.c                                     :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/31 16:28:35 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/05 10:50:35 by rafernan         ###   ########.fr       */
+/*   Created: 2021/10/21 15:34:36 by daalmeid          #+#    #+#             */
+/*   Updated: 2022/04/05 10:31:31 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/minishell.h"
+#include "libft.h"
 
-void	ptr_ptr_free(void **ptr)
+void	ft_putstr_fd(char *s, int fd)
 {
 	int	i;
 
+	if (s == 0)
+		return ;
 	i = 0;
-	while (ptr[i] != NULL)
-		free (ptr[i++]);
-	free(ptr);
+	while (s[i] != '\0')
+	{
+		ft_putchar_fd(s[i], fd);
+		i++;
+	}
 }
+/*
+int	main(void)
+{
+	char	*s;
+	int		fd;
+
+	fd = 1;
+	s = "Dario Barroca";
+	ft_putstr_fd(s, fd);
+	return (0);
+}
+*/

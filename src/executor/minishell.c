@@ -6,12 +6,12 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 10:58:16 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/04 17:07:56 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/05 10:47:36 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
-#include "executor.h"
+#include "../../headers/executor.h"
 
 void	tk_print(void *tk_ptr)
 {

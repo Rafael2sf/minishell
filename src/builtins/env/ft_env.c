@@ -6,14 +6,14 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 10:18:36 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/04 17:42:51 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/05 10:15:31 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../headers/minishell.h"
 #include "../../../headers/builtins.h"
 
-int	ft_env(char **input, char **env, int fd)
+int	ft_env(char **input, int fd, char **env)
 {
 	int		i;
 
@@ -25,7 +25,8 @@ int	ft_env(char **input, char **env, int fd)
 			ft_putendl_fd(env[i], fd);
 		i++;
 	}
-	return (1);
+	close(fd);
+	return (0);
 }
 
 /*int	main(int ac, char **av, char **env)

@@ -6,12 +6,12 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 11:11:54 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/01 12:10:16 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/05 10:20:07 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
-#include "executor.h"
+#include "../../headers/executor.h"
 
 static void	ms_read_heredoc(const char *delimitir, int dlen, int fd);
 

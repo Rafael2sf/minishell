@@ -6,12 +6,12 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 11:08:28 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/04 16:57:20 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/05 10:20:04 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
-#include "executor.h"
+#include "../../headers/executor.h"
 
 static int	ms_epipe(void);
 static void	ms_get_llsr(t_ast *tmp, int *i_fd, bool *error, t_ast *last);

@@ -6,12 +6,12 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 10:24:23 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/04 17:08:48 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/05 10:19:55 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
-#include "executor.h"
+#include "../../headers/executor.h"
 
 static char	*ms_srchfp(char *fname, char **paths);
 static char	*ms_strpath(char *path, const char *file);

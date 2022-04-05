@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   env_start_prep.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 16:37:53 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/04 16:42:52 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/05 10:40:46 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
-#include "../../headers/libft.h"
-#include "ft_export.h"
+#include "../../headers/builtins.h"
 
 char	**reset_oldpwd(char **env)
 {

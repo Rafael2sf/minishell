@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   env_cpy.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 16:30:16 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/03/31 16:30:43 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/05 10:40:27 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
-#include "../../headers/libft.h"
 
 char	**creat_copy(char **env)
 {

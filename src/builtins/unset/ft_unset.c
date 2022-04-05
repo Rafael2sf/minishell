@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 09:48:40 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/04 17:42:24 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/05 10:38:40 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static int	set_var_unset(char ***env, char **input)
 
 int	ft_unset(char **input, int fd, char ***env)
 {
-	(void)fd;
+	close(fd);
 	if (!*env)
 	{
 		ft_putendl_fd("error: env does not exist", 2);

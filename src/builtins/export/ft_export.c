@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 16:03:43 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/04 17:43:09 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/05 10:34:36 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,11 @@ int	ft_export(char **input, int fd, char ***env)
 	}
 	if (input[1] == NULL)
 		env_to_export(*env, fd);
+	close(fd);
 	return (0);
 }
 
+/*
 int	main(int ac, char **av, char **env)
 {
 	int		i;
@@ -120,3 +122,4 @@ int	main(int ac, char **av, char **env)
 	ptr_ptr_free((void **) env_cpy);
 	return (0);
 }
+*/

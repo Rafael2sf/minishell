@@ -62,6 +62,9 @@ int			ft_memcmp(const void *s1, const void *s2, size_t n);
 
 int			ft_putchar(int fd, char c);
 size_t		ft_putstr(int fd, const char *s);
+void		ft_putchar_fd(char c, int fd);
+void		ft_putstr_fd(char *s, int fd);
+void		ft_putendl_fd(char *s, int fd);
 int			ft_putaddr(int fd, size_t addr);
 int			ft_putnbr(int fd, ssize_t n);
 int			ft_putnbr_b(int fd, ssize_t n, char base, char frmt);

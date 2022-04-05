@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 13:55:53 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/04 17:42:54 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/05 10:14:50 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	ft_echo(char **input, int fd)
 	}
 	if (flag == 0)
 		ft_putchar_fd('\n', fd);
+	close(fd);
 	return (0);
 }
 

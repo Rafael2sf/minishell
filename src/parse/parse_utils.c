@@ -6,25 +6,11 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 11:12:09 by rafernan          #+#    #+#             */
-/*   Updated: 2022/03/31 14:22:40 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/05 10:43:01 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
-
-int	ft_is(char c, char const *set)
-{
-	char	*tmp;
-
-	tmp = (char *)set;
-	while (tmp && *tmp)
-	{
-		if (c == *tmp)
-			return (1);
-		tmp++;
-	}
-	return (0);
-}
 
 void	pvars_init(t_pvars *v)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 16:52:23 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/05 16:26:25 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/06 11:25:53 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int		ft_unset(char **input, int fd, char ***env);
 int		ft_export(char **input, int fd, char ***env);
 int		ft_echo(char **input, int fd);
 int		ft_env(char **input, int fd, char **env);
-int		ft_exit(char **input, int fd, char **env, int stat);
+int		ft_exit(char **input, int fd, char **env, int *stat);
 int		ft_pwd(char **input, int fd, char **env);
 
 void	ptr_ptr_free(void **ptr);

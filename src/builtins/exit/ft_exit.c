@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 16:03:52 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/05 16:41:58 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/05 18:29:45 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../headers/minishell.h"
 #include "../../../headers/builtins.h"
 
-int	ft_exit(char **input, int fd, char **env, int stat)
+int	ft_exit(char **input, int fd, char **env, int *stat)
 {
 	int	i;
 
@@ -27,7 +27,7 @@ int	ft_exit(char **input, int fd, char **env, int stat)
 	}
 	ptr_ptr_free((void **)env);
 	if (input[1] == NULL)
-		exit(stat);
+		exit(*stat);
 	while (ft_is(input[1][i], " \t"))
 		i++;
 	if (ft_is(input[1][i], "-+"))
@@ -42,7 +42,8 @@ int	ft_exit(char **input, int fd, char **env, int stat)
 			exit(-1);
 		}
 	}
-	exit(ft_atoi(input[1]));
+	*stat = ft_atoi(input[1]);
+	exit(*stat);
 }
 
 /*int	main(int ac, char **av, char **env)

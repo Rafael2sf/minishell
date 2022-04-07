@@ -61,7 +61,7 @@ static char	**ft_split_helper(char **p, char const *s, char *set, size_t size)
 	p[j] = NULL;
 	return (p);
 }
-#include <stdio.h>
+
 char	**ft_split(char const *s, char *set)
 {
 	char	**tmp;

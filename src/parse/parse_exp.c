@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 12:23:50 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/05 15:01:15 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/06 11:25:06 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static char	*ms_get_env(char *s, int *i);
 static int	ms_expand_len(char *s, bool *req_expand);
 static int	ms_get_env_len(char *s, int *i);
 
-/* READ --> MUST DO $? */
+/*															 READ --> MUST DO $? */
 
 char	*ms_expand(char *str)
 {
@@ -55,7 +55,6 @@ static void	ms_expand_str(char *s, char *buf)
 		{
 			if (s[v.start + 1] != '\"' && s[v.start + 1])
 			{
-				(v.start) += 1;
 				envar = ms_get_env(s, &v.start);
 				while (envar && *envar)
 					buf[v.end++] = *envar++;
@@ -75,6 +74,7 @@ static char	*ms_get_env(char *s, int *i)
 	char	*tmp;
 	char	c;
 
+	(*i) += 1;
 	ptr = &s[*i];
 	while (s[*i] && !ft_is(s[*i], "\'\"/$ \t"))
 		(*i) += 1;
@@ -102,7 +102,6 @@ static int	ms_expand_len(char *s, bool *req_expand)
 			if (s[v.start + 1] != '\"' && s[v.start + 1])
 			{
 				(*req_expand) = true;
-				(v.start) += 1;
 				(v.end) += ms_get_env_len(s, &v.start);
 			}
 			else if (v.dquote)
@@ -121,6 +120,7 @@ static int	ms_get_env_len(char *s, int *i)
 	char	*tmp;
 	char	c;
 
+	(*i) += 1;
 	ptr = &s[*i];
 	while (s[*i] && !ft_is(s[*i], "\'\"/$ \t"))
 		(*i) += 1;
@@ -129,7 +129,5 @@ static int	ms_get_env_len(char *s, int *i)
 	tmp = getenv(ptr);
 	s[*i] = c;
 	(*i) -= 1;
-	if (!tmp) // strlen handle null
-		return (0);
-	return (strlen(tmp)); // Using forbbiden
+	return (ft_strlen(tmp));
 }

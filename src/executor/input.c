@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 11:08:28 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/05 15:56:34 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/07 11:03:03 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,14 @@ int	ms_get_input(t_ast *cur, int *i_fd)
 	last = tmp->left;
 	if (!tmp->left)
 	{
-		if (cur->type == E_PIPE)
+		if (cur->type != E_CMD)
 			(*i_fd) = (cur->p)[0];
 		else
 			(*i_fd) = dup(STDIN_FILENO);
 		return (0);
 	}
+	if (cur->prev)
+		close((cur->p)[0]);
 	while (tmp->left)
 		tmp = (tmp->left);
 	ms_get_llsr(tmp, i_fd, &error, last);

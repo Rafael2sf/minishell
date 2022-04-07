@@ -6,7 +6,7 @@
 #    By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 10:54:37 by rafernan          #+#    #+#              #
-#    Updated: 2022/04/05 15:03:59 by rafernan         ###   ########.fr        #
+#    Updated: 2022/04/07 10:58:44 by rafernan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ MKD		=		mkdir
 PRT		=		printf
 MKE		=		make
 CPY		=		cp
+NRM		=		norminette
 
 ################### COLORS ##############
 
@@ -79,7 +80,8 @@ SRCS_	=		minishell.c \
 				utils/change_shlvl.c \
 				utils/env_cpy.c \
 				utils/env_start_prep.c \
-				utils/ptr_ptr_free.c
+				utils/ptr_ptr_free.c \
+				utils/tk_print.c
 
 SRCS	=		$(addprefix $(_SRC), $(SRCS_))
 OBJS	=		$(patsubst %.c, %.o,$(SRCS))
@@ -93,6 +95,7 @@ all: $(NAME)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
+#	@$(NRM)	$<
 
 debug:
 	$(MAKE) $(NAME) CFLAGS="$(DBFLAGS)"

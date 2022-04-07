@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 11:03:00 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/05 14:37:22 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/06 11:19:04 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,12 @@ int	ms_parse(t_ast **root, char *line)
 	t_pvars	v;
 
 	pvars_init(&v);
-	while (*line && *line == ' ')
+	while (*line && ft_is(*line, " \t"))
 		line++;
 	if (*line == '|')
 		return (ms_parse_error(-1, '|', 0));
+	if (!line)
+		return (1);
 	while (1)
 	{
 		if (line[v.end] == '\0')
@@ -42,20 +44,17 @@ int	ms_parse(t_ast **root, char *line)
 
 static int	ms_parse_last(char *line, t_pvars *v, t_ast **root)
 {
-	if (line[v->end] == '\0')
+	if (v->quote != 0 || v->dquote != 0)
 	{
-		if (v->quote != 0 || v->dquote != 0)
-		{
-			if (v->quote >= v->dquote)
-				return (ms_parse_error(-1, '\'', 0));
-			else
-				return (ms_parse_error(-1, '\"', 0));
-		}
-		while (--v->end >= v->start && line[v->end] == ' ')
-			;
-		if (v->end - v->start >= 0)
-			ms_create_token(root, E_CMD, &line[v->start],
-				v->end - v->start + 1);
+		if (v->quote >= v->dquote)
+			return (ms_parse_error(-1, '\'', 0));
+		else
+			return (ms_parse_error(-1, '\"', 0));
 	}
+	while (--v->end >= v->start && ft_is(line[v->end], " \t"))
+		;
+	if (v->end - v->start >= 0)
+		ms_create_token(root, E_CMD, &line[v->start],
+			v->end - v->start + 1);
 	return (0);
 }

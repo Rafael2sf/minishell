@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 13:55:38 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/05 16:48:36 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/07 10:31:54 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@ t_ast	*tk_new_token(t_type type, void *ref)
 		(new_token->prev) = NULL;
 		(new_token->left) = NULL;
 		(new_token->right) = NULL;
+		(new_token->pid) = 0;
+		(new_token->p)[0] = 0;
+		(new_token->p)[1] = 0;
 		return (new_token);
 	}
 	return (NULL);
@@ -50,28 +53,6 @@ void	ast_iter(t_ast *root, void (*f)(void *))
 int	tk_is_rd(t_type type)
 {
 	return (type == E_LSR || type == E_LLSR || type == E_GRT || type == E_GGRT);
-}
-
-/*
-	Write a node data
-*/
-void	tk_print(void *tk_ptr)
-{
-	t_ast	*tk;
-	char	**ref;
-	int		i;
-
-	i = 0;
-	tk = (t_ast *)(tk_ptr);
-	if (tk->type == E_CMD)
-	{
-		ref = (char **)(tk->data);
-		while (ref[i])
-			printf("%s ", ref[i++]);
-	}
-	if (tk_is_rd(tk->type))
-		printf("%s", (char *)(tk->data));
-	printf(" ");
 }
 
 /*

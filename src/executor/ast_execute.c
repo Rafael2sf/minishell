@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 15:04:54 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/05 17:51:33 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/07 11:00:20 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,45 @@
 #include "../../headers/executor.h"
 #include "../../headers/builtins.h"
 
+t_ast	*ast_root(t_ast *token)
+{
+	t_ast	*tmp;
+
+	if (!token)
+		return (NULL);
+	tmp = token;
+	while (tmp->prev)
+		(tmp) = (tmp->prev);
+	return (tmp);
+}
+
+void	tk_close(void *tk_ptr)
+{
+	t_ast	*token;
+
+	token = ast_root((t_ast *)(tk_ptr));
+	// while (token == E_PIPE)
+	// {
+	// 	if (token->right->type == E_CMD)
+	// 	{
+	// 		if ((token->right->p)[0] > 2)
+	// 			close((token->right->p)[0]);
+	// 		if ((token->right->p)[1] > 2)
+	// 			close((token->right->p)[1]);
+	// 	}
+	// }
+	if (token->type == E_PIPE)
+	{
+		if ((token->p)[0] > 2)
+			close((token->right->p)[0]);
+		if ((token->p)[1] > 2)
+			close((token->right->p)[1]);
+	}
+}
+
 int	tk_exec(t_exc *data);
 int	test_exec(t_exc *data);
-int	ms_is_builtin(char *s);
+int	ms_is_builtin(t_exc *data, char **s);
 
 int	ast_executor(t_ast *tokens, int *stat, char **env)
 {
@@ -52,19 +88,20 @@ int	tk_exec(t_exc *data)
 		}
 		if (data->token->type == E_PIPE)
 			tmp = (data->token->right);
-		(data->stat) = ms_is_builtin(((char **)(tmp->data))[0]);
-		if (data->stat == -1 && tmp->type != E_UNDEF && ms_newcmd(&((char **)(tmp->data))[0], data->paths))
+		if (tmp->type != E_UNDEF && ms_newcmd(&((char **)(tmp->data))[0], data->paths))
 		{
 			(data->cmd) = (char **)(tmp->data);
 			test_exec(data);
 		}
-		else if (data->stat == -1)
+		else
 		{
 			close(data->i_fd);
 			close(data->o_fd);
 		}
 		(data->token) = (data->token->prev);
 	}
+	ast_iter(ast_root(tmp), tk_close);
+	waitpid(tmp->pid, NULL, 0);
 	ft_free_m(data->paths);
 	return (0);
 }
@@ -83,26 +120,19 @@ int	test_exec(t_exc *data)
 	{
 		dup2(data->i_fd, STDIN_FILENO);
 		dup2(data->o_fd, STDOUT_FILENO);
-		execve((data->cmd)[0], data->cmd, data->envp);
 		close(data->i_fd);
 		close(data->o_fd);
+		execve((data->cmd)[0], data->cmd, data->envp);
+		ast_iter(ast_root(cur), tk_close);
+		ast_iter(ast_root(cur), tk_free);
 		exit(0); // free stuff
 	}
 	else
 	{
 		close(data->i_fd);
 		close(data->o_fd);
-		wait(0);
 	}
 	return (0);
-}
-
-int	ms_is_builtin(char *s)
-{
-	close(data->i_fd);
-	if (ft_strncmp(s, "exit", 5) == 0)
-		return (ft_exit());
-	return (-1);
 }
 
 /*

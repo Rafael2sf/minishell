@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 12:09:01 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/05 15:42:19 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/07 10:49:59 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ typedef struct	s_mshell
 	char	**env;
 }	t_mshell;
 
-void	tk_print(void *tk_ptr);
 void	tk_free(void *tk_ptr);
+void	ast_print(t_ast *root, int depth);
 
 char	**altered_split(char const *s, char c);
 char	**change_shlvl(char ***env);

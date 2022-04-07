@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 10:41:02 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/05 15:00:38 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/06 11:43:19 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ int	ms_parse_token(t_ast **root, char *line, t_pvars *v)
 	if (ret == -1)
 		return (-1);
 	if (line[v->end] == '|')
-		ret += ms_parse_pipe(root, line, v);
+		ret = ms_parse_pipe(root, line, v);
 	else
-		ret += ms_parse_rd(root, line, v);
+		ret = ms_parse_rd(root, line, v);
 	while (line[v->end] && ft_is(line[v->end], " \t"))
 		(v->end)++;
 	return (ret);
@@ -85,7 +85,7 @@ static int	ms_get_rd_word(t_pvars *v, char *line)
 	while (1)
 	{
 		if (v->quote == 0 && v->dquote == 0
-			&& (ft_is(line[v->end], " <|>") || !line[v->end]))
+			&& (ft_is(line[v->end], " \t<|>") || !line[v->end]))
 			break ;
 		if (!line[v->end])
 			return (-1);

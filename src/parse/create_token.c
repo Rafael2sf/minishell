@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 16:26:10 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/05 15:01:23 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/06 11:31:03 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ static t_ast	*ms_create_token_any(char *s, int size, t_type t)
 		if (!tmp)
 			return (NULL);
 		if (tmp == s)
-			tmp = strndup(s, size); // forbbiden
+			tmp = ft_strndup(s, size); // forbbiden
 	}
 	return (tk_new_token(t, tmp));
 }

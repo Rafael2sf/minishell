@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 14:59:46 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/05 15:57:02 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/07 11:01:27 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int	ms_get_output(t_ast *cur, int *o_fd)
 			(*o_fd) = dup(STDOUT_FILENO);
 		return (0);
 	}
+	if (cur->prev)
+		close((cur->prev->p)[1]);
 	while (tmp->right)
 		tmp = (tmp->right);
 	return (ms_get_ofiles(tmp, o_fd, &error));

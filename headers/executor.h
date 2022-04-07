@@ -17,6 +17,6 @@ int		ms_get_output(t_ast *cur, int *o_fd);
 char	**ms_paths(void);
 char	*ms_newcmd(char **cmd, char **paths);
 int		ms_heredoc(const char *delimitir);
-int		ast_executor(t_ast *tokens, int *wstat, char **env);
+int		ast_executor(t_ast *tokens, int *wstat, char ***env);
 
 # endif

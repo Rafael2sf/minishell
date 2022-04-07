@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 10:58:16 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/05 17:26:04 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/06 15:56:52 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@
 static char **ms_env_creation(char **envp);
 
 /* Minishell main */
-int	main(int argc, char **argv, char **envp)
+int	main(void)
 {
+	extern char	**environ;
 	t_mshell	shell;
-	
-	(void)(argc);
-	(void)(argv);
+
 	(shell.stat) = 0;
 	(shell.tokens) = NULL;
-	(shell.env) = ms_env_creation(envp);
+	environ = ms_env_creation(environ);
+	(shell.env) = &environ;
 	if (!shell.env)
 		return (errno);
 	while (1)

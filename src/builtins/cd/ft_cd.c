@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:50:08 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/05 17:09:04 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/06 14:20:45 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,10 @@ static int	change_pwd_vars(char *var_id, int fd, char ***env, char *buf)
 	pwd_change[1] = ft_strjoin(var_id, buf);
 	pwd_change[2] = NULL;
 	if (!pwd_change[1])
+	{
+		perror("error allocating memory");
 		return (errno);
+	}
 	err_val = ft_export(pwd_change, fd, env);
 	if (err_val)
 		return (err_val);
@@ -103,6 +106,7 @@ int	ft_cd(char **input, int fd, char ***env)
 	err_val = change_pwd_vars("OLDPWD=", fd, env, buf);
 	if (err_val)
 		return (err_val);
+	input[1] = NULL;
 	return (pwd_change(fd, env));
 }
 

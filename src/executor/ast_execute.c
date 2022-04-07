@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_execute.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 15:04:54 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/05 17:51:33 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/06 11:56:13 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,25 @@
 
 int	tk_exec(t_exc *data);
 int	test_exec(t_exc *data);
-int	ms_is_builtin(char *s);
+int	ms_is_builtin(t_exc *data, t_ast *tmp);
 
-int	ast_executor(t_ast *tokens, int *stat, char **env)
+int	ast_executor(t_ast *tokens, int *stat, char ***env)
 {
 	t_exc	data;
+	int		ret;
 
 	(data.token) = tokens;
 	(data.i_fd) = STDIN_FILENO;
 	(data.o_fd) = STDOUT_FILENO;
-	(data.envp) = env;
+	(data.envp) = *env;
 	(data.stat) = stat;
 	(data.cmd) = NULL;
 	(data.paths) = ms_paths();
 	while (data.token->left && !tk_is_rd(data.token->left->type))
 		(data.token) = (data.token->left);
-	return (tk_exec(&data));
+	ret = tk_exec(&data);
+	*env = data.envp;
+	return (ret);
 }
 
 int	tk_exec(t_exc *data)
@@ -52,13 +55,13 @@ int	tk_exec(t_exc *data)
 		}
 		if (data->token->type == E_PIPE)
 			tmp = (data->token->right);
-		(data->stat) = ms_is_builtin(((char **)(tmp->data))[0]);
-		if (data->stat == -1 && tmp->type != E_UNDEF && ms_newcmd(&((char **)(tmp->data))[0], data->paths))
+		*(data->stat) = ms_is_builtin(data, tmp);
+		if (*(data->stat) == -1 && tmp->type != E_UNDEF && ms_newcmd(&((char **)(tmp->data))[0], data->paths))
 		{
 			(data->cmd) = (char **)(tmp->data);
 			test_exec(data);
 		}
-		else if (data->stat == -1)
+		else if (*(data->stat) == -1)
 		{
 			close(data->i_fd);
 			close(data->o_fd);
@@ -97,11 +100,26 @@ int	test_exec(t_exc *data)
 	return (0);
 }
 
-int	ms_is_builtin(char *s)
+int	ms_is_builtin(t_exc *data, t_ast *tmp)
 {
+	int	i = 0;
+
+
 	close(data->i_fd);
-	if (ft_strncmp(s, "exit", 5) == 0)
-		return (ft_exit());
+	if (ft_strncmp(((char **)(tmp->data))[0], "exit", 5) == 0)
+		return (ft_exit((char **)(tmp->data), data->o_fd, data->envp, data->stat));
+	else if (ft_strncmp(((char **)(tmp->data))[0], "cd", 3) == 0)
+		return (ft_cd((char **)(tmp->data), data->o_fd, &data->envp));
+	else if (ft_strncmp(((char **)(tmp->data))[0], "echo", 5) == 0)
+		return (ft_echo((char **)(tmp->data), data->o_fd));
+	else if (ft_strncmp(((char **)(tmp->data))[0], "env", 4) == 0)
+		return (ft_env((char **)(tmp->data), data->o_fd, data->envp));
+	else if (ft_strncmp(((char **)(tmp->data))[0], "export", 7) == 0)
+		return (ft_export((char **)(tmp->data), data->o_fd, &data->envp));
+	else if (ft_strncmp(((char **)(tmp->data))[0], "unset", 6) == 0)
+		return (ft_unset((char **)(tmp->data), data->o_fd, &data->envp));
+	else if (ft_strncmp(((char **)(tmp->data))[0], "pwd", 4) == 0)
+		return (ft_pwd((char **)(tmp->data), data->o_fd, data->envp));
 	return (-1);
 }
 

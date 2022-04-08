@@ -6,42 +6,44 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 14:59:46 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/07 11:01:27 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/08 16:23:01 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
 #include "../../headers/executor.h"
 
-static int	ms_get_ofiles(t_ast *tmp, int *o_fd, bool *error);
+static int	ms_get_ofiles(t_ast *tmp, int o_fd, bool *error);
 
-int	ms_get_output(t_ast *cur, int *o_fd)
+int	ms_get_output(t_ast *cur)
 {
 	t_ast	*tmp;
 	bool	error;
+	int		fd;
 
+	fd = -1;
 	tmp = cur;
 	error = false;
-	if (cur->prev)
-		pipe(cur->prev->p);
-	if (tmp->type == E_PIPE)
-		tmp = (tmp->right);
 	if (!tmp->right)
 	{
-		if (cur->prev)
-			(*o_fd) = (cur->prev->p)[1];
+		if (tmp->prev && tmp->prev->left == tmp)
+			fd = (tmp->prev->p)[1]; 
+		else if (tmp->prev && tmp->prev->prev)
+			fd = (tmp->prev->prev->p)[1];
 		else
-			(*o_fd) = dup(STDOUT_FILENO);
-		return (0);
+			fd = dup(STDOUT_FILENO);
+		return (fd);
 	}
-	if (cur->prev)
+	if (tmp->prev && tmp->prev->left == tmp)
 		close((cur->prev->p)[1]);
+	else if (tmp->prev && tmp->prev->prev)
+		close((tmp->prev->prev->p)[1]);
 	while (tmp->right)
 		tmp = (tmp->right);
-	return (ms_get_ofiles(tmp, o_fd, &error));
+	return (ms_get_ofiles(tmp, fd, &error));
 }
 
-static int	ms_get_ofiles(t_ast *tmp, int *o_fd, bool *error)
+static int	ms_get_ofiles(t_ast *tmp, int o_fd, bool *error)
 {
 	int	fd;
 	
@@ -55,13 +57,12 @@ static int	ms_get_ofiles(t_ast *tmp, int *o_fd, bool *error)
 		{
 			perror((char *)(tmp->data));
 			(*error) = true;
-			return (-1);
 		}
 		if (tmp->prev->type == E_CMD || tmp->prev->type == E_UNDEF)
-			(*o_fd) = fd;
+			o_fd = fd;
 		else if (fd > 2)
 			close(fd);
 		tmp = (tmp->prev);
 	}
-	return (0);
+	return (o_fd);
 }

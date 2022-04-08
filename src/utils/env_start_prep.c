@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 16:37:53 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/05 15:42:24 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/08 11:55:07 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	**export_at_start_process(char **env)
 		{
 			input[1] = env[i];
 			ft_unset(input, 1, &env);
-			continue ;
+			// continue ; // Looping forever when failing to unset
 		}
 		i++;
 	}

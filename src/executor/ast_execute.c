@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_execute.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 15:04:54 by rafernan          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/04/07 11:00:20 by rafernan         ###   ########.fr       */
-=======
-/*   Updated: 2022/04/06 11:56:13 by daalmeid         ###   ########.fr       */
->>>>>>> builtins
+/*   Updated: 2022/04/08 18:33:14 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,176 +14,148 @@
 #include "../../headers/executor.h"
 #include "../../headers/builtins.h"
 
-t_ast	*ast_root(t_ast *token)
+int	ms_exec_builtin(t_ast *tk, t_mshell *shell)
 {
-	t_ast	*tmp;
-
-	if (!token)
-		return (NULL);
-	tmp = token;
-	while (tmp->prev)
-		(tmp) = (tmp->prev);
-	return (tmp);
-}
-
-void	tk_close(void *tk_ptr)
-{
-	t_ast	*token;
-
-	token = ast_root((t_ast *)(tk_ptr));
-	// while (token == E_PIPE)
-	// {
-	// 	if (token->right->type == E_CMD)
-	// 	{
-	// 		if ((token->right->p)[0] > 2)
-	// 			close((token->right->p)[0]);
-	// 		if ((token->right->p)[1] > 2)
-	// 			close((token->right->p)[1]);
-	// 	}
-	// }
-	if (token->type == E_PIPE)
-	{
-		if ((token->p)[0] > 2)
-			close((token->right->p)[0]);
-		if ((token->p)[1] > 2)
-			close((token->right->p)[1]);
-	}
-}
-
-int	tk_exec(t_exc *data);
-int	test_exec(t_exc *data);
-<<<<<<< HEAD
-int	ms_is_builtin(t_exc *data, char **s);
-=======
-int	ms_is_builtin(t_exc *data, t_ast *tmp);
->>>>>>> builtins
-
-int	ast_executor(t_ast *tokens, int *stat, char ***env)
-{
-	t_exc	data;
-	int		ret;
-
-	(data.token) = tokens;
-	(data.i_fd) = STDIN_FILENO;
-	(data.o_fd) = STDOUT_FILENO;
-	(data.envp) = *env;
-	(data.stat) = stat;
-	(data.cmd) = NULL;
-	(data.paths) = ms_paths();
-	while (data.token->left && !tk_is_rd(data.token->left->type))
-		(data.token) = (data.token->left);
-	ret = tk_exec(&data);
-	*env = data.envp;
-	return (ret);
-}
-
-int	tk_exec(t_exc *data)
-{
-	t_ast	*tmp;
-
-	tmp = (data->token);
-	if (!data->token)
-		return (0);
-	while (data->token)
-	{
-		if (ms_get_output(data->token, &data->o_fd) == -1)
-			return (-1);
-		if (ms_get_input(data->token, &data->i_fd) == -1)
-		{
-			close(data->o_fd);
-			return (-1);
-		}
-		if (data->token->type == E_PIPE)
-			tmp = (data->token->right);
-<<<<<<< HEAD
-		if (tmp->type != E_UNDEF && ms_newcmd(&((char **)(tmp->data))[0], data->paths))
-=======
-		*(data->stat) = ms_is_builtin(data, tmp);
-		if (*(data->stat) == -1 && tmp->type != E_UNDEF && ms_newcmd(&((char **)(tmp->data))[0], data->paths))
->>>>>>> builtins
-		{
-			(data->cmd) = (char **)(tmp->data);
-			test_exec(data);
-		}
-<<<<<<< HEAD
-		else
-=======
-		else if (*(data->stat) == -1)
->>>>>>> builtins
-		{
-			close(data->i_fd);
-			close(data->o_fd);
-		}
-		(data->token) = (data->token->prev);
-	}
-	ast_iter(ast_root(tmp), tk_close);
-	waitpid(tmp->pid, NULL, 0);
-	ft_free_m(data->paths);
-	return (0);
-}
-
-int	test_exec(t_exc *data)
-{
-	t_ast	*cur;
-	
-	cur = data->token;
-	if (data->token->type != E_CMD)
-		cur = data->token->right;
-	cur->pid = fork();
-	if (cur->pid == -1)
-		return (-1);
-	if (cur->pid == 0)
-	{
-		dup2(data->i_fd, STDIN_FILENO);
-		dup2(data->o_fd, STDOUT_FILENO);
-		close(data->i_fd);
-		close(data->o_fd);
-		execve((data->cmd)[0], data->cmd, data->envp);
-		ast_iter(ast_root(cur), tk_close);
-		ast_iter(ast_root(cur), tk_free);
-		exit(0); // free stuff
-	}
-	else
-	{
-		close(data->i_fd);
-		close(data->o_fd);
-	}
-	return (0);
-}
-
-<<<<<<< HEAD
-=======
-int	ms_is_builtin(t_exc *data, t_ast *tmp)
-{
-	int	i = 0;
-
-
-	close(data->i_fd);
-	if (ft_strncmp(((char **)(tmp->data))[0], "exit", 5) == 0)
-		return (ft_exit((char **)(tmp->data), data->o_fd, data->envp, data->stat));
-	else if (ft_strncmp(((char **)(tmp->data))[0], "cd", 3) == 0)
-		return (ft_cd((char **)(tmp->data), data->o_fd, &data->envp));
-	else if (ft_strncmp(((char **)(tmp->data))[0], "echo", 5) == 0)
-		return (ft_echo((char **)(tmp->data), data->o_fd));
-	else if (ft_strncmp(((char **)(tmp->data))[0], "env", 4) == 0)
-		return (ft_env((char **)(tmp->data), data->o_fd, data->envp));
-	else if (ft_strncmp(((char **)(tmp->data))[0], "export", 7) == 0)
-		return (ft_export((char **)(tmp->data), data->o_fd, &data->envp));
-	else if (ft_strncmp(((char **)(tmp->data))[0], "unset", 6) == 0)
-		return (ft_unset((char **)(tmp->data), data->o_fd, &data->envp));
-	else if (ft_strncmp(((char **)(tmp->data))[0], "pwd", 4) == 0)
-		return (ft_pwd((char **)(tmp->data), data->o_fd, data->envp));
+	close((tk->p[0]));
+	if (ft_strncmp(((char **)(tk->data))[0], "exit", 5) == 0)
+		return (ft_exit((char **)(tk->data), (tk->p)[1], *(shell->env), &shell->stat));
+	else if (ft_strncmp(((char **)(tk->data))[0], "cd", 3) == 0)
+		return (ft_cd((char **)(tk->data), (tk->p)[1], (shell->env)));
+	else if (ft_strncmp(((char **)(tk->data))[0], "echo", 5) == 0)
+		return (ft_echo((char **)(tk->data), (tk->p)[1]));
+	else if (ft_strncmp(((char **)(tk->data))[0], "env", 4) == 0)
+		return (ft_env((char **)(tk->data), (tk->p)[1], *(shell->env)));
+	else if (ft_strncmp(((char **)(tk->data))[0], "export", 7) == 0)
+		return (ft_export((char **)(tk->data), (tk->p)[1], (shell->env)));
+	else if (ft_strncmp(((char **)(tk->data))[0], "unset", 6) == 0)
+		return (ft_unset((char **)(tk->data), (tk->p)[1], (shell->env)));
+	else if (ft_strncmp(((char **)(tk->data))[0], "pwd", 4) == 0)
+		return (ft_pwd((char **)(tk->data), (tk->p)[1], *(shell->env)));
 	return (-1);
 }
 
->>>>>>> builtins
-/*
+int	ms_is_builtin(const char *s)
+{
+	if (ft_strncmp(s, "exit", 5) == 0)
+		return (0);
+	else if (ft_strncmp(s, "cd", 3) == 0)
+		return (0);
+	else if (ft_strncmp(s, "echo", 5) == 0)
+		return (0);
+	else if (ft_strncmp(s, "env", 4) == 0)
+		return (0);
+	else if (ft_strncmp(s, "export", 7) == 0)
+		return (0);
+	else if (ft_strncmp(s, "unset", 6) == 0)
+		return (0);
+	else if (ft_strncmp(s, "pwd", 4) == 0)
+		return (0);
+	return (-1);
+}
 
+int	tk_prep(t_ast *tk, void *p)
+{
+	if (tk->type == E_PIPE)
+	{
+		if (pipe(tk->p) == -1)
+			return (-1);
+	}
+	else if (tk->type == E_CMD)
+	{
+		(tk->p[0]) = ms_get_input(tk);
+		if (tk->p[0] == -1)
+		{
+			ft_free_m((char **)tk->data);
+			(tk->type) = E_UNDEF;
+			return (1);
+		}
+		(tk->p[1]) = ms_get_output(tk);
+		if (tk->p[1] == -1)
+		{
+			ft_free_m((char **)tk->data);
+			(tk->type) = E_UNDEF;
+			return (1);
+		}
+		if (ms_is_builtin(((char **)tk->data)[0]) == 0)
+			return (0) ;
+		if (!ms_newcmd(&((char **)tk->data)[0], (char **)(p)))
+		{
+			ft_free_m((char **)tk->data);
+			(tk->type) = E_UNDEF;
+			return (1);
+		}
+	}
+	return (0);
+}
 
+int	tk_exec(t_ast *tk, void *p)
+{
+	t_mshell	*shell;
 
+	shell = (t_mshell *)p;
+	if (tk->type == E_CMD)
+	{
+		if (ms_exec_builtin(tk, shell) != -1)
+			return (0);
+		(tk->pid) = fork();
+		if (tk->pid == -1)
+		{
+			perror("minishell:");
+			return (1);
+		}
+		if (tk->pid == 0)
+		{
+			dup2((tk->p)[0], STDIN_FILENO);
+			dup2((tk->p)[1], STDOUT_FILENO);
+			close((tk->p)[0]);
+			close((tk->p)[1]);
+			execve(((char **)tk->data)[0], (char **)(tk->data), *(shell->env));
+			printf("--- execve error ---- \n");
+			exit(0);
+		}
+		else
+		{
+			close((tk->p)[0]);
+			close((tk->p)[1]);
+		}
+	}
+	else if (tk->type == E_UNDEF)
+	{
+		close((tk->p)[0]);
+		close((tk->p)[1]);
+	}
+	return (0);
+}
 
-	(P)
-(C)		(C)
+int	tk_wait(t_ast *tk, void *p)
+{
+	t_mshell		*shell;
 
+	shell = (t_mshell *)p;
+	if (tk->type == E_CMD)
+	{
+		if (!tk->prev || (tk->prev->right == tk && !tk->prev->prev)) // if last
+			waitpid(tk->pid, &(shell->stat), 0);
+		else
+			wait(0);
+	}
+	return (0);
+}
 
-*/
+int	ast_executor(t_mshell *shell)
+{
+	char	**paths;
+	int		state;
+	
+	paths = ms_paths();
+	state = ast_iter_pre(shell->tokens, tk_prep, 0, (void *)(paths));
+	ft_free_m(paths);
+	if (DEBUG)
+		ast_print(shell->tokens, 0);
+	else
+	{
+		ast_iter_in(shell->tokens, tk_exec, 0, (void *)(shell));
+		ast_iter_in(shell->tokens, tk_wait, 1, (void *)(shell));
+	}
+	return (state);
+}

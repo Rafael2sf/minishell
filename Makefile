@@ -6,7 +6,7 @@
 #    By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 10:54:37 by rafernan          #+#    #+#              #
-#    Updated: 2022/04/07 10:58:44 by rafernan         ###   ########.fr        #
+#    Updated: 2022/04/08 11:01:44 by rafernan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,13 +81,17 @@ SRCS_	=		minishell.c \
 				utils/env_cpy.c \
 				utils/env_start_prep.c \
 				utils/ptr_ptr_free.c \
-				utils/tk_print.c
+				utils/tk_print.c \
+				utils/ast_iter.c
 
 SRCS	=		$(addprefix $(_SRC), $(SRCS_))
 OBJS	=		$(patsubst %.c, %.o,$(SRCS))
 
 DEPS	=		libft/libft.a
 LIBS	=		-lft -lreadline
+
+INCS	=		-I  ~/.brew/opt/readline/include
+LKNS	=		-L./libft -L ~/.brew/opt/readline/lib
 
 ################### RULES ###############
 
@@ -101,7 +105,7 @@ debug:
 	$(MAKE) $(NAME) CFLAGS="$(DBFLAGS)"
 
 $(NAME): $(DEPS) $(OBJS)
-	$(CC) $(CFLAGS) $(LIBS) $(OBJS) -o $(NAME) -L./libft
+	$(CC) $(CFLAGS) $(LIBS) $(OBJS) -o $(NAME) $(INCS) $(LKNS)
 
 libft/libft.a: $(shell make -C libft/ -q libft.a || echo force)
 	$(MKE) libft.a -C libft/

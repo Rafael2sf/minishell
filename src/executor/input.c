@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 11:08:28 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/07 11:03:03 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/08 18:46:56 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,39 +14,37 @@
 #include "../../headers/executor.h"
 
 static int	ms_epipe(void);
-static void	ms_get_llsr(t_ast *tmp, int *i_fd, bool *error, t_ast *last);
-static void	ms_get_lsr(t_ast *tmp, int *i_fd, bool *error, t_ast *last);
-static int	ms_set_input(int *i_fd, bool error);
+static void	ms_get_llsr(t_ast *tmp, int *i_fd, bool *error);
+static void	ms_get_lsr(t_ast *tmp, int *i_fd, bool *error);
+static int	ms_set_input(int i_fd, bool error);
 
-int	ms_get_input(t_ast *cur, int *i_fd)
+int	ms_get_input(t_ast *cur)
 {
 	t_ast	*tmp;
-	t_ast	*last;
 	bool	error;
-	
+	int		fd;
+
+	fd = -1;
 	tmp = cur;
 	error = false;
-	if (tmp->type == E_PIPE)
-		tmp = (tmp->right);
-	last = tmp->left;
 	if (!tmp->left)
 	{
-		if (cur->type != E_CMD)
-			(*i_fd) = (cur->p)[0];
+		if (tmp->prev && tmp->prev->left != tmp) // If first wiht pipe
+			fd = (cur->prev->p)[0]; 
 		else
-			(*i_fd) = dup(STDIN_FILENO);
-		return (0);
+			fd = dup(STDIN_FILENO);
+		return (fd);
 	}
-	if (cur->prev)
-		close((cur->p)[0]);
+	if (tmp->prev && tmp->prev->left != tmp)
+		close((cur->prev->p)[0]);
 	while (tmp->left)
 		tmp = (tmp->left);
-	ms_get_llsr(tmp, i_fd, &error, last);
-	ms_get_lsr(tmp, i_fd, &error, last);
-	return (ms_set_input(i_fd, error));
+	ms_get_llsr(tmp, &fd, &error);
+	ms_get_lsr(tmp, &fd, &error);
+	return (ms_set_input(fd, error));
 }
 
-static void	ms_get_llsr(t_ast *tmp, int *i_fd, bool *error, t_ast *last)
+static void	ms_get_llsr(t_ast *tmp, int *i_fd, bool *error)
 {
 	int	fd;
 	
@@ -60,7 +58,7 @@ static void	ms_get_llsr(t_ast *tmp, int *i_fd, bool *error, t_ast *last)
 				perror("");
 				(*error) = true;
 			}
-			if (tmp == last)
+			if (tmp->prev->type == E_CMD || tmp->prev->type == E_UNDEF)
 				(*i_fd) = fd;
 			else if (fd > 2)
 				close(fd);
@@ -69,7 +67,7 @@ static void	ms_get_llsr(t_ast *tmp, int *i_fd, bool *error, t_ast *last)
 	}
 }
 
-static void	ms_get_lsr(t_ast *tmp, int *i_fd, bool *error, t_ast *last)
+static void	ms_get_lsr(t_ast *tmp, int *i_fd, bool *error)
 {
 	int	fd;
 	
@@ -83,7 +81,7 @@ static void	ms_get_lsr(t_ast *tmp, int *i_fd, bool *error, t_ast *last)
 				(*error) = true;
 				perror((char *)tmp->data);
 			}
-			if (tmp == last)
+			if (tmp->prev->type == E_CMD || tmp->prev->type == E_UNDEF)
 				(*i_fd) = fd;
 			else if (fd > 2)
 				close(fd);
@@ -92,18 +90,15 @@ static void	ms_get_lsr(t_ast *tmp, int *i_fd, bool *error, t_ast *last)
 	}
 }
 
-static int	ms_set_input(int *i_fd, bool error)
+static int	ms_set_input(int i_fd, bool error)
 {	
 	if (error == true)
 	{
-		if (*i_fd > 0)
-			close(*i_fd);
-		*i_fd = ms_epipe();
-		if (*i_fd == -1)
-			return (-1);
-		return (0);
+		if (i_fd > 2)
+			close(i_fd);
+		i_fd = ms_epipe();
 	}
-	return (0);
+	return (i_fd);
 }
 
 static int	ms_epipe(void)

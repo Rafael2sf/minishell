@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:35:43 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/01 12:17:44 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/07 16:02:17 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int	ast_add_cmd(t_ast **root, t_ast *new_token)
 	if (((*root)->type) == E_PIPE && !((*root)->right))
 	{
 		((*root)->right) = new_token;
-		(new_token->prev) = ((*root)->right);
+		(new_token->prev) = (*root);
 		return (0);
 	}
 	else if (((*root)->type) == E_UNDEF)

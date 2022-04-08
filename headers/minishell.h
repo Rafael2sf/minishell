@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 12:09:01 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/07 11:10:54 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/08 13:54:37 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,18 @@ typedef struct	s_mshell
 	char	***env;
 }	t_mshell;
 
-void	tk_free(void *tk_ptr);
+int		tk_free(t_ast *tk, void *ptr);
 void	ast_print(t_ast *root, int depth);
+int		ast_executor(t_mshell *shell);
 
 char	**altered_split(char const *s, char c);
 char	**change_shlvl(char ***env);
 void	ptr_ptr_free(void **ptr);
 char	**creat_copy(char **env);
 char	**export_at_start_process(char **env);
+
+int		ast_iter_pre(t_ast *root, int (*f)(t_ast *, void *), bool rev, void *ptr);
+int		ast_iter_in(t_ast *root, int (*f)(t_ast *, void *), bool rev, void *ptr);
+int		ast_iter_pos(t_ast *root, int (*f)(t_ast *, void *), bool rev, void *ptr);
 
 #endif

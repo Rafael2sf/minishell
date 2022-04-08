@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 16:26:10 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/06 11:31:03 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/07 12:35:21 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@ int	ms_create_token(t_ast **root, t_type type, char *s, int size)
 		new_t = ms_create_token_any(s, size, type);
 	if (!new_t)
 		return (ms_parse_error(-1, '-', 1));
-	if (new_t != *root && ast_add(root, new_t) != 0)
-		return (ms_parse_error(-1, '-', 1)); // This should never hapen ! Remove later
+	ast_add(root, new_t);
 	return (0);
 }
 
@@ -45,7 +44,7 @@ static t_ast	*ms_create_token_cmd(t_ast **root, char *s, int size, char c)
 		base = (*root)->right;
 	if (base)
 	{
-		if (tk_merge((*root)->right, s, size, s[size]) != 0)
+		if (tk_merge(base, s, size, s[size]) != 0)
 			return (NULL);
 		return (ms_expand_cmd(base));
 	}

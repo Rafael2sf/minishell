@@ -50,7 +50,6 @@ int		ast_add(t_ast **root, t_ast *new_token);
 int		ast_add_top(t_ast **root, t_ast *new_token);
 int		ast_add_left(t_ast **root, t_ast *new_token);
 int		ast_add_right(t_ast **root, t_ast *new_token);
-void	ast_iter(t_ast *root, void (*f)(void *));
 
 int		ft_is(char c, char const *set);
 

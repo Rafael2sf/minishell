@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 16:30:16 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/05 10:40:27 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/08 11:27:12 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@ char	**creat_copy(char **env)
 		env_cpy[i] = malloc(sizeof(char) * (ft_strlen(env[i]) + 1));
 		if (!env_cpy[i])
 		{
+			/*
+			while (--i > 0)
+				free(env_cpy[i]);
+			*/
 			ptr_ptr_free((void **)env_cpy);
 			return (NULL);
 		}

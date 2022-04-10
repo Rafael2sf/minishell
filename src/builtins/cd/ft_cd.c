@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../../headers/minishell.h"
-#include "../../../headers/builtins.h"
+#include "../builtins.h"
 
 static void	error_message(char *input)
 {
@@ -60,7 +60,7 @@ static int	change_pwd_vars(char *var_id, int fd, char ***env, char *buf)
 		perror("error allocating memory");
 		return (errno);
 	}
-	err_val = ft_export(pwd_change, fd, env);
+	err_val = ft_export(pwd_change, fd, NULL, env);
 	if (err_val)
 		return (err_val);
 	free(pwd_change[1]);
@@ -83,11 +83,12 @@ static int	pwd_change(int fd, char ***env)
 	return (0);
 }
 
-int	ft_cd(char **input, int fd, char ***env)
+int	ft_cd(char **input, int fd, int *stat, char ***env)
 {
 	char	buf[1024];
 	int		err_val;
 
+	(void)(stat);
 	close(fd);
 	if (null_input_check(&input[1], *env) == 0)
 		return (1);
@@ -109,21 +110,3 @@ int	ft_cd(char **input, int fd, char ***env)
 	input[1] = NULL;
 	return (pwd_change(fd, env));
 }
-
-// int	main(int ac, char **av, char **env)
-// {
-// 	char	**env_cpy;
-// 	int		i =0;
-// 	char	*test[3] = {"cd", "", NULL};
-// 	(void) ac;
-// 	(void) av;
-//
-// 	env_cpy = creat_copy(env);
-// 	ft_cd(test, 1, &env_cpy);
-// 	while (env_cpy[i])
-// 	{
-// 		printf("%s\n",env_cpy[i++]);
-// 	}
-// 	ptr_ptr_free((void **) env_cpy);
-// 	return (0);
-// }

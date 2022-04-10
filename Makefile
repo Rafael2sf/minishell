@@ -6,7 +6,7 @@
 #    By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 10:54:37 by rafernan          #+#    #+#              #
-#    Updated: 2022/04/08 11:01:44 by rafernan         ###   ########.fr        #
+#    Updated: 2022/04/10 18:12:04 by rafernan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,9 @@ DBFLAGS	=		-g -Wall -Werror -Wextra -D DEBUG=1
 
 ################### FILES ###############
 
-SRCS_	=		minishell.c \
+SRCS_	=		\
+				main/main.c \
+				main/envp.c \
 				\
 				builtins/cd/ft_cd.c \
 				builtins/echo/ft_echo.c \
@@ -60,29 +62,29 @@ SRCS_	=		minishell.c \
 				builtins/unset/ft_unset.c \
 				builtins/unset/parse_name_unset.c \
 				\
-				executor/ast_execute.c \
-				executor/hdoc.c \
-				executor/input.c \
-				executor/output.c \
-				executor/search.c \
+				executor/executor.c \
 				\
-				parse/ast_add.c \
-				parse/ast_add_type.c \
-				parse/ast_utils.c \
-				parse/create_token.c \
-				parse/matrix_utils.c \
-				parse/parse.c \
-				parse/parse_exp.c \
-				parse/parse_token.c \
+				lexer/ast_add.c \
+				lexer/ast.c \
+				lexer/ast_utils.c \
+				lexer/lexer.c \
+				lexer/lexer_to_ast.c \
+				lexer/lexer_token.c \
+				lexer/lexer_utils.c \
 				\
-				parse/parse_utils.c \
-				utils/altered_split.c \
-				utils/change_shlvl.c \
-				utils/env_cpy.c \
-				utils/env_start_prep.c \
-				utils/ptr_ptr_free.c \
-				utils/tk_print.c \
-				utils/ast_iter.c
+				parser/builtin.c \
+				parser/expand.c \
+				parser/hdoc.c \
+				parser/input.c \
+				parser/output.c \
+				parser/parser.c \
+				parser/parser_utils.c \
+				parser/search.c \
+				\
+				utils/ast_iter.c \
+				utils/ast_print.c \
+				utils/ms_split.c \
+				utils/pp_utils.c
 
 SRCS	=		$(addprefix $(_SRC), $(SRCS_))
 OBJS	=		$(patsubst %.c, %.o,$(SRCS))
@@ -90,8 +92,8 @@ OBJS	=		$(patsubst %.c, %.o,$(SRCS))
 DEPS	=		libft/libft.a
 LIBS	=		-lft -lreadline
 
-INCS	=		-I  ~/.brew/opt/readline/include
-LKNS	=		-L./libft -L ~/.brew/opt/readline/lib
+INCS	=		-I  ~/.brew/opt/readline/include -I ./headers/
+LKNS	=		-L ./libft -L ~/.brew/opt/readline/lib
 
 ################### RULES ###############
 
@@ -105,7 +107,7 @@ debug:
 	$(MAKE) $(NAME) CFLAGS="$(DBFLAGS)"
 
 $(NAME): $(DEPS) $(OBJS)
-	$(CC) $(CFLAGS) $(LIBS) $(OBJS) -o $(NAME) $(INCS) $(LKNS)
+	$(CC) $(CFLAGS) $(LIBS) $(OBJS) -o $(NAME) $(INCS) $(LKNS) ./libft/libft.a
 
 libft/libft.a: $(shell make -C libft/ -q libft.a || echo force)
 	$(MKE) libft.a -C libft/
@@ -134,3 +136,4 @@ fclean: clean
 re: fclean all
 
 .PHONY: all debug clean fclean re force
+ 

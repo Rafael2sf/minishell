@@ -1,31 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/21 16:05:27 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/05 10:18:17 by rafernan         ###   ########.fr       */
+/*   Created: 2022/04/10 17:30:24 by rafernan          #+#    #+#             */
+/*   Updated: 2022/04/10 17:30:26 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../headers/minishell.h"
-#include "../builtins.h"
+#include "../../headers/minishell.h"
+#include "parser.h"
 
-int	ft_pwd(char **input, int fd, int *stat, char ***env)
+int	ms_parse_error(int code)
 {
-	char	buf[1024];
+	perror("minishell: ");
+	return (code);
+}
 
-	(void)(env);
-	(void)(input);
-	(void)(stat);
-	if (getcwd(buf, 1024) == NULL)
-	{
-		perror("getcwd failed");
-		return (errno);
-	}
-	ft_putendl_fd(buf, fd);
-	close(fd);
-	return (0);
+char	**ms_parse_paths(void)
+{
+	char	*vpath;
+	char	**paths;
+
+	paths = NULL;
+	vpath = getenv("PATH");
+	if (vpath)
+		paths = ft_split(vpath, ": \t\v\b\r\n");
+	return (paths);
 }

@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
-#include "../../headers/parse.h"
+#include "../lexer/lexer.h"
 
 /*
 	Recursively iterate the tree
@@ -19,72 +19,63 @@
 
 int	ast_iter_pre(t_ast *root, int (*f)(t_ast *, void *), bool rev, void *ptr)
 {
-	static int	ret;
-
-	if (!root || ret == -1)
-	{
-		ret = 0;
-		return (ret);
-	}
+	if (!root)
+		return (0);
 	else if (rev)
 	{
-		ret += f(root, ptr);
+		if (f(root, ptr) == -1)
+			return (-1);
 		ast_iter_pre(root->right, f, rev, ptr);
 		ast_iter_pre(root->left, f, rev, ptr);
 	}
 	else
 	{
-		ret += f(root, ptr);
+		if (f(root, ptr) == -1)
+			return (-1);
 		ast_iter_pre(root->left, f, rev, ptr);
 		ast_iter_pre(root->right, f, rev, ptr);
 	}
-	return (ret);
+	return (0);
 }
 
 int	ast_iter_in(t_ast *root, int (*f)(t_ast *, void *), bool rev, void *ptr)
 {
-	static int	ret;
-
-	if (!root || ret == -1)
-	{
-		ret = 0;
-		return (ret);
-	}
+	if (!root)
+		return (0);
 	else if (rev)
 	{
 		ast_iter_in(root->right, f, rev, ptr);
-		ret += f(root, ptr);
+		if (f(root, ptr) == -1)
+			return (-1);
 		ast_iter_in(root->left, f, rev, ptr);
 	}
 	else
 	{
 		ast_iter_in(root->left, f, rev, ptr);
-		ret += f(root, ptr);
+		if (f(root, ptr) == -1)
+			return (-1);
 		ast_iter_in(root->right, f, rev, ptr);
 	}
-	return (ret);
+	return (0);
 }
 
 int	ast_iter_pos(t_ast *root, int (*f)(t_ast *, void *), bool rev, void *ptr)
 {
-	static int	ret;
-
-	if (!root || ret == -1)
-	{
-		ret = 0;
-		return (ret);
-	}
+	if (!root)
+		return (0);
 	else if (rev)
 	{
 		ast_iter_pos(root->right, f, rev, ptr);
 		ast_iter_pos(root->left, f, rev, ptr);
-		ret += f(root, ptr);
+		if (f(root, ptr) == -1)
+			return (-1);
 	}
 	else
 	{
 		ast_iter_pos(root->left, f, rev, ptr);
 		ast_iter_pos(root->right, f, rev, ptr);
-		ret += f(root, ptr);
+		if (f(root, ptr) == -1)
+			return (-1);
 	}
-	return (ret);
+	return (0);
 }

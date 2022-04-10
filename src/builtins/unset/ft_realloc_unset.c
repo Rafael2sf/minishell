@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../../headers/minishell.h"
-#include "../../../headers/builtins.h"
+#include "../builtins.h"
 
 static void	ft_rlc_unset_copy(char **ptr, char *existing_var, char ***new_ptr)
 {

@@ -11,10 +11,11 @@
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
+#include "lexer.h"
 
 static int	ms_parse_last(char *line, t_pvars *v, t_ast **root);
 
-int	ms_parse(t_ast **root, char *line)
+int	ms_lexer(t_ast **root, char *line)
 {
 	t_pvars	v;
 
@@ -22,7 +23,7 @@ int	ms_parse(t_ast **root, char *line)
 	while (*line && ft_is(*line, " \t"))
 		line++;
 	if (*line == '|')
-		return (ms_parse_error(-1, '|', 0));
+		return (ms_lexer_error(-1, '|', 0));
 	if (!line)
 		return (1);
 	while (1)
@@ -47,9 +48,9 @@ static int	ms_parse_last(char *line, t_pvars *v, t_ast **root)
 	if (v->quote != 0 || v->dquote != 0)
 	{
 		if (v->quote >= v->dquote)
-			return (ms_parse_error(-1, '\'', 0));
+			return (ms_lexer_error(-1, '\'', 0));
 		else
-			return (ms_parse_error(-1, '\"', 0));
+			return (ms_lexer_error(-1, '\"', 0));
 	}
 	while (--v->end >= v->start && ft_is(line[v->end], " \t"))
 		;

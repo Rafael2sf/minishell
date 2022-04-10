@@ -1,48 +1,56 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tk_print.c                                         :+:      :+:    :+:   */
+/*   ast_print.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 10:32:13 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/08 12:02:45 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/10 18:06:52 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
 
-static void	tk_print(t_ast *tk, int depth);
-static void	tk_print_cmd(char **data, int *fds);
+static void	tk_print(t_ast *tk, int depth, int cmd_only);
+static void	tk_print_cmd(char **data);
 static void	tk_print_rd(char *data, t_type type);
 
-
-void	ast_print(t_ast *root, int depth)
+void	ast_print(t_ast *root, int depth, int cmd_only)
 {
 	if (!root)
 		return ;
-	ast_print(root->left, depth + 1);
-	tk_print(root, depth);
-	ast_print(root->right, depth + 1);
+	ast_print(root->left, depth + 1, cmd_only);
+	tk_print(root, depth, cmd_only);
+	ast_print(root->right, depth + 1, cmd_only);
 }
 
 /*
 	Write a node data
 */
-static void	tk_print(t_ast *tk, int depth)
+static void	tk_print(t_ast *tk, int depth, int cmd_only)
 {
-	while (depth--)
-		ft_putstr(STDERR_FILENO, "__");
-	if (tk->type == E_CMD)
-		tk_print_cmd((char **)(tk->data), (int *)tk->p);
-	else if (tk->type == E_PIPE)
-		ft_putstr(STDERR_FILENO,"(P)");
-	else
+	while (!cmd_only && depth--)
+		ft_putstr(STDERR_FILENO, "---");
+	if (tk->type == E_CMD  || tk->type == E_UNDEF)
+		tk_print_cmd((char **)(tk->data));
+	else if (tk->type == E_PIPE && !cmd_only)
+		ft_putstr(STDERR_FILENO, "(P)");
+	else if (!cmd_only)
 		tk_print_rd((char *)(tk->data), tk->type);
-	ft_putchar(STDERR_FILENO, '\n');
+	if (cmd_only && (tk->type == E_CMD || tk->type == E_UNDEF))
+	{
+		ft_putchar(STDERR_FILENO,' ');
+		ft_putnbr(STDERR_FILENO, tk->p[0]);
+		ft_putchar(STDERR_FILENO, ' ');
+		ft_putnbr(STDERR_FILENO, tk->p[1]);
+		ft_putchar(STDERR_FILENO, '\n');
+	}
+	else if (!cmd_only)
+		ft_putchar(STDERR_FILENO, '\n');
 }
 
-static void	tk_print_cmd(char **data, int *fds)
+static void	tk_print_cmd(char **data)
 {
 	char	**ref;
 	int		i;
@@ -50,16 +58,13 @@ static void	tk_print_cmd(char **data, int *fds)
 	i = 0;
 	ref = data;
 	ft_putchar(STDERR_FILENO, '(');
-	while (ref[i])
+	while (ref && ref[i])
 	{
 		ft_putstr(STDERR_FILENO, ref[i++]);
 		if (ref[i])
 			ft_putchar(STDERR_FILENO, ':');
 	}
-	ft_putstr(STDERR_FILENO, ") ");
-	ft_putnbr(STDERR_FILENO, fds[0]);
-	ft_putstr(STDERR_FILENO, ", ");
-	ft_putnbr(STDERR_FILENO, fds[1]);
+	ft_putstr(STDERR_FILENO, ")");
 }
 
 static void	tk_print_rd(char *data, t_type type)

@@ -6,11 +6,12 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 13:55:38 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/07 18:09:35 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/10 16:52:56 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
+#include "lexer.h"
 
 /*
 	Create a new_token token
@@ -30,6 +31,7 @@ t_ast	*tk_new_token(t_type type, void *ref)
 		(new_token->pid) = -1;
 		(new_token->p)[0] = -1;
 		(new_token->p)[1] = -1;
+		(new_token->func) = NULL;
 		return (new_token);
 	}
 	return (NULL);
@@ -44,24 +46,26 @@ int	tk_is_rd(t_type type)
 }
 
 /*
-	Free node data
+	Free ast
 */
-int	tk_free(t_ast *tk, void *ptr)
+void	ast_free(t_ast **tk)
 {
 	char	**arr;
 	int		i;
 
-	(void)(ptr);
+	if (!tk || !*tk)
+		return ;
 	i = 0;
-	if (tk->type == E_CMD)
+	ast_free(&((*tk)->left));
+	ast_free(&((*tk)->right));
+	if (((*tk)->type) == E_CMD)
 	{
-		arr = (char **)(tk->data);
+		arr = (char **)((*tk)->data);
 		while (arr[i])
 			free(arr[i++]);
 		free(arr);
 	}
-	else if (tk_is_rd(tk->type))
-		free((char *)tk->data);
-	free(tk);
-	return (0);
+	else if (tk_is_rd((*tk)->type))
+		free((char *)((*tk)->data));
+	free(*tk);
 }

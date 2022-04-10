@@ -11,7 +11,25 @@
 /* ************************************************************************** */
 
 #include "../../../headers/minishell.h"
-#include "../../../headers/builtins.h"
+#include "../builtins.h"
+
+static char	*find_var_unset(char **env, int n_v_index, char *input);
+static int	prep_output_unset(char *input, char ***env, int n_v_index);
+static int	set_var_unset(char ***env, char **input);
+
+int	ft_unset(char **input, int fd, int *stat, char ***env)
+{
+	(void)(stat);
+	close(fd);
+	if (!*env)
+	{
+		ft_putendl_fd("error: env is empity", 2);
+		return (1);
+	}
+	if (!input[1])
+		return (0);
+	return (set_var_unset(env, input));
+}
 
 static char	*find_var_unset(char **env, int n_v_index, char *input)
 {
@@ -66,17 +84,4 @@ static int	set_var_unset(char ***env, char **input)
 			return (errno);
 	}
 	return (ret);
-}
-
-int	ft_unset(char **input, int fd, char ***env)
-{
-	close(fd);
-	if (!*env)
-	{
-		ft_putendl_fd("error: env is empity", 2);
-		return (1);
-	}
-	if (!input[1])
-		return (0);
-	return (set_var_unset(env, input));
 }

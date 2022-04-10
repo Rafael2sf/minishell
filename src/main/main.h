@@ -1,31 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/21 16:05:27 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/05 10:18:17 by rafernan         ###   ########.fr       */
+/*   Created: 2022/04/10 17:41:47 by rafernan          #+#    #+#             */
+/*   Updated: 2022/04/10 17:41:47 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../headers/minishell.h"
-#include "../builtins.h"
+#ifndef MAIN_H
+# define MAIN_H
 
-int	ft_pwd(char **input, int fd, int *stat, char ***env)
-{
-	char	buf[1024];
+char		**ms_init_env(char **envp);
 
-	(void)(env);
-	(void)(input);
-	(void)(stat);
-	if (getcwd(buf, 1024) == NULL)
-	{
-		perror("getcwd failed");
-		return (errno);
-	}
-	ft_putendl_fd(buf, fd);
-	close(fd);
-	return (0);
-}
+#endif /* MAIN_H */

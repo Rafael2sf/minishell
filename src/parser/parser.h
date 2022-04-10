@@ -1,23 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ptr_ptr_free.c                                     :+:      :+:    :+:   */
+/*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/31 16:28:35 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/05 10:50:35 by rafernan         ###   ########.fr       */
+/*   Created: 2022/04/10 17:29:51 by rafernan          #+#    #+#             */
+/*   Updated: 2022/04/10 17:35:46 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/minishell.h"
+#ifndef PARSER_H
+# define PARSER_H
 
-void	ptr_ptr_free(void **ptr)
-{
-	int	i;
+char		*ms_expand(char *str);
+int			ms_heredoc(const char *delimitir);
+t_bultinf	ms_find_builtin(const char *s);
 
-	i = 0;
-	while (ptr[i] != NULL)
-		free (ptr[i++]);
-	free(ptr);
-}
+int			ms_parse_error(int code);
+int			ms_parse_input(t_ast *cur);
+int			ms_parse_output(t_ast *cur);
+char		**ms_parse_paths(void);
+char		*ms_parse_cmd(char **cmd, char **paths);
+
+#endif /* PRSER_H */

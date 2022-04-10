@@ -11,13 +11,15 @@
 /* ************************************************************************** */
 
 #include "../../../headers/minishell.h"
-#include "../../../headers/builtins.h"
+#include "../builtins.h"
 
-int	ft_echo(char **input, int fd)
+int	ft_echo(char **input, int fd, int *stat, char ***envp)
 {
 	int		i;
 	int		flag;
 
+	(void)(stat);
+	(void)(envp);
 	i = 1;
 	flag = 0;
 	if (input[1] != NULL && ft_strncmp("-n", input[1], 3) == 0)
@@ -36,11 +38,3 @@ int	ft_echo(char **input, int fd)
 	close(fd);
 	return (0);
 }
-
-/*int	main(void)
-{
-	char 	*input[4] = {"echo", "-n", "Right HERE!", NULL};
-
-	ft_echo(input, 1);
-	return (0);
-}*/

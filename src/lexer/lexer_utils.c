@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
+#include "lexer.h"
 
 void	pvars_init(t_pvars *v)
 {
@@ -44,10 +45,10 @@ void	ms_parse_quotes(char c, t_pvars *v)
 	}
 }
 
-int	ms_parse_error(int code, char c, bool use_perror)
+int	ms_lexer_error(int code, char c, bool use_perror)
 {
 	if (use_perror)
-		perror("minishell");
+		perror("minishell: ");
 	else if (code != 0)
 	{
 		ft_putstr(STDERR_FILENO, "minishell: parse error near `");

@@ -11,26 +11,21 @@
 /* ************************************************************************** */
 
 #include "../../../headers/minishell.h"
-#include "../../../headers/builtins.h"
+#include "../builtins.h"
 
-int	ft_env(char **input, int fd, char **env)
+int	ft_env(char **input, int fd, int *stat, char ***env)
 {
 	int		i;
 
-	(void) input;
+	(void)(stat);
+	(void)(input);
 	i = 0;
-	while (env[i] != NULL)
+	while ((*env)[i] != NULL)
 	{
-		if (ft_strchr(env[i], '=') != NULL)
-			ft_putendl_fd(env[i], fd);
+		if (ft_strchr((*env)[i], '=') != NULL)
+			ft_putendl_fd((*env)[i], fd);
 		i++;
 	}
 	close(fd);
 	return (0);
 }
-
-/*int	main(int ac, char **av, char **env)
-{
-	ft_env(env,1);
-	return (0);
-}*/

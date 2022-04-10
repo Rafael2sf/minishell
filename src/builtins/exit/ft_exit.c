@@ -11,13 +11,13 @@
 /* ************************************************************************** */
 
 #include "../../../headers/minishell.h"
-#include "../../../headers/builtins.h"
+#include "../builtins.h"
 
-int	ft_exit(char **input, int fd, char **env, int *stat)
+static void	check_parameter(char **input);
+
+int	ft_exit(char **input, int fd, int *stat, char ***env)
 {
-	int	i;
-
-	i = 0;
+	(void)(env);
 	close(fd);
 	ft_putendl_fd("exit", 1);
 	if (input[1] != NULL && input[2] != NULL)
@@ -25,16 +25,26 @@ int	ft_exit(char **input, int fd, char **env, int *stat)
 		ft_putendl_fd("minishell: exit: too many arguments", 2);
 		return (1);
 	}
-	ptr_ptr_free((void **)env);
 	if (input[1] == NULL)
 		exit(*stat);
+	check_parameter(input);
+	(*stat) = ft_atoi(input[1]);
+	free(input[1]);
+	exit(*stat);
+}
+
+static void	check_parameter(char **input)
+{
+	int	i;
+
+	i = 0;
 	while (ft_is(input[1][i], " \t"))
 		i++;
 	if (ft_is(input[1][i], "-+"))
 		i++;
 	while (input[1][i] != '\0')
 	{
-		if (!ft_isdigit(input[1][i++]))
+		if (!ft_isdigit(input[1][i++]) || i == 20)
 		{
 			ft_putstr_fd("minishell: exit: ", 2);
 			ft_putstr_fd(input[1], 2);
@@ -42,20 +52,4 @@ int	ft_exit(char **input, int fd, char **env, int *stat)
 			exit(-1);
 		}
 	}
-	*stat = ft_atoi(input[1]);
-	exit(*stat);
 }
-
-/*int	main(int ac, char **av, char **env)
-{
-	char	**env_cpy;
-	int		i;
-
-	(void) ac;
-	(void) av;
-	i = 0;
-	env_cpy = creat_copy(env);
-	ft_exit(av, 1, env_cpy);
-	ptr_ptr_free((void **)env_cpy);
-	return (0);
-}*/

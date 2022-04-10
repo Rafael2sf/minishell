@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
+#include "lexer.h"
 
 static int	ms_parse_pipe(t_ast **root, char *line, t_pvars *v);
 static int	ms_parse_rd(t_ast **root, char *line, t_pvars *v);
@@ -46,7 +47,7 @@ static int	ms_parse_pipe(t_ast **root, char *line, t_pvars *v)
 	while (line[tmp] == ' ')
 		tmp++;
 	if (line[tmp] == '|' || line[tmp] == '\0')
-		return (ms_parse_error(-1, '|', 0));
+		return (ms_lexer_error(-1, '|', 0));
 	(v->end) += 1;
 	return (ms_create_token(root, E_PIPE, NULL, 0));
 }
@@ -68,14 +69,14 @@ static int	ms_parse_rd(t_ast **root, char *line, t_pvars *v)
 			type = E_LLSR;
 		else
 			type = E_GGRT;
-			(v->end) += 1;
+		(v->end) += 1;
 	}
 	while (line[v->end] && ft_is(line[v->end], " \t"))
 		(v->end)++;
 	if (ft_is(line[v->end], "<|>") || line[v->end] == '\0')
-		return (ms_parse_error(-1, line[err_loc], 0));
+		return (ms_lexer_error(-1, line[err_loc], 0));
 	if (ms_get_rd_word(v, line) != 0)
-		return (ms_parse_error(-1, line[err_loc], 0));
+		return (ms_lexer_error(-1, line[err_loc], 0));
 	return (ms_create_token(root, type, &line[v->start], v->end - v->start));
 }
 

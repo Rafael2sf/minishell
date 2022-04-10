@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../../headers/minishell.h"
-#include "../../../headers/builtins.h"
+#include "../builtins.h"
 
 static char	*find_var_exp(char **env, int name_variable_index,
 		char **split_input)

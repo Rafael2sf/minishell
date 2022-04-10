@@ -11,13 +11,13 @@
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
+#include "../lexer/lexer.h"
+#include "parser.h"
 
 static void	ms_expand_str(char *s, char *b);
 static char	*ms_get_env(char *s, int *i);
 static int	ms_expand_len(char *s, bool *req_expand);
 static int	ms_get_env_len(char *s, int *i);
-
-/*															 READ --> MUST DO $? */
 
 char	*ms_expand(char *str)
 {

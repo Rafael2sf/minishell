@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
-#include "../../headers/executor.h"
+#include "parser.h"
 
 static void	ms_read_heredoc(const char *delimitir, int dlen, int fd);
 
@@ -34,11 +34,9 @@ static void	ms_read_heredoc(const char *delimitir, int dlen, int fd)
 {
 	char	*line;
 	int		len;
-	int		j;
 
 	while (1)
 	{
-		j = 0;
 		write(1, "> ", 2);
 		line = ft_getnl(STDIN_FILENO);
 		if (!line)

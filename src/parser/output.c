@@ -6,16 +6,16 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 14:59:46 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/08 16:23:01 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/10 17:30:32 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
-#include "../../headers/executor.h"
+#include "parser.h"
 
 static int	ms_get_ofiles(t_ast *tmp, int o_fd, bool *error);
 
-int	ms_get_output(t_ast *cur)
+int	ms_parse_output(t_ast *cur)
 {
 	t_ast	*tmp;
 	bool	error;
@@ -27,7 +27,7 @@ int	ms_get_output(t_ast *cur)
 	if (!tmp->right)
 	{
 		if (tmp->prev && tmp->prev->left == tmp)
-			fd = (tmp->prev->p)[1]; 
+			fd = (tmp->prev->p)[1];
 		else if (tmp->prev && tmp->prev->prev)
 			fd = (tmp->prev->prev->p)[1];
 		else
@@ -46,7 +46,7 @@ int	ms_get_output(t_ast *cur)
 static int	ms_get_ofiles(t_ast *tmp, int o_fd, bool *error)
 {
 	int	fd;
-	
+
 	while (tmp->type == E_GRT || tmp->type == E_GGRT)
 	{
 		if (tmp->type == E_GRT)
@@ -55,6 +55,7 @@ static int	ms_get_ofiles(t_ast *tmp, int o_fd, bool *error)
 			fd = open((char *)tmp->data, O_CREAT | O_WRONLY | O_APPEND, 0644);
 		if (fd == -1)
 		{
+			ft_putstr(2, "minishell: ");
 			perror((char *)(tmp->data));
 			(*error) = true;
 		}

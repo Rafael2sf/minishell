@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
+#include "lexer.h"
 
 static int	ast_add_cmd(t_ast **root, t_ast *new_token);
 static int	ast_add_rd(t_ast **root, t_ast *new_token);

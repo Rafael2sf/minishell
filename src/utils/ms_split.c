@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   altered_split.c                                    :+:      :+:    :+:   */
+/*   ms_split.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,6 +11,28 @@
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
+
+static int		word_count(const char *s, char c);
+static int		get_next_word(const char *s, char c);
+static char		**fill_splits(char **ptr_split, int k, char const *s, char c);
+
+char	**ms_split(char const *s, char c)
+{
+	char	**ptr_split;
+	int		k;
+
+	if (s == 0)
+		return (NULL);
+	k = (word_count(s, c));
+	ptr_split = malloc(sizeof(char *) * (k + 1));
+	if (!ptr_split)
+		return (NULL);
+	ptr_split[k] = NULL;
+	ptr_split = fill_splits(ptr_split, k, s, c);
+	if (!ptr_split)
+		return (NULL);
+	return (ptr_split);
+}
 
 static int	word_count(const char *s, char c)
 {
@@ -92,23 +114,5 @@ static char	**fill_splits(char **ptr_split, int k, char const *s, char c)
 		}
 		ptr_split[i++][j] = '\0';
 	}
-	return (ptr_split);
-}
-
-char	**altered_split(char const *s, char c)
-{
-	char	**ptr_split;
-	int		k;
-
-	if (s == 0)
-		return (NULL);
-	k = (word_count(s, c));
-	ptr_split = malloc(sizeof(char *) * (k + 1));
-	if (!ptr_split)
-		return (NULL);
-	ptr_split[k] = NULL;
-	ptr_split = fill_splits(ptr_split, k, s, c);
-	if (!ptr_split)
-		return (NULL);
 	return (ptr_split);
 }

@@ -11,13 +11,10 @@
 /* ************************************************************************** */
 
 #include "../../../headers/minishell.h"
-#include "../../../headers/builtins.h"
+#include "../builtins.h"
 
 static int	error_printing(char *input, char c_check)
 {
-	int	j;
-
-	j = 0;
 	if (!ft_isalnum(c_check) && c_check != '_')
 	{	
 		ft_putstr_fd("export: ", 2);
@@ -33,10 +30,8 @@ static int	error_printing(char *input, char c_check)
 int	parsing_input_name_export(char *input)
 {
 	int			i;
-	int			j;
 
 	i = 0;
-	j = 0;
 	if (ft_isdigit(input[0]) || input[0] == '\0')
 	{
 		ft_putstr_fd("export: ", 2);

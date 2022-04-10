@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 10:58:16 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/08 18:32:31 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/10 17:44:26 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/minishell.h"
-#include "../headers/executor.h"
-#include "../headers/builtins.h"
+#include "../../headers/minishell.h"
+#include "main.h"
 
-static char **ms_env_creation(char **envp);
+static int	ms_valid_exit(t_ast *tokens);
+static void	ms_exit(t_mshell *shell);
+static void	ms_init(t_mshell *shell);
 
-void	rl_replace_line(const char *text, int clear_undo);
 /*
 static void handle_signals(int sig, siginfo_t *info, void *ucontext)
 {
@@ -41,12 +41,13 @@ static void prep_act(struct sigaction *act)
     sigemptyset(&act->sa_mask);
 }
 */
+
 /* Minishell main */
 int	main(void)
 {
-	extern char			**environ;
-	t_mshell			shell;
-    /*
+	t_mshell	shell;
+	int			ret;
+    /*	
 	struct sigaction	act;
     struct termios		term;
     struct termios		term2;
@@ -64,50 +65,77 @@ int	main(void)
     tcgetattr(STDIN_FILENO, &term2);
     term.c_cc[VQUIT] = _POSIX_VDISABLE;
 	*/
-	(shell.stat) = 0;
-	(shell.tokens) = NULL;
-	environ = ms_env_creation(environ);
-	(shell.env) = &environ;
-	if (!shell.env)
-		return (errno);
-	if (DEBUG)
-		printf("PID = %d\n", getpid());
+	ret = 0;
+	ms_init(&shell);
 	while (1)
 	{
 		//tcsetattr(STDIN_FILENO, TCSANOW, &term);
-		(shell.prompt) = readline("minishell $ ");
+		(shell.prompt) = readline("> baby~sh ☕ ");
 		//tcsetattr(STDIN_FILENO, TCSANOW, &term2);
 		add_history(shell.prompt);
 		if (!shell.prompt)
-			break ; // exit
-		if (ms_parse(&(shell.tokens), (shell.prompt)) == 0 && shell.tokens)
+			ms_exit(&shell);
+		ret = ms_lexer(&(shell.tokens), (shell.prompt));
+		free(shell.prompt);
+		if (shell.tokens && ret != -1)
 		{
-			free(shell.prompt);
-			ast_executor(&shell);
+			ret = ms_parser(shell.tokens);
+			if (ms_valid_exit(shell.tokens))
+				ms_exit(&shell);
+			else if (ret != -1)
+				ms_executor(&shell);
 		}
-		else
-			free(shell.prompt);
-		ast_iter_in(shell.tokens, tk_free, 1, NULL);
+		ast_free(&(shell.tokens));
 		(shell.tokens) = NULL;
 		(shell.prompt) = NULL;
+		ret = 0;
 	}
-	clear_history();
-	return (0);
+	return (ret);
 }
 
-static char **ms_env_creation(char **envp)
+static int	ms_valid_exit(t_ast *tokens)
 {
-	char	**env_cpy;
+	char		**data;
 
-	env_cpy = creat_copy(envp);
-	if (!env_cpy)
+	data = (char **)(tokens->data);
+	return (tokens->type == E_CMD && data && ft_strncmp(data[0], "exit", 5) == 0
+			&& (!data[1] || (data[1] && !data[2])));
+}
+
+static void	ms_exit(t_mshell *shell)
+{
+	char		*cmd[3];
+	int			val;
+	char		**data;
+
+	if (shell->tokens)
+		data = (char **)(shell->tokens->data);
+	cmd[0] = "exit";
+	cmd[2] = NULL;
+	if (data && data[1])
 	{
-		perror("error creating env");
-		return (NULL);
+		val = ft_atoi(data[1]);
+		cmd[1] = ft_strdup(data[1]);
 	}
-	change_shlvl(&env_cpy);
-	if (!env_cpy)
-		return (NULL);
-	env_cpy = export_at_start_process(env_cpy);
-	return (env_cpy);
+	else
+	{
+		val = (shell->stat);
+		cmd[1] = NULL;
+	}
+	ptr_ptr_free((void **)(*shell->env));
+	ast_free(&(shell->tokens));
+	ft_exit(cmd, -1, &val, NULL);
+}
+
+static void	ms_init(t_mshell *shell)
+{
+	extern 	char	**environ;
+
+	(shell->stat) = 0;
+	(shell->prompt) = NULL;
+	(shell->tokens) = NULL;
+	environ = ms_init_env(environ);
+	(shell->env) = &environ;
+	if (!shell->env)
+		exit (errno);
 }

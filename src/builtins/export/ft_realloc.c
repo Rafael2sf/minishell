@@ -11,11 +11,11 @@
 /* ************************************************************************** */
 
 #include "../../../headers/minishell.h"
-#include "../../../headers/builtins.h"
+#include "../builtins.h"
 
 char	**ft_realloc(char ***ptr, size_t size)
 {
-	int		i;
+	size_t	i;
 	char	**new_ptr;
 
 	i = 0;
@@ -25,7 +25,7 @@ char	**ft_realloc(char ***ptr, size_t size)
 		perror("Error allocating variable");
 		return (NULL);
 	}
-	while ((*ptr)[i])
+	while ((*ptr)[i] && i < (size - 1))
 	{
 		new_ptr[i] = (*ptr)[i];
 		i++;

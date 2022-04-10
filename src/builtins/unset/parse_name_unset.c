@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../../headers/minishell.h"
-#include "../../../headers/builtins.h"
+#include "../builtins.h"
 
 static int	check_first_c(char *input)
 {

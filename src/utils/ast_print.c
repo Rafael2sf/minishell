@@ -6,14 +6,14 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 10:32:13 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/10 18:06:52 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/11 11:15:38 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
 
 static void	tk_print(t_ast *tk, int depth, int cmd_only);
-static void	tk_print_cmd(char **data);
+static void	tk_print_cmd(void *data);
 static void	tk_print_rd(char *data, t_type type);
 
 void	ast_print(t_ast *root, int depth, int cmd_only)
@@ -30,17 +30,19 @@ void	ast_print(t_ast *root, int depth, int cmd_only)
 */
 static void	tk_print(t_ast *tk, int depth, int cmd_only)
 {
+	if (!tk)
+		return ;
 	while (!cmd_only && depth--)
 		ft_putstr(STDERR_FILENO, "---");
-	if (tk->type == E_CMD  || tk->type == E_UNDEF)
-		tk_print_cmd((char **)(tk->data));
+	if (tk->type == E_CMD || tk->type == E_UNDEF)
+		tk_print_cmd((tk->data));
 	else if (tk->type == E_PIPE && !cmd_only)
 		ft_putstr(STDERR_FILENO, "(P)");
 	else if (!cmd_only)
 		tk_print_rd((char *)(tk->data), tk->type);
 	if (cmd_only && (tk->type == E_CMD || tk->type == E_UNDEF))
 	{
-		ft_putchar(STDERR_FILENO,' ');
+		ft_putchar(STDERR_FILENO, ' ');
 		ft_putnbr(STDERR_FILENO, tk->p[0]);
 		ft_putchar(STDERR_FILENO, ' ');
 		ft_putnbr(STDERR_FILENO, tk->p[1]);
@@ -50,13 +52,13 @@ static void	tk_print(t_ast *tk, int depth, int cmd_only)
 		ft_putchar(STDERR_FILENO, '\n');
 }
 
-static void	tk_print_cmd(char **data)
+static void	tk_print_cmd(void *data)
 {
 	char	**ref;
 	int		i;
 
 	i = 0;
-	ref = data;
+	ref = (char **)data;
 	ft_putchar(STDERR_FILENO, '(');
 	while (ref && ref[i])
 	{

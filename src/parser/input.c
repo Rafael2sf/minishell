@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 11:08:28 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/10 17:30:17 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/11 12:13:57 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,12 @@ int	ms_parse_input(t_ast *cur)
 		close((cur->prev->p)[0]);
 	ms_get_llsr(tmp, &fd, &error);
 	ms_get_lsr(tmp, &fd, &error);
+	if (error)
+	{
+		if (fd > 2)
+			close(fd);
+		return (-1);
+	}
 	return (fd);
 }
 

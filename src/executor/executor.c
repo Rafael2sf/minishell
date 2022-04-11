@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 15:04:54 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/10 18:05:00 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/11 12:07:04 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	tk_close_all(t_ast *tk, void *p)
 	(void)(p);
 	if (!tk)
 		return (0);
-	if (tk->type == E_CMD || tk->type == E_UNDEF || tk->type == E_UNDEF)
+	if (tk->type == E_CMD || tk->type == E_UNDEF)
 	{
 		if ((tk->p)[0] > 2)
 			close((tk->p)[0]);
@@ -74,14 +74,13 @@ int	tk_exec(t_ast *tk, void *p)
 			(tk->func)((char **)(tk->data),(tk->p)[1], &(shell->stat), (shell->env));
 			return (0);
 		}
-		
+
 		(tk->pid) = fork();
 		if (tk->pid == -1)
 		{
 			perror("minishell: ");
 			return (1);
 		}
-
 
 		if (tk->pid == 0)
 		{
@@ -116,7 +115,7 @@ int	ms_executor(t_mshell *shell)
 {
 	if (DEBUG)
 	{
-		printf("\t <-- PARSER --> \n");
+		printf("\n\t <-- PARSER --> \n");
 		ast_print(shell->tokens, 0, 1);
 		ast_iter_pre(shell->tokens, tk_close_all, 0, NULL);
 	}

@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 10:24:23 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/10 17:22:26 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/11 11:09:26 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ char	*ms_parse_cmd(char **cmd, char **paths)
 		return (NULL);
 	}
 	fp = ms_find_file(cmd, paths);
-	if (!fp)
-		return (NULL);
 	if (*cmd != fp)
 		free(*cmd);
 	*cmd = fp;

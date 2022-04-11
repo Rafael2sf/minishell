@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 16:53:18 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/10 18:05:06 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/11 12:08:46 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,15 +93,13 @@ static int	tk_set_rd(t_ast *tk, void *p)
 	if (tk->type == E_CMD || tk->type == E_UNDEF)
 	{
 		(tk->p)[0] = ms_parse_input(tk);
-		if (tk->p[0] == -1)
-			return (ms_reset_tk(1, tk));
 		ast_free(&tk->left);
-		tk->left = NULL;
+		(tk->left) = NULL;
 		(tk->p)[1] = ms_parse_output(tk);
-		if (tk->p[1] == -1)
+		if (tk->p[1] == -1 || (tk->p)[0] == -1)
 			return (ms_reset_tk(1, tk));
 		ast_free(&tk->right);
-		tk->right = NULL;
+		(tk->right) = NULL;
 		if (tk->type == E_UNDEF)
 			return (0);
 		(tk->func) = ms_find_builtin(((char **)tk->data)[0]);
@@ -116,6 +114,7 @@ static int	tk_set_rd(t_ast *tk, void *p)
 static int	ms_reset_tk(int code, t_ast *tk)
 {
 	ptr_ptr_free((void **)tk->data);
+	(tk->data) = NULL;
 	(tk->type) = E_UNDEF;
 	return (code);
 }

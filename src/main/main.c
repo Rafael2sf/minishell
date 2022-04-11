@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 10:58:16 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/10 17:44:26 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/11 11:56:37 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,13 @@ int	main(void)
 	ms_init(&shell);
 	while (1)
 	{
+		// ☕
 		//tcsetattr(STDIN_FILENO, TCSANOW, &term);
-		(shell.prompt) = readline("> baby~sh ☕ ");
-		//tcsetattr(STDIN_FILENO, TCSANOW, &term2);
+		if (shell.stat == 0)
+			(shell.prompt) = readline("\033[32m-\033[39m baby~sh $ ");
+		else
+			(shell.prompt) = readline("\033[31m-\033[39m baby~sh $ ");
+		//tcsetattr(STDIN_FILENO, TCSANOW, &term2); 
 		add_history(shell.prompt);
 		if (!shell.prompt)
 			ms_exit(&shell);
@@ -84,11 +88,16 @@ int	main(void)
 				ms_exit(&shell);
 			else if (ret != -1)
 				ms_executor(&shell);
+			else
+				(shell.stat) = 1;
 		}
+		else
+			(shell.stat) = 258;
 		ast_free(&(shell.tokens));
 		(shell.tokens) = NULL;
 		(shell.prompt) = NULL;
 		ret = 0;
+		printf("stat = %d\n", (shell.stat));
 	}
 	return (ret);
 }
@@ -108,6 +117,7 @@ static void	ms_exit(t_mshell *shell)
 	int			val;
 	char		**data;
 
+	data = NULL;
 	if (shell->tokens)
 		data = (char **)(shell->tokens->data);
 	cmd[0] = "exit";

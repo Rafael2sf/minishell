@@ -6,7 +6,7 @@
 #    By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 10:54:37 by rafernan          #+#    #+#              #
-#    Updated: 2022/04/10 18:12:04 by rafernan         ###   ########.fr        #
+#    Updated: 2022/04/11 11:37:32 by rafernan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,9 +37,9 @@ _LIB	=
 
 ################### COMPILER ############
 
-CC		=		gcc
+CC		=		cc
 AR		=		ar rcs
-CFLAGS	=		-O2
+CFLAGS	=		-Wall -Werror -Wextra -O2
 DBFLAGS	=		-g -Wall -Werror -Wextra -D DEBUG=1
 
 ################### FILES ###############
@@ -107,7 +107,7 @@ debug:
 	$(MAKE) $(NAME) CFLAGS="$(DBFLAGS)"
 
 $(NAME): $(DEPS) $(OBJS)
-	$(CC) $(CFLAGS) $(LIBS) $(OBJS) -o $(NAME) $(INCS) $(LKNS) ./libft/libft.a
+	$(CC) $(CFLAGS) $(LIBS) $(OBJS) -o $(NAME) $(INCS) $(LKNS) $(DEPS)
 
 libft/libft.a: $(shell make -C libft/ -q libft.a || echo force)
 	$(MKE) libft.a -C libft/

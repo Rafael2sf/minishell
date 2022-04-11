@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 13:55:38 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/10 16:52:56 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/11 10:31:04 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,10 @@ void	ast_free(t_ast **tk)
 	if (!tk || !*tk)
 		return ;
 	i = 0;
-	ast_free(&((*tk)->left));
-	ast_free(&((*tk)->right));
+	if ((*tk)->left)
+		ast_free(&((*tk)->left));
+	if ((*tk)->right)
+		ast_free(&((*tk)->right));
 	if (((*tk)->type) == E_CMD)
 	{
 		arr = (char **)((*tk)->data);

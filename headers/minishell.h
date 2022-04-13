@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 12:09:01 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/10 17:56:50 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/11 16:43:28 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,5 +119,9 @@ char	**ptr_ptr_join(char **a, char **b);
 
 /* Debugging */
 void	ast_print(t_ast *root, int depth, int cmd_only);
+
+/* signal handling */
+
+void prep_act(struct sigaction *act, char ign_or_not);
 
 #endif

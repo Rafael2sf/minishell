@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 16:26:10 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/10 17:41:45 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/12 17:24:52 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,13 @@ static char	**export_at_start_process(char ***env)
 	i = 0;
 	while ((*env)[i] != NULL)
 	{
-		if (ft_strchr((*env)[i], '=') == NULL)
+		if (ft_strchr((*env)[i], '=') == NULL && ft_strncmp((*env)[i], "OLDPWD", 6) != 0)
 		{
 			input[1] = (*env)[i];
 			ft_unset(input, 1, NULL, env);
+			if ((*env)[i] == NULL)
+				break ;
+			continue ;
 		}
 		i++;
 	}
@@ -66,7 +69,7 @@ static void	reset_oldpwd(char **env)
 	{
 		if (ft_strncmp(env[i], "OLDPWD=", 7) == 0)
 		{
-			tmp = ft_strdup("OLDPWD=");
+			tmp = ft_strdup("OLDPWD");
 			if (tmp)
 			{
 				free(env[i]);

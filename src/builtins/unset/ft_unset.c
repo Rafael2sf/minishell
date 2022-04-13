@@ -6,7 +6,7 @@
 /*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 09:48:40 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/06 11:26:00 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/12 17:24:11 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,11 @@ static int	set_var_unset(char ***env, char **input);
 int	ft_unset(char **input, int fd, int *stat, char ***env)
 {
 	(void)(stat);
-	close(fd);
+	if (fd != 1)
+		close(fd);
 	if (!*env)
 	{
-		ft_putendl_fd("error: env is empity", 2);
+		ft_putendl_fd("error: env is empty", 2);
 		return (1);
 	}
 	if (!input[1])

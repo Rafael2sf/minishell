@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 15:04:54 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/11 12:07:04 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/11 16:43:46 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	tk_close_all(t_ast *tk, void *p)
 int	tk_exec(t_ast *tk, void *p)
 {
 	t_mshell	*shell;
+	struct sigaction	act;
 
 	if (!tk)
 		return (0);
@@ -92,6 +93,13 @@ int	tk_exec(t_ast *tk, void *p)
 			ast_free(&shell->tokens);
 			exit(0);
 		}
+	}
+	prep_act(&act, 'h');
+	if (sigaction(SIGINT, &act, NULL) == -1 ||
+        sigaction(SIGQUIT, &act, NULL) == -1)
+    {
+       	perror("Error in sigaction");
+        return (errno);
 	}
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 10:58:16 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/13 11:28:54 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/12 16:55:18 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,64 +16,40 @@
 
 static void	ms_init(t_mshell *shell);
 
-/*
-static void handle_signals(int sig, siginfo_t *info, void *ucontext)
-{
-	(void)info;
-	(void)ucontext;
-	if (sig == SIGQUIT)
-		return ;
-	else if (sig == SIGINT)
-	{
-		rl_replace_line("", 0);
-		ft_putstr_fd("\n", 0);
-		rl_on_new_line();
-		rl_redisplay();
-    }
-}
-
-static void prep_act(struct sigaction *act)
-{
-    ft_memset(act, '\0', sizeof(*act));
-    act->sa_sigaction = handle_signals;
-    act->sa_flags = SA_SIGINFO;
-    sigemptyset(&act->sa_mask);
-}
-*/
-
 /* Minishell main */
 int	main(void)
 {
 	t_mshell	shell;
 	int			ret;
-    /*	
+    
 	struct sigaction	act;
     struct termios		term;
     struct termios		term2;
 
-    prep_act(&act);
-    if (sigaction(SIGQUIT, &act, NULL) == -1 ||
-        sigaction(SIGINT, &act, NULL) == -1)
-    {
-        perror("Error in sigaction");
-        return (errno);
-    }
+    prep_act(&act, 'h');
+   
     if (isatty(STDIN_FILENO) != 1)
         return (errno);
     tcgetattr(STDIN_FILENO, &term);
     tcgetattr(STDIN_FILENO, &term2);
     term.c_cc[VQUIT] = _POSIX_VDISABLE;
-	*/
+	term.c_lflag &= ~ECHOCTL;
+	
 	ret = 0;
 	ms_init(&shell);
 	while (1)
 	{
-		//tcsetattr(STDIN_FILENO, TCSANOW, &term);
+ 		if (sigaction(SIGQUIT, &act, NULL) == -1 ||
+        sigaction(SIGINT, &act, NULL) == -1)
+    	{
+        	perror("Error in sigaction");
+     		return (errno);
+    	}
+		tcsetattr(STDIN_FILENO, TCSANOW, &term);
 		if (shell.stat == 0)
 			(shell.prompt) = readline("\033[32m-\033[39m minishell $ ");
 		else
-			(shell.prompt) = readline("\033[31mx\033[39m minishell $ ");
-		//tcsetattr(STDIN_FILENO, TCSANOW, &term2); 
+			(shell.prompt) = readline("\033[31m-\033[39m minishell $ ");
 		add_history(shell.prompt);
 		if (!shell.prompt)
 			ms_exit(&shell);
@@ -82,11 +58,15 @@ int	main(void)
 		if (shell.tokens && ret != -1)
 		{
 			ret = ms_parser(&shell);
+			tcsetattr(STDIN_FILENO, TCSANOW, &term2);
 			if (ret != -1)
-				ms_executor(&shell);
+			  ms_executor(&shell);
 		}
 		else if (ret == -1)
-			(shell.stat) = 258;
+    {
+  	  tcsetattr(STDIN_FILENO, TCSANOW, &term2);
+      (shell.stat) = 258;
+    }
 		else
 			(shell.stat) = S_OK;
 		ast_free(&(shell.tokens));

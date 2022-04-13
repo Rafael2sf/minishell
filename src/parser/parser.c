@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 16:53:18 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/11 12:08:46 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/12 15:27:16 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,25 +18,24 @@ static int	ms_reset_tk(int code, t_ast *tk);
 static int	tk_open_pipes(t_ast *tk, void *p);
 static int	tk_set_rd(t_ast *tk, void *p);
 
-int	ms_parser(t_ast	*root)
+int	ms_parser(t_mshell *shell)
 {
-	char	**paths;
 	int		ret;
 
 	ret = 0;
 	if (DEBUG)
 	{
 		printf("\t <-- LEXER -> \n");
-		ast_print(root, 0, 0);
+		ast_print(shell->tokens, 0, 0);
 	}
-	if (ast_iter_in(root, tk_expand, 0, NULL) == -1)
+	if (ast_iter_in(shell->tokens, tk_expand, 0, NULL) == -1)
 		return (ms_parse_error(-1));
-	if (ast_iter_pre(root, tk_open_pipes, 0, NULL) == -1)
+	if (ast_iter_pre(shell->tokens, tk_open_pipes, 0, NULL) == -1)
 		return (ms_parse_error(-1)); // call tk_close_all
-	paths = ms_parse_paths();
-	ret = ast_iter_in(root, tk_set_rd, 0, (void *)(paths));
-	if (paths)
-		ptr_ptr_free((void **)(paths));
+	(shell->paths) = ms_parse_paths();
+	ret = ast_iter_in(shell->tokens, tk_set_rd, 0, (void *)(shell));
+	if (shell->paths)
+		ptr_ptr_free((void **)(shell->paths));
 	if (ret == -1) // call tk_close_all
 		return (ms_parse_error(-1));
 	return (0);
@@ -55,11 +54,13 @@ static int	tk_expand(t_ast *tk, void *p)
 	{
 		i = -1;
 		ref = (char **)(tk->data);
-		while (ref[++i])
+		while (ref && ref[++i])
 		{
 			tmp = ms_expand(ref[i]);
 			if (!tmp)
+			{
 				return (-1);
+			}
 			if (tmp != ref[i])
 			{
 				free(ref[i]);
@@ -86,27 +87,42 @@ static int	tk_open_pipes(t_ast *tk, void *p)
 	return (0);
 }
 
-static int	tk_set_rd(t_ast *tk, void *p)
+static int	tk_set_rd(t_ast *tk, void *sp)
 {
+	t_mshell	*shell;
+
+	shell = (t_mshell *)(sp);
 	if (!tk)
 		return (0);
 	if (tk->type == E_CMD || tk->type == E_UNDEF)
 	{
 		(tk->p)[0] = ms_parse_input(tk);
+		if ((tk->p[0]) == -1)
+		{
+			if (tk->prev && tk->prev->left == tk)
+				close((tk->prev->p)[1]);
+			else if (tk->prev && tk->prev->prev)
+				close((tk->prev->prev->p)[1]);
+			return (ms_reset_tk(1, tk));
+		}
 		ast_free(&tk->left);
 		(tk->left) = NULL;
 		(tk->p)[1] = ms_parse_output(tk);
-		if (tk->p[1] == -1 || (tk->p)[0] == -1)
+		if (tk->p[1] == -1)
 			return (ms_reset_tk(1, tk));
 		ast_free(&tk->right);
 		(tk->right) = NULL;
 		if (tk->type == E_UNDEF)
 			return (0);
-		(tk->func) = ms_find_builtin(((char **)tk->data)[0]);
+		(tk->func) = ms_find_builtin(((char **)(tk->data))[0]);
 		if (tk->func)
 			return (0);
-		if (!ms_parse_cmd(&((char **)tk->data)[0], (char **)(p)))
+		if (!ms_parse_cmd(&((char **)tk->data)[0], shell->paths))
+		{
+			if (!tk->prev)
+				(shell->stat) = 127;
 			return (ms_reset_tk(1, tk));
+		}
 	}
 	return (0);
 }

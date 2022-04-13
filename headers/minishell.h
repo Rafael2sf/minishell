@@ -6,7 +6,7 @@
 /*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 12:09:01 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/11 16:43:28 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/12 11:03:06 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 # include <string.h>
 # include <sys/ioctl.h>
 # include <termios.h>
-//# include <curses.h>
-//# include <term.h>
+# include <curses.h>
+# include <term.h>
 # include <errno.h>
 # include <stdbool.h>
 
@@ -50,6 +50,12 @@ typedef enum e_type
 	E_GRT,
 	E_GGRT
 }	t_type;
+
+
+enum
+{
+	S_OK = 0
+};
 
 /*
 	Abstract syntax tree
@@ -85,6 +91,7 @@ typedef struct s_mshell
 	t_ast	*tokens;
 	int		stat;
 	char	***env;
+	char	**paths;
 }	t_mshell;
 
 /*  readline */
@@ -107,11 +114,12 @@ int		ast_iter_pos(t_ast *root, int (*f)(t_ast *, void *), bool r, void *p);
 
 /* Functions */
 int		ms_lexer(t_ast **root, char *line);
-int		ms_parser(t_ast	*root);
+int		ms_parser(t_mshell *shell);
 int		ms_executor(t_mshell *shell);
 
 /* Utils */
 char	**ms_split(char const *s, char c);
+void	ms_exit(t_mshell *shell);
 void	ptr_ptr_free(void **ptr);
 int		ptr_ptr_len(char **s);
 char	**ptr_ptr_dup(char **env);

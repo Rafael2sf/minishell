@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ptr_ptr_free.c                                     :+:      :+:    :+:   */
+/*   pp_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 16:28:35 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/05 10:50:35 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/13 10:46:44 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	ptr_ptr_len(char **s)
 
 	i = 0;
 	if (!s)
-		return (-1);
+		return (0);
 	while (s[i])
 		i++;
 	return (i);
@@ -43,21 +43,28 @@ char	**ptr_ptr_join(char **a, char **b)
 	int		i;
 	int		j;
 
-	if (!a || !b)
+	// if (!a && b)
+	// 	return (b);
+	// if (a && !b)
+	// 	return (a);
+	if (!a && !b)
 		return (NULL);
-	len = ptr_ptr_len(a);
-	len += ptr_ptr_len(b);
+	len = ptr_ptr_len(a) + ptr_ptr_len(b);
 	new = malloc(sizeof(char *) * len + 1);
+	if (!new)
+		return (NULL);
 	i = 0;
 	j = 0;
-	while (a[i])
+	while (a && a[j])
 		new[i++] = a[j++];
 	j = 0;
-	while (b[j])
+	while (b && b[j])
 		new[i++] = b[j++];
 	new[i] = NULL;
-	free(a);
-	free(b);
+	if (a)
+		free(a);
+	if (b)
+		free(b);
 	return (new);
 }
 

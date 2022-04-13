@@ -86,6 +86,8 @@ SRCS_	=		\
 				utils/ms_split.c \
 				utils/pp_utils.c \
 				utils/signal_handling.c
+				utils/ms_exit.c \
+				utils/pp_utils.c
 
 SRCS	=		$(addprefix $(_SRC), $(SRCS_))
 OBJS	=		$(patsubst %.c, %.o,$(SRCS))

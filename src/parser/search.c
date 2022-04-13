@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 10:24:23 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/11 11:09:26 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/13 11:34:40 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "parser.h"
 
 static char	*ms_find_file(char **cmd, char **paths);
-static int	ms_check_file(char *filepath);
+static int	ms_check_file(char *filepath, int check_dir);
 static char	*ms_srchfp(char *fname, char **paths);
 static char	*ms_strpath(char *path, const char *file);
 
@@ -28,7 +28,15 @@ char	*ms_parse_cmd(char **cmd, char **paths)
 		ft_putstr(STDERR_FILENO, "command not found\n");
 		return (NULL);
 	}
+	if ((*cmd)[0] == '.' && !(*cmd)[1])
+	{
+		ft_putstr(STDERR_FILENO, "minishell: .: filename argument required\n \
+.: usage: . filename [arguments]\n");
+		return (NULL);
+	}
 	fp = ms_find_file(cmd, paths);
+	if (!fp)
+		return (NULL);
 	if (*cmd != fp)
 		free(*cmd);
 	*cmd = fp;
@@ -37,35 +45,46 @@ char	*ms_parse_cmd(char **cmd, char **paths)
 
 static char	*ms_find_file(char **cmd, char **paths)
 {
-	char	*fp;
 	int		i;
+	int		v;
 
 	i = 0;
-	fp = NULL;
-	while ((*cmd)[i] != '/' && (*cmd)[i])
+	while ((*cmd)[i] && (*cmd)[i] != '/')
 		i++;
-	if ((*cmd)[i] == '/' && ms_check_file(*cmd) == 0)
-		fp = *cmd;
-	else if ((*cmd)[i] == '/')
+	v = ms_check_file(*cmd, 1);
+	if (v == 1)
+		return (NULL);
+	if (v == 0)
+		return (*cmd);
+	if ((*cmd)[i] == '/')
 	{
-		write(STDERR_FILENO, "minishell: ", 12);
-		perror(*cmd); // Not writing expected error try "../"
+		ft_putstr(STDERR_FILENO, "minishell: ");
+		perror(*cmd);
+		return (NULL);
 	}
-	else
-		fp = ms_srchfp(*cmd, paths);
-	return (fp);
+	return (ms_srchfp(*cmd, paths));
 }
 
-static int	ms_check_file(char *filepath)
+static int	ms_check_file(char *filepath, int check_dir)
 {
 	struct stat	file_stat;
 
 	if (!filepath)
 		return (-1);
 	stat(filepath, &file_stat);
-	if (access(filepath, F_OK | X_OK) == 0 && S_ISREG(file_stat.st_mode))
-		return (0);
-	return (-1);
+	if (access(filepath, F_OK | X_OK) == 0)
+	{
+		if (check_dir && S_ISREG(file_stat.st_mode) == 0)
+		{
+			write(STDERR_FILENO, "minishell: ", 11);
+			ft_putstr(STDERR_FILENO, filepath);
+			write(STDERR_FILENO, " : Is a directory\n", 18);
+			return (1);
+		}
+	}
+	else
+		return (-1);
+	return (0);
 }
 
 static char	*ms_srchfp(char *fname, char **paths)
@@ -77,7 +96,7 @@ static char	*ms_srchfp(char *fname, char **paths)
 	while (paths && paths[i])
 	{
 		fp = ms_strpath(paths[i], fname);
-		if (ms_check_file(fp) == 0)
+		if (ms_check_file(fp, 0) == 0)
 			return (fp);
 		if (fp)
 			free(fp);

@@ -6,7 +6,7 @@
 /*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 15:04:54 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/11 16:43:46 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/13 11:42:22 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,14 @@ int	ms_exec_builtin(t_ast *tk, t_mshell *shell)
 	return (-1);
 }
 */
+int	ms_valid_exit(t_ast *tokens)
+{
+	char		**data;
+
+	data = (char **)(tokens->data);
+	return (tokens->type == E_CMD && data && ft_strncmp(data[0], "exit", 5) == 0
+			&& (!data[1] || (data[1] && !data[2])));
+}
 
 int	tk_close_all(t_ast *tk, void *p)
 {
@@ -65,6 +73,11 @@ int	tk_exec(t_ast *tk, void *p)
 			close((tk->p)[0]);
 			if (tk->prev)
 			{
+				// if valid exit free mem and exit
+				if (ms_valid_exit(tk))
+					ms_exit(shell);
+					
+				// If command is not valid close pipe
 				if (tk->func == ft_cd || tk->func == ft_unset || tk->func == ft_exit
 					|| ((tk->func) == ft_export && ((char **)(tk->data))[1] != NULL))
 				{
@@ -72,10 +85,12 @@ int	tk_exec(t_ast *tk, void *p)
 					return (0);
 				}
 			}
-			(tk->func)((char **)(tk->data),(tk->p)[1], &(shell->stat), (shell->env));
+			// run valid function
+			(shell->stat) = (tk->func)((char **)(tk->data),(tk->p)[1], &(shell->stat), (shell->env));
 			return (0);
 		}
 
+		// else run binary in child process
 		(tk->pid) = fork();
 		if (tk->pid == -1)
 		{

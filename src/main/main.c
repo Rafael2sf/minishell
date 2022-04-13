@@ -11,10 +11,9 @@
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
+#include "../parser/parser.h"
 #include "main.h"
 
-static int	ms_valid_exit(t_ast *tokens);
-static void	ms_exit(t_mshell *shell);
 static void	ms_init(t_mshell *shell);
 
 /* Minishell main */
@@ -46,12 +45,11 @@ int	main(void)
         	perror("Error in sigaction");
      		return (errno);
     	}
-		// ☕
 		tcsetattr(STDIN_FILENO, TCSANOW, &term);
 		if (shell.stat == 0)
-			(shell.prompt) = readline("\033[32m-\033[39m baby~sh ☕ ");
+			(shell.prompt) = readline("\033[32m-\033[39m minishell $ ");
 		else
-			(shell.prompt) = readline("\033[31m-\033[39m baby~sh ☕ ");
+			(shell.prompt) = readline("\033[31m-\033[39m minishell $ ");
 		add_history(shell.prompt);
 		if (!shell.prompt)
 			ms_exit(&shell);
@@ -59,71 +57,34 @@ int	main(void)
 		free(shell.prompt);
 		if (shell.tokens && ret != -1)
 		{
-			ret = ms_parser(shell.tokens);
+			ret = ms_parser(&shell);
 			tcsetattr(STDIN_FILENO, TCSANOW, &term2);
-			if (ms_valid_exit(shell.tokens))
-				ms_exit(&shell);
-			else if (ret != -1)
-				ms_executor(&shell);
-			else
-				(shell.stat) = 1;
+			if (ret != -1)
+			  ms_executor(&shell);
 		}
+		else if (ret == -1)
+    {
+  	  tcsetattr(STDIN_FILENO, TCSANOW, &term2);
+      (shell.stat) = 258;
+    }
 		else
-		{
-			tcsetattr(STDIN_FILENO, TCSANOW, &term2);
-			(shell.stat) = 258;
-		}	
+			(shell.stat) = S_OK;
 		ast_free(&(shell.tokens));
 		(shell.tokens) = NULL;
 		(shell.prompt) = NULL;
 		ret = 0;
-		printf("stat = %d\n", (shell.stat));
 	}
 	return (ret);
-}
-
-static int	ms_valid_exit(t_ast *tokens)
-{
-	char		**data;
-
-	data = (char **)(tokens->data);
-	return (tokens->type == E_CMD && data && ft_strncmp(data[0], "exit", 5) == 0
-			&& (!data[1] || (data[1] && !data[2])));
-}
-
-static void	ms_exit(t_mshell *shell)
-{
-	char		*cmd[3];
-	int			val;
-	char		**data;
-
-	data = NULL;
-	if (shell->tokens)
-		data = (char **)(shell->tokens->data);
-	cmd[0] = "exit";
-	cmd[2] = NULL;
-	if (data && data[1])
-	{
-		val = ft_atoi(data[1]);
-		cmd[1] = ft_strdup(data[1]);
-	}
-	else
-	{
-		val = (shell->stat);
-		cmd[1] = NULL;
-	}
-	ptr_ptr_free((void **)(*shell->env));
-	ast_free(&(shell->tokens));
-	ft_exit(cmd, -1, &val, NULL);
 }
 
 static void	ms_init(t_mshell *shell)
 {
 	extern 	char	**environ;
 
-	(shell->stat) = 0;
+	(shell->stat) = S_OK;
 	(shell->prompt) = NULL;
 	(shell->tokens) = NULL;
+	(shell->paths) = NULL;
 	environ = ms_init_env(environ);
 	(shell->env) = &environ;
 	if (!shell->env)

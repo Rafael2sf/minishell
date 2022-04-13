@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast_add_type.c                                     :+:      :+:    :+:   */
+/*   ast_add.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:35:43 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/07 16:02:17 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/12 17:05:48 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,9 @@ static int	ast_add_cmd(t_ast **root, t_ast *new_token)
 	else if (((*root)->type) == E_UNDEF)
 	{
 		((*root)->type) = E_CMD;
-		((*root)->data) = (new_token->data);
-		free(new_token);
+		((*root)->data) = (char **)(new_token->data);
+		(new_token->data) = NULL;
+		//free(new_token);
 		return (0);
 	}
 	else if ((*root)->right)

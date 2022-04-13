@@ -6,7 +6,7 @@
 #    By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 10:54:37 by rafernan          #+#    #+#              #
-#    Updated: 2022/04/11 11:37:32 by rafernan         ###   ########.fr        #
+#    Updated: 2022/04/11 15:15:38 by rafernan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -84,6 +84,7 @@ SRCS_	=		\
 				utils/ast_iter.c \
 				utils/ast_print.c \
 				utils/ms_split.c \
+				utils/ms_exit.c \
 				utils/pp_utils.c
 
 SRCS	=		$(addprefix $(_SRC), $(SRCS_))

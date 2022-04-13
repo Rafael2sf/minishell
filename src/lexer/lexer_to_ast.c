@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create_token.c                                     :+:      :+:    :+:   */
+/*   lexer_to_ast.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 16:26:10 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/07 12:35:21 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/12 15:24:49 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ int	ms_create_token(t_ast **root, t_type type, char *s, int size)
 	t_ast	*new_t;
 
 	new_t = NULL;
-	if (type == E_CMD)
+	if (type == E_CMD || type == E_UNDEF)
 		new_t = ms_create_token_cmd(root, s, size, s[size]);
 	else
 		new_t = ms_create_token_any(s, size, type);
 	if (!new_t)
-		return (ms_lexer_error(-1, '-', 1));
+		return (ms_lexer_error(-1, '\0', 1));
 	ast_add(root, new_t);
 	return (0);
 }
@@ -40,7 +40,7 @@ static t_ast	*ms_create_token_cmd(t_ast **root, char *s, int size, char c)
 	base = NULL;
 	if (*root && (*root)->type == E_CMD)
 		base = *root;
-	else if (*root && (*root)->type == E_PIPE && (*root)->right)
+	else if (*root && (*root)->type == E_PIPE && (*root)->right && (*root)->right->type != E_UNDEF)
 		base = (*root)->right;
 	if (base)
 	{

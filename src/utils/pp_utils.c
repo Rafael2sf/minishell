@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 16:28:35 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/13 10:46:44 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/14 10:42:13 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ptr_ptr_free(void **ptr)
 		return ;
 	i = 0;
 	while (ptr[i] != NULL)
-		free (ptr[i++]);
+		free(ptr[i++]);
 	free(ptr);
 }
 
@@ -43,10 +43,6 @@ char	**ptr_ptr_join(char **a, char **b)
 	int		i;
 	int		j;
 
-	// if (!a && b)
-	// 	return (b);
-	// if (a && !b)
-	// 	return (a);
 	if (!a && !b)
 		return (NULL);
 	len = ptr_ptr_len(a) + ptr_ptr_len(b);

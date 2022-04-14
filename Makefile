@@ -3,7 +3,7 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+         #
+#    By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 10:54:37 by rafernan          #+#    #+#              #
 #    Updated: 2022/04/13 12:27:00 by daalmeid         ###   ########.fr        #
@@ -95,7 +95,7 @@ DEPS	=		libft/libft.a
 LIBS	=		-lft -lreadline
 
 INCS	=		-I  ~/.brew/opt/readline/include -I ./headers/
-LKNS	=		-L ./libft -L ~/.brew/opt/readline/lib
+LKNS	=		-L ./libft -L ~/.brew/opt/readline/lib -L /usr/lib/x86_64-linux-gnu/
 
 ################### RULES ###############
 
@@ -103,7 +103,7 @@ all: $(NAME)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
-#	@$(NRM)	$<
+#	$(NRM) $<
 
 debug:
 	$(MAKE) $(NAME) CFLAGS="$(DBFLAGS)"

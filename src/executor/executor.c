@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 15:04:54 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/14 12:13:11 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/14 12:14:32 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	tk_exec(t_ast *tk, void *p)
 				// if valid exit free mem and exit
 				if (ms_valid_exit(tk))
 					ms_exit(shell);
-					
+
 				// If command is not valid close pipe
 				if (tk->func == ft_cd || tk->func == ft_unset || tk->func == ft_exit
 					|| ((tk->func) == ft_export && ((char **)(tk->data))[1] != NULL))
@@ -108,7 +108,6 @@ int	tk_exec(t_ast *tk, void *p)
 			exit(0);
 		}
 	}
-	
 	return (0);
 }
 
@@ -131,9 +130,9 @@ int	tk_wait(t_ast *tk, void *p)
 		if (!tk->prev || (tk->prev->right == tk && !tk->prev->prev))
 		{
 			waitpid(tk->pid, &(shell->stat), 0);
-			if(WIFSIGNALED(shell->stat))
-				printf("%d\n", shell->stat);
-		}	
+			if (WIFSIGNALED(shell->stat))
+				(shell->stat) += 128;
+		}
 		else
 			waitpid(tk->pid, NULL, 0);
 	}

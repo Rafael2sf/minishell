@@ -13,7 +13,7 @@
 #include "../../headers/minishell.h"
 #include "parser.h"
 
-static int	tk_expand(t_ast *tk, void *p);
+static int	tk_expand(t_ast *tk, void *stat);
 static int	ms_reset_tk(int code, t_ast *tk);
 static int	tk_open_pipes(t_ast *tk, void *p);
 static int	tk_set_rd(t_ast *tk, void *p);
@@ -28,7 +28,7 @@ int	ms_parser(t_mshell *shell)
 		printf("\t <-- LEXER -> \n");
 		ast_print(shell->tokens, 0, 0);
 	}
-	if (ast_iter_in(shell->tokens, tk_expand, 0, NULL) == -1)
+	if (ast_iter_in(shell->tokens, tk_expand, 0, (void *)&(shell->stat)) == -1)
 		return (ms_parse_error(-1));
 	if (ast_iter_pre(shell->tokens, tk_open_pipes, 0, NULL) == -1)
 		return (ms_parse_error(-1)); // call tk_close_all
@@ -41,13 +41,13 @@ int	ms_parser(t_mshell *shell)
 	return (0);
 }
 
-static int	tk_expand(t_ast *tk, void *p)
+static int	tk_expand(t_ast *tk, void *stat)
 {
 	char	**ref;
 	char	*tmp;
 	int		i;
 
-	(void)(p);
+	(void)(stat);
 	if (!tk)
 		return (0);
 	if (tk->type == E_CMD)
@@ -56,7 +56,7 @@ static int	tk_expand(t_ast *tk, void *p)
 		ref = (char **)(tk->data);
 		while (ref && ref[++i])
 		{
-			tmp = ms_expand(ref[i]);
+			tmp = ms_expand(ref[i], (int *)(long *)stat);
 			if (!tmp)
 			{
 				return (-1);
@@ -66,6 +66,17 @@ static int	tk_expand(t_ast *tk, void *p)
 				free(ref[i]);
 				ref[i] = tmp;
 			}
+		}
+	}
+	else if (tk->type == E_LSR || tk->type == E_LLSR
+		|| tk->type == E_GRT || tk->type == E_GGRT)
+	{
+		int a = 0;
+		tmp = ms_expand((char *)tk->data, &a);
+		if (tmp && ((char *)tk->data) != tmp)
+		{
+			free((char *)tk->data);
+			(tk->data) = tmp;
 		}
 	}
 	return (0);

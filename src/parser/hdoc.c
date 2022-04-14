@@ -65,14 +65,22 @@ static void	ms_read_heredoc(const char *delimitir, int dlen, int fd)
 {
 	char	*line;
 	int		len;
-
+	char	*tmp;
+	
 	while (1)
 	{
 		line = readline("> ");
 		if (!line)
 			break ;
+		int a = 0;
+		tmp = ms_expand(line, &a);
+		if (tmp && line != tmp)
+		{
+			free(line);
+			line = tmp;
+		}
 		if (ft_strncmp(line, delimitir, dlen) == 0
-			&& line[dlen] == 0)
+			&& line[dlen] == '\0')
 		{
 			free(line);
 			break ;
@@ -83,6 +91,7 @@ static void	ms_read_heredoc(const char *delimitir, int dlen, int fd)
 			perror("");
 			break ;
 		}
+		write(fd, "\n", 1);
 		free(line);
 		write(fd, "\n", 1);
 	}

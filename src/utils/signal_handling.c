@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handling.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 16:22:39 by daalmeid          #+#    #+#             */
 /*   Updated: 2022/04/14 12:06:32 by daalmeid         ###   ########.fr       */
@@ -24,7 +24,7 @@ static void handle_signals(int sig, siginfo_t *info, void *ucontext)
 		ft_putstr_fd("\n", 0);
 		rl_on_new_line();
 		rl_redisplay();
-    }
+	}
 }
 
 static void handle_signals_heredoc(int sig, siginfo_t *info, void *ucontext)
@@ -55,3 +55,4 @@ void prep_act(struct sigaction *act, char ign_or_not)
 	act->sa_flags = SA_SIGINFO;
     sigemptyset(&act->sa_mask);
 }
+

@@ -6,14 +6,13 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 17:29:51 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/10 17:35:46 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/13 15:46:22 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 
-char		*ms_expand(char *str);
 int			ms_heredoc(const char *delimitir);
 t_bultinf	ms_find_builtin(const char *s);
 

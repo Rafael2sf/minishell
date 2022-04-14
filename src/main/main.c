@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 10:58:16 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/12 16:55:18 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/14 11:28:41 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int	main(void)
     tcgetattr(STDIN_FILENO, &term2);
     term.c_cc[VQUIT] = _POSIX_VDISABLE;
 	term.c_lflag &= ~ECHOCTL;
-	
 	ret = 0;
 	ms_init(&shell);
 	while (1)
@@ -47,13 +46,14 @@ int	main(void)
     	}
 		tcsetattr(STDIN_FILENO, TCSANOW, &term);
 		if (shell.stat == 0)
-			(shell.prompt) = readline("\033[32m-\033[39m minishell $ ");
+			(shell.prompt) = readline("\033[32mo\033[39m minishell $ ");
 		else
-			(shell.prompt) = readline("\033[31m-\033[39m minishell $ ");
-		add_history(shell.prompt);
+			(shell.prompt) = readline("\033[31mx\033[39m minishell $ ");
 		if (!shell.prompt)
 			ms_exit(&shell);
 		ret = ms_lexer(&(shell.tokens), (shell.prompt));
+		if (shell.tokens && ret != -1)
+			add_history(shell.prompt);
 		free(shell.prompt);
 		if (shell.tokens && ret != -1)
 		{
@@ -63,10 +63,10 @@ int	main(void)
 			  ms_executor(&shell);
 		}
 		else if (ret == -1)
-    {
-  	  tcsetattr(STDIN_FILENO, TCSANOW, &term2);
-      (shell.stat) = 258;
-    }
+		{
+			tcsetattr(STDIN_FILENO, TCSANOW, &term2);
+			(shell.stat) = 258;
+		}
 		else
 			(shell.stat) = S_OK;
 		ast_free(&(shell.tokens));
@@ -74,6 +74,7 @@ int	main(void)
 		(shell.prompt) = NULL;
 		ret = 0;
 	}
+	ptr_ptr_free((void **)(*shell.env));
 	return (ret);
 }
 

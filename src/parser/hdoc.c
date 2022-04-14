@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 11:11:54 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/05 10:20:07 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/13 16:22:02 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,22 @@ static void	ms_read_heredoc(const char *delimitir, int dlen, int fd)
 {
 	char	*line;
 	int		len;
-
+	char	*tmp;
+	
 	while (1)
 	{
-		write(1, "> ", 2);
-		line = ft_getnl(STDIN_FILENO);
+		line = readline("> ");
 		if (!line)
 			break ;
+		int a = 0;
+		tmp = ms_expand(line, &a);
+		if (tmp && line != tmp)
+		{
+			free(line);
+			line = tmp;
+		}
 		if (ft_strncmp(line, delimitir, dlen) == 0
-			&& line[dlen] == '\n')
+			&& line[dlen] == '\0')
 		{
 			free(line);
 			break ;
@@ -53,6 +60,7 @@ static void	ms_read_heredoc(const char *delimitir, int dlen, int fd)
 			perror("");
 			break ;
 		}
+		write(fd, "\n", 1);
 		free(line);
 	}
 }

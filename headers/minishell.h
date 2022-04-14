@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 12:09:01 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/12 11:03:06 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/14 13:12:17 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ int		ms_parser(t_mshell *shell);
 int		ms_executor(t_mshell *shell);
 
 /* Utils */
+char	*ms_expand(char *str, void *stat);
 char	**ms_split(char const *s, char c);
 void	ms_exit(t_mshell *shell);
 void	ptr_ptr_free(void **ptr);

@@ -6,7 +6,7 @@
 /*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 10:58:16 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/12 16:55:18 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/14 12:52:44 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	main(void)
 {
 	t_mshell	shell;
 	int			ret;
-    
 	struct sigaction	act;
     struct termios		term;
     struct termios		term2;
@@ -50,6 +49,8 @@ int	main(void)
 			(shell.prompt) = readline("\033[32m-\033[39m minishell $ ");
 		else
 			(shell.prompt) = readline("\033[31m-\033[39m minishell $ ");
+		if (shell.sig_call == true)
+			(shell.sig_call) = false;
 		add_history(shell.prompt);
 		if (!shell.prompt)
 			ms_exit(&shell);
@@ -85,6 +86,7 @@ static void	ms_init(t_mshell *shell)
 	(shell->prompt) = NULL;
 	(shell->tokens) = NULL;
 	(shell->paths) = NULL;
+	(shell->sig_call) = false;
 	environ = ms_init_env(environ);
 	(shell->env) = &environ;
 	if (!shell->env)

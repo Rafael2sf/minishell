@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 12:09:01 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/14 13:12:17 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/14 12:48:39 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ typedef enum e_type
 	E_GGRT
 }	t_type;
 
-
 enum
 {
 	S_OK = 0
@@ -92,6 +91,7 @@ typedef struct s_mshell
 	int		stat;
 	char	***env;
 	char	**paths;
+	bool	sig_call;
 }	t_mshell;
 
 /*  readline */

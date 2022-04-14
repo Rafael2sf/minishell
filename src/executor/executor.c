@@ -61,7 +61,6 @@ int	tk_close_all(t_ast *tk, void *p)
 int	tk_exec(t_ast *tk, void *p)
 {
 	t_mshell	*shell;
-	struct sigaction	act;
 
 	if (!tk)
 		return (0);
@@ -109,21 +108,23 @@ int	tk_exec(t_ast *tk, void *p)
 			exit(0);
 		}
 	}
-	prep_act(&act, 'i');
-	if (sigaction(SIGINT, &act, NULL) == -1 ||
-        sigaction(SIGQUIT, &act, NULL) == -1)
-    {
-       	perror("Error in sigaction");
-        return (errno);
-	}
 	return (0);
 }
 
 int	tk_wait(t_ast *tk, void *p)
 {
 	t_mshell		*shell;
+	struct sigaction	act;
+
 
 	shell = (t_mshell *)p;
+	prep_act(&act, 'i');
+		if (sigaction(SIGINT, &act, NULL) == -1 ||
+        sigaction(SIGQUIT, &act, NULL) == -1)
+    	{
+       		perror("Error in sigaction");
+        	return (errno);
+	}
 	if (tk->type == E_CMD)
 	{
 		if (!tk->prev || (tk->prev->right == tk && !tk->prev->prev))
@@ -140,6 +141,8 @@ int	tk_wait(t_ast *tk, void *p)
 
 int	ms_executor(t_mshell *shell)
 {
+	struct sigaction	act;
+	
 	if (DEBUG)
 	{
 		printf("\n\t <-- PARSER --> \n");
@@ -148,6 +151,13 @@ int	ms_executor(t_mshell *shell)
 	}
 	else
 	{
+		prep_act(&act, 'd');
+		if (sigaction(SIGINT, &act, NULL) == -1 ||
+        sigaction(SIGQUIT, &act, NULL) == -1)
+    	{
+       		perror("Error in sigaction");
+        	return (errno);
+		}
 		ast_iter_in(shell->tokens, tk_exec, 0, (void *)(shell));
 		ast_iter_pre(shell->tokens, tk_close_all, 0, NULL);
 		ast_iter_in(shell->tokens, tk_wait, 1, (void *)(shell));

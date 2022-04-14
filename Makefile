@@ -6,7 +6,7 @@
 #    By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 10:54:37 by rafernan          #+#    #+#              #
-#    Updated: 2022/04/14 13:10:55 by rafernan         ###   ########.fr        #
+#    Updated: 2022/04/13 12:27:00 by daalmeid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -86,7 +86,7 @@ SRCS_	=		\
 				utils/ms_split.c \
 				utils/pp_utils.c \
 				utils/signal_handling.c \
-				utils/ms_exit.c
+				utils/ms_exit.c 
 
 SRCS	=		$(addprefix $(_SRC), $(SRCS_))
 OBJS	=		$(patsubst %.c, %.o,$(SRCS))

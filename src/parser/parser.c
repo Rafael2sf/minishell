@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 16:53:18 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/14 13:02:10 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/13 18:50:12 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static int	tk_set_rd(t_ast *tk, void *sp)
 		return (0);
 	if (tk->type == E_CMD || tk->type == E_UNDEF)
 	{
-		(tk->p)[0] = ms_parse_input(tk);
+		(tk->p)[0] = ms_parse_input(tk, shell);
 		if ((tk->p[0]) == -1)
 		{
 			if (tk->prev && tk->prev->left == tk)

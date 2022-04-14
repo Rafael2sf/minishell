@@ -3,28 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 11:08:28 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/13 15:34:10 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/14 12:36:22 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
 #include "parser.h"
 
-static void	ms_get_llsr(t_ast *tmp, int *i_fd, bool *error);
+static void	ms_get_llsr(t_ast *tmp, int *i_fd, bool *error, t_mshell *shell);
 static void	ms_get_lsr(t_ast *tmp, int *i_fd, bool *error);
 
-int	ms_parse_input(t_ast *cur)
+int	ms_parse_input(t_ast *cur, t_mshell *shell)
 {
 	t_ast	*tmp;
 	bool	error;
 	int		fd;
+	struct sigaction	act;
+
 
 	fd = -1;
 	tmp = cur;
 	error = false;
+	prep_act(&act, 'i');
+		if (sigaction(SIGINT, &act, NULL) == -1 ||
+        sigaction(SIGQUIT, &act, NULL) == -1)
+    	{
+       		perror("Error in sigaction");
+        	return (errno);
+	}
 	if (!tmp->left)
 	{
 		if (tmp->prev && tmp->prev->left != tmp)
@@ -35,9 +44,9 @@ int	ms_parse_input(t_ast *cur)
 	}
 	if (tmp->prev && tmp->prev->left != tmp)
 		close((cur->prev->p)[0]);
-	ms_get_llsr(tmp, &fd, &error);
+	ms_get_llsr(tmp, &fd, &error, shell);
 	ms_get_lsr(tmp, &fd, &error);
-	if (error)
+	if (error) //Now what? error fica true com rececao de CTRL + C, para onde vai a seguir?
 	{
 		if (fd > 2)
 			close(fd);
@@ -46,7 +55,7 @@ int	ms_parse_input(t_ast *cur)
 	return (fd);
 }
 
-static void	ms_get_llsr(t_ast *tmp, int *i_fd, bool *error)
+static void	ms_get_llsr(t_ast *tmp, int *i_fd, bool *error, t_mshell *shell)
 {
 	int	fd;
 
@@ -56,12 +65,14 @@ static void	ms_get_llsr(t_ast *tmp, int *i_fd, bool *error)
 	{
 		if (tmp->type == E_LLSR)
 		{
-			fd = ms_heredoc((char *)tmp->data);
+			fd = ms_heredoc((char *)tmp->data, shell);
 			if (fd == -1)
 			{
 				perror("minishell: ");
 				(*error) = true;
 			}
+			else if (fd == -2)
+				(*error) = true;
 			if (tmp->prev->type == E_CMD || tmp->prev->type == E_UNDEF)
 				(*i_fd) = fd;
 			else if (fd > 2)

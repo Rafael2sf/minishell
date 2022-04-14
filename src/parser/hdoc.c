@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hdoc.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 11:11:54 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/14 12:50:22 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/14 16:52:16 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,12 @@ int	ms_heredoc(const char *delimitir, t_mshell *shell)
 		close(p[1]);
 		exit(0);
 	}
-	else
+	close(p[1]);
+	waitpid(pid, &shell->stat, 0);
+	if ((shell->stat) == 256)
 	{
-
-		close(p[1]);
-		waitpid(pid, &shell->stat, 0);
-		printf("%d\n", shell->stat);
-	}
-	if (shell->stat == 256)
-	{
-		shell->sig_call = true;
+		(shell->sig_call) = true;
+		(shell->stat) = 1;
 		return (-2);
 	}
 	return (p[0]);
@@ -93,6 +89,5 @@ static void	ms_read_heredoc(const char *delimitir, int dlen, int fd)
 		}
 		write(fd, "\n", 1);
 		free(line);
-		write(fd, "\n", 1);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 15:04:54 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/14 12:14:32 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/14 16:11:31 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,15 @@ int	tk_wait(t_ast *tk, void *p)
 		{
 			waitpid(tk->pid, &(shell->stat), 0);
 			if (WIFSIGNALED(shell->stat))
+			{
 				(shell->stat) += 128;
+				if ((shell->stat) == 130)
+					ft_putchar_fd('\n', STDOUT_FILENO);
+				if ((shell->stat) == 131)
+					ft_putstr_fd("Quit: 3\n", STDOUT_FILENO);
+			}
+			else
+				(shell->stat) = WEXITSTATUS(shell->stat);
 		}
 		else
 			waitpid(tk->pid, NULL, 0);

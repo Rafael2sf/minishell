@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 12:09:01 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/14 12:48:39 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/14 16:57:34 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,6 @@ char	**ptr_ptr_join(char **a, char **b);
 void	ast_print(t_ast *root, int depth, int cmd_only);
 
 /* signal handling */
-
 void prep_act(struct sigaction *act, char ign_or_not);
 
 #endif

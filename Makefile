@@ -6,7 +6,7 @@
 #    By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 10:54:37 by rafernan          #+#    #+#              #
-#    Updated: 2022/04/13 12:27:00 by daalmeid         ###   ########.fr        #
+#    Updated: 2022/04/14 16:58:37 by rafernan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -95,7 +95,7 @@ DEPS	=		libft/libft.a
 LIBS	=		-lft -lreadline
 
 INCS	=		-I  ~/.brew/opt/readline/include -I ./headers/
-LKNS	=		-L ./libft -L ~/.brew/opt/readline/lib -L /usr/lib/x86_64-linux-gnu/
+LKNS	=		-L ./libft -L ~/.brew/opt/readline/lib
 
 ################### RULES ###############
 

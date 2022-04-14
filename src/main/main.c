@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 10:58:16 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/14 12:52:44 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/14 17:14:58 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,23 @@
 #include "main.h"
 
 static void	ms_init(t_mshell *shell);
+extern char	**environ;
 
-/* Minishell main */
 int	main(void)
 {
 	t_mshell	shell;
 	int			ret;
+
 	struct sigaction	act;
     struct termios		term;
     struct termios		term2;
 
     prep_act(&act, 'h');
-   
     if (isatty(STDIN_FILENO) != 1)
         return (errno);
     tcgetattr(STDIN_FILENO, &term);
     tcgetattr(STDIN_FILENO, &term2);
-    term.c_cc[VQUIT] = _POSIX_VDISABLE;
+   	term.c_cc[VQUIT] = _POSIX_VDISABLE;
 	term.c_lflag &= ~ECHOCTL;
 	ret = 0;
 	ms_init(&shell);
@@ -48,10 +48,12 @@ int	main(void)
 			(shell.prompt) = readline("\033[32mo\033[39m minishell $ ");
 		else
 			(shell.prompt) = readline("\033[31mx\033[39m minishell $ ");
-		if (shell.sig_call == true)
-			(shell.sig_call) = false;
+		(shell.sig_call) = false;
 		if (!shell.prompt)
+		{
+			tcsetattr(STDIN_FILENO, TCSANOW, &term2);
 			ms_exit(&shell);
+		}
 		ret = ms_lexer(&(shell.tokens), (shell.prompt));
 		if (shell.tokens && ret != -1)
 			add_history(shell.prompt);
@@ -80,9 +82,7 @@ int	main(void)
 }
 
 static void	ms_init(t_mshell *shell)
-{
-	extern 	char	**environ;
-
+{	
 	(shell->stat) = S_OK;
 	(shell->prompt) = NULL;
 	(shell->tokens) = NULL;

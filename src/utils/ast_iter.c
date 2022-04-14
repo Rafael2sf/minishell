@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_iter.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 15:01:22 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/14 12:51:49 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/14 14:22:09 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,7 @@ int	ast_iter_in(t_ast *root, int (*f)(t_ast *, void *), bool rev, void *ptr)
 	if (!root)
 		return (0);
 	else if (shell && shell->sig_call == true)
-	{
 	 	return (-1);
-	}
 	else if (rev)
 	{
 		ast_iter_in(root->right, f, rev, ptr);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 10:41:02 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/14 16:01:37 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/15 16:53:16 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,7 @@ static int	ms_parse_rd(t_ast **root, char *line, t_pvars *v)
 		type = E_LSR;
 	else
 		type = E_GRT;
-	err_loc = (v->end);
-	(v->end) += 1;
+	err_loc = (v->end)++;
 	if (ft_is(line[v->end], "<>"))
 	{
 		if (line[v->end - 1] == '<' && line[v->end] == '<')

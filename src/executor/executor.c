@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 15:04:54 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/14 16:11:31 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/15 16:21:49 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	ms_valid_exit(t_ast *tokens)
 
 	data = (char **)(tokens->data);
 	return (tokens->type == E_CMD && data && ft_strncmp(data[0], "exit", 5) == 0
-			&& (!data[1] || (data[1] && !data[2])));
+		&& (!data[1] || (data[1] && !data[2])));
 }
 
 int	tk_close_all(t_ast *tk, void *p)
@@ -75,20 +75,20 @@ int	tk_exec(t_ast *tk, void *p)
 				// if valid exit free mem and exit
 				if (ms_valid_exit(tk))
 					ms_exit(shell);
-
 				// If command is not valid close pipe
-				if (tk->func == ft_cd || tk->func == ft_unset || tk->func == ft_exit
-					|| ((tk->func) == ft_export && ((char **)(tk->data))[1] != NULL))
+				if (tk->func == ft_cd || tk->func == ft_unset
+					|| tk->func == ft_exit || ((tk->func) == ft_export
+						&& ((char **)(tk->data))[1] != NULL))
 				{
 					close((tk->p)[1]);
 					return (0);
 				}
 			}
 			// run valid function
-			(shell->stat) = (tk->func)((char **)(tk->data),(tk->p)[1], &(shell->stat), (shell->env));
+			(shell->stat) = (tk->func)((char **)(tk->data),
+					(tk->p)[1], &(shell->stat), (shell->env));
 			return (0);
 		}
-
 		// else run binary in child process
 		(tk->pid) = fork();
 		if (tk->pid == -1)
@@ -96,7 +96,6 @@ int	tk_exec(t_ast *tk, void *p)
 			perror("minishell: ");
 			return (1);
 		}
-
 		if (tk->pid == 0)
 		{
 			dup2((tk->p)[0], STDIN_FILENO);
@@ -113,18 +112,11 @@ int	tk_exec(t_ast *tk, void *p)
 
 int	tk_wait(t_ast *tk, void *p)
 {
-	t_mshell		*shell;
-	struct sigaction	act;
-
+	t_mshell			*shell;
 
 	shell = (t_mshell *)p;
-	prep_act(&act, 'i');
-		if (sigaction(SIGINT, &act, NULL) == -1 ||
-        sigaction(SIGQUIT, &act, NULL) == -1)
-    	{
-       		perror("Error in sigaction");
-        	return (errno);
-	}
+	if (call_sigact('i') == -1)
+		return (errno);
 	if (tk->type == E_CMD)
 	{
 		if (!tk->prev || (tk->prev->right == tk && !tk->prev->prev))
@@ -149,8 +141,6 @@ int	tk_wait(t_ast *tk, void *p)
 
 int	ms_executor(t_mshell *shell)
 {
-	struct sigaction	act;
-	
 	if (DEBUG)
 	{
 		printf("\n\t <-- PARSER --> \n");
@@ -159,13 +149,8 @@ int	ms_executor(t_mshell *shell)
 	}
 	else
 	{
-		prep_act(&act, 'd');
-		if (sigaction(SIGINT, &act, NULL) == -1 ||
-        sigaction(SIGQUIT, &act, NULL) == -1)
-    	{
-       		perror("Error in sigaction");
-        	return (errno);
-		}
+		if (call_sigact('d') == -1)
+			return (errno);
 		ast_iter_in(shell->tokens, tk_exec, 0, (void *)(shell));
 		ast_iter_pre(shell->tokens, tk_close_all, 0, NULL);
 		ast_iter_in(shell->tokens, tk_wait, 1, (void *)(shell));

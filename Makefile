@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+         #
+#    By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 10:54:37 by rafernan          #+#    #+#              #
-#    Updated: 2022/04/14 16:58:37 by rafernan         ###   ########.fr        #
+#    Updated: 2022/04/15 17:51:00 by daalmeid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -86,7 +86,9 @@ SRCS_	=		\
 				utils/ms_split.c \
 				utils/pp_utils.c \
 				utils/signal_handling.c \
-				utils/ms_exit.c 
+				utils/ms_exit.c \
+				utils/ft_getenv.c \
+				utils/nbr_len.c
 
 SRCS	=		$(addprefix $(_SRC), $(SRCS_))
 OBJS	=		$(patsubst %.c, %.o,$(SRCS))
@@ -138,4 +140,3 @@ fclean: clean
 re: fclean all
 
 .PHONY: all debug clean fclean re force
- 

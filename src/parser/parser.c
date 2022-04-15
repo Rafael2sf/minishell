@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 16:53:18 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/14 14:40:01 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/15 13:05:45 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	ms_parser(t_mshell *shell)
 		return (ms_parse_error(-1));
 	if (ast_iter_pre(shell->tokens, tk_open_pipes, 0, NULL) == -1)
 		return (ms_parse_error(-1)); // call tk_close_all
-	(shell->paths) = ms_parse_paths();
+	(shell->paths) = ms_parse_paths(shell->env);
 	ret = ast_iter_in(shell->tokens, tk_set_rd, 0, (void *)(shell));
 	if (shell->paths)
 		ptr_ptr_free((void **)(shell->paths));
@@ -43,9 +43,9 @@ int	ms_parser(t_mshell *shell)
 
 static int	tk_expand(t_ast *tk, void *p)
 {
-	char	**ref;
-	char	*tmp;
-	int		i;
+	char		**ref;
+	char		*tmp;
+	int			i;
 	t_mshell	*shell;
 
 	shell = (t_mshell *)p;
@@ -57,7 +57,7 @@ static int	tk_expand(t_ast *tk, void *p)
 		ref = (char **)(tk->data);
 		while (ref && ref[++i])
 		{
-			tmp = ms_expand(ref[i], &(shell->stat));
+			tmp = ms_expand(ref[i], shell);
 			if (!tmp)
 				return (-1);
 			if (tmp != ref[i])
@@ -70,7 +70,7 @@ static int	tk_expand(t_ast *tk, void *p)
 	else if (tk->type == E_LSR || tk->type == E_LLSR
 		|| tk->type == E_GRT || tk->type == E_GGRT)
 	{
-		tmp = ms_expand((char *)tk->data, &(shell->sig_call));
+		tmp = ms_expand((char *)tk->data, shell);
 		if (tmp && ((char *)tk->data) != tmp)
 		{
 			free((char *)tk->data);

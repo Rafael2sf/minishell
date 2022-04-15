@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 12:09:01 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/14 16:57:34 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/15 17:19:25 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,18 +118,20 @@ int		ms_parser(t_mshell *shell);
 int		ms_executor(t_mshell *shell);
 
 /* Utils */
-char	*ms_expand(char *str, void *stat);
+char	*ms_expand(char *str, t_mshell *shell);
 char	**ms_split(char const *s, char c);
 void	ms_exit(t_mshell *shell);
 void	ptr_ptr_free(void **ptr);
 int		ptr_ptr_len(char **s);
 char	**ptr_ptr_dup(char **env);
 char	**ptr_ptr_join(char **a, char **b);
+char	*ft_getenv(char *env_var, char ***env);
+int		nbr_len(int n);
 
 /* Debugging */
 void	ast_print(t_ast *root, int depth, int cmd_only);
 
 /* signal handling */
-void prep_act(struct sigaction *act, char ign_or_not);
+int		call_sigact(char act_choice);
 
 #endif

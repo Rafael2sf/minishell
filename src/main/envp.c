@@ -6,7 +6,7 @@
 /*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 16:26:10 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/12 17:24:52 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/15 15:52:21 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ static char	**export_at_start_process(char ***env)
 	i = 0;
 	while ((*env)[i] != NULL)
 	{
-		if (ft_strchr((*env)[i], '=') == NULL && ft_strncmp((*env)[i], "OLDPWD", 6) != 0)
+		if (ft_strchr((*env)[i], '=') == NULL
+			&& ft_strncmp((*env)[i], "OLDPWD", 6) != 0)
 		{
 			input[1] = (*env)[i];
 			ft_unset(input, 1, NULL, env);

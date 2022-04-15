@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 17:30:24 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/10 17:30:26 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/15 11:48:11 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ int	ms_parse_error(int code)
 	return (code);
 }
 
-char	**ms_parse_paths(void)
+char	**ms_parse_paths(char ***env)
 {
 	char	*vpath;
 	char	**paths;
 
 	paths = NULL;
-	vpath = getenv("PATH");
+	vpath = ft_getenv("PATH", env);
 	if (vpath)
 		paths = ft_split(vpath, ": \t\v\b\r\n");
 	return (paths);

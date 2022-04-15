@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_to_ast.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 16:26:10 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/12 15:24:49 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/15 15:51:34 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ static t_ast	*ms_create_token_cmd(t_ast **root, char *s, int size, char c)
 	base = NULL;
 	if (*root && (*root)->type == E_CMD)
 		base = *root;
-	else if (*root && (*root)->type == E_PIPE && (*root)->right && (*root)->right->type != E_UNDEF)
+	else if (*root && (*root)->type == E_PIPE && (*root)->right
+		&& (*root)->right->type != E_UNDEF)
 		base = (*root)->right;
 	if (base)
 	{

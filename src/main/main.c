@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 10:58:16 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/14 17:14:58 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/15 16:18:59 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,34 +15,26 @@
 #include "main.h"
 
 static void	ms_init(t_mshell *shell);
-extern char	**environ;
 
 int	main(void)
 {
-	t_mshell	shell;
-	int			ret;
+	t_mshell			shell;
+	int					ret;
+	struct termios		term;
+	struct termios		term2;
 
-	struct sigaction	act;
-    struct termios		term;
-    struct termios		term2;
-
-    prep_act(&act, 'h');
-    if (isatty(STDIN_FILENO) != 1)
-        return (errno);
-    tcgetattr(STDIN_FILENO, &term);
-    tcgetattr(STDIN_FILENO, &term2);
-   	term.c_cc[VQUIT] = _POSIX_VDISABLE;
+	if (isatty(STDIN_FILENO) != 1)
+		return (errno);
+	tcgetattr(STDIN_FILENO, &term);
+	tcgetattr(STDIN_FILENO, &term2);
+	term.c_cc[VQUIT] = _POSIX_VDISABLE;
 	term.c_lflag &= ~ECHOCTL;
 	ret = 0;
 	ms_init(&shell);
 	while (1)
 	{
- 		if (sigaction(SIGQUIT, &act, NULL) == -1 ||
-        sigaction(SIGINT, &act, NULL) == -1)
-    	{
-        	perror("Error in sigaction");
-     		return (errno);
-    	}
+		if (call_sigact('h') == -1)
+			return (errno);
 		tcsetattr(STDIN_FILENO, TCSANOW, &term);
 		if (shell.stat == 0)
 			(shell.prompt) = readline("\033[32mo\033[39m minishell $ ");
@@ -63,7 +55,7 @@ int	main(void)
 			ret = ms_parser(&shell);
 			tcsetattr(STDIN_FILENO, TCSANOW, &term2);
 			if (ret != -1)
-			  ms_executor(&shell);
+				ms_executor(&shell);
 		}
 		else if (ret == -1)
 		{
@@ -77,19 +69,21 @@ int	main(void)
 		(shell.prompt) = NULL;
 		ret = 0;
 	}
-	ptr_ptr_free((void **)(*shell.env));
 	return (ret);
 }
 
 static void	ms_init(t_mshell *shell)
 {	
+	extern char	**environ;
+	static char	**env;
+
 	(shell->stat) = S_OK;
 	(shell->prompt) = NULL;
 	(shell->tokens) = NULL;
 	(shell->paths) = NULL;
 	(shell->sig_call) = false;
-	environ = ms_init_env(environ);
-	(shell->env) = &environ;
+	env = ms_init_env(environ);
+	(shell->env) = &env;
 	if (!shell->env)
 		exit (errno);
 }

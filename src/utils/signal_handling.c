@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handling.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 16:22:39 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/15 16:29:25 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/18 11:17:02 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,23 +35,27 @@ static void	handle_signals_heredoc(int sig, siginfo_t *info, void *ucontext)
 		return ;
 	else if (sig == SIGINT)
 	{
-		clear_history();
-		write(STDOUT_FILENO, "\n", 1);
-		exit(1);
+		//clear_history();
+		//write(STDOUT_FILENO, "\n", 1);
+		close(STDIN_FILENO);
+		write(STDOUT_FILENO, "> \n", 3);
+		//exit(1);
 	}
 }
 
 static void	prep_act(struct sigaction *act, char ign_or_not)
 {
 	ft_memset(act, '\0', sizeof(*act));
-	if (ign_or_not == 'i')
-		act->sa_handler = SIG_IGN;
-	else if (ign_or_not == '<')
-		act->sa_sigaction = handle_signals_heredoc;
-	else if (ign_or_not == 'h')
-		act->sa_sigaction = handle_signals;
-	else if (ign_or_not == 'd')
-		act->sa_handler = SIG_DFL;
+	if (ign_or_not == 'i') // SM_IGN
+		(act->sa_handler) = SIG_IGN;
+	else if (ign_or_not == '<') // SM_DOC
+		(act->sa_sigaction) = handle_signals_heredoc;
+	else if (ign_or_not == 'h') // SM_INT
+		(act->sa_sigaction) = handle_signals;
+	else if (ign_or_not == 'd') // SM_DEF
+		(act->sa_handler) = SIG_DFL;
+	else
+		return ;
 	act->sa_flags = SA_SIGINFO;
 	sigemptyset(&act->sa_mask);
 }

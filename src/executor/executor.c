@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 15:04:54 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/15 16:21:49 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/18 11:00:46 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	tk_exec(t_ast *tk, void *p)
 			}
 			// run valid function
 			(shell->stat) = (tk->func)((char **)(tk->data),
-					(tk->p)[1], &(shell->stat), (shell->env));
+					(tk->p)[1], &(shell->stat), &(shell->env));
 			return (0);
 		}
 		// else run binary in child process
@@ -101,7 +101,7 @@ int	tk_exec(t_ast *tk, void *p)
 			dup2((tk->p)[0], STDIN_FILENO);
 			dup2((tk->p)[1], STDOUT_FILENO);
 			ast_iter_pre(shell->tokens, tk_close_all, 0, NULL);
-			execve(((char **)tk->data)[0], (char **)(tk->data), *(shell->env));
+			execve(((char **)tk->data)[0], (char **)(tk->data), (shell->env));
 			ptr_ptr_free((void **)(shell->env));
 			ast_free(&shell->tokens);
 			exit(0);

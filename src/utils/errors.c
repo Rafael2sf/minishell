@@ -1,32 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/10 17:30:24 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/18 11:02:55 by rafernan         ###   ########.fr       */
+/*   Created: 2022/04/18 10:52:11 by rafernan          #+#    #+#             */
+/*   Updated: 2022/04/18 11:06:42 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
-#include "parser.h"
 
-int	ms_parse_error(int code)
+void	ms_clean(t_mshell *shell)
 {
-	perror("minishell: ");
-	return (code);
-}
-
-char	**ms_parse_paths(char **env)
-{
-	char	*vpath;
-	char	**paths;
-
-	paths = NULL;
-	vpath = ft_getenv("PATH", env);
-	if (vpath)
-		paths = ft_split(vpath, ": \t\v\b\r\n");
-	return (paths);
+	if (!shell)
+		return ;
+	if (shell->prompt)
+		free(shell->prompt);
+	if (shell->env)
+		ptr_ptr_free((void **)(shell->env));
+	if (shell->tokens) // CLOSE FILES
+		ast_free(&shell->tokens);
+	clear_history();
 }

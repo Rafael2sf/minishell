@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+         #
+#    By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 10:54:37 by rafernan          #+#    #+#              #
-#    Updated: 2022/04/15 17:51:00 by daalmeid         ###   ########.fr        #
+#    Updated: 2022/04/18 11:03:19 by rafernan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -88,7 +88,8 @@ SRCS_	=		\
 				utils/signal_handling.c \
 				utils/ms_exit.c \
 				utils/ft_getenv.c \
-				utils/nbr_len.c
+				utils/nbr_len.c \
+				utils/errors.c
 
 SRCS	=		$(addprefix $(_SRC), $(SRCS_))
 OBJS	=		$(patsubst %.c, %.o,$(SRCS))

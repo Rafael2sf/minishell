@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 10:58:16 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/15 16:18:59 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/18 11:59:01 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,17 @@
 #include "../parser/parser.h"
 #include "main.h"
 
-static void	ms_init(t_mshell *shell);
+static void	ms_init(t_mshell *, char **);
 
-int	main(void)
+int	main(int argc, char **argv, char **envp)
 {
 	t_mshell			shell;
 	int					ret;
 	struct termios		term;
 	struct termios		term2;
 
+	(void)(argc);
+	(void)(argv);
 	if (isatty(STDIN_FILENO) != 1)
 		return (errno);
 	tcgetattr(STDIN_FILENO, &term);
@@ -30,16 +32,16 @@ int	main(void)
 	term.c_cc[VQUIT] = _POSIX_VDISABLE;
 	term.c_lflag &= ~ECHOCTL;
 	ret = 0;
-	ms_init(&shell);
+	ms_init(&shell, envp);
 	while (1)
 	{
 		if (call_sigact('h') == -1)
 			return (errno);
 		tcsetattr(STDIN_FILENO, TCSANOW, &term);
 		if (shell.stat == 0)
-			(shell.prompt) = readline("\033[32mo\033[39m minishell $ ");
+			(shell.prompt) = readline("\033[32m~\033[39m minishell $ ");
 		else
-			(shell.prompt) = readline("\033[31mx\033[39m minishell $ ");
+			(shell.prompt) = readline("\033[31m~\033[39m minishell $ ");
 		(shell.sig_call) = false;
 		if (!shell.prompt)
 		{
@@ -50,12 +52,15 @@ int	main(void)
 		if (shell.tokens && ret != -1)
 			add_history(shell.prompt);
 		free(shell.prompt);
+		(shell.prompt) = NULL;
 		if (shell.tokens && ret != -1)
 		{
 			ret = ms_parser(&shell);
 			tcsetattr(STDIN_FILENO, TCSANOW, &term2);
 			if (ret != -1)
 				ms_executor(&shell);
+			else
+				(shell.stat) = 1;
 		}
 		else if (ret == -1)
 		{
@@ -72,18 +77,14 @@ int	main(void)
 	return (ret);
 }
 
-static void	ms_init(t_mshell *shell)
-{	
-	extern char	**environ;
-	static char	**env;
-
+static void	ms_init(t_mshell *shell, char **envp)
+{
 	(shell->stat) = S_OK;
 	(shell->prompt) = NULL;
 	(shell->tokens) = NULL;
 	(shell->paths) = NULL;
 	(shell->sig_call) = false;
-	env = ms_init_env(environ);
-	(shell->env) = &env;
+	(shell->env)= ms_init_env(envp);
 	if (!shell->env)
 		exit (errno);
 }

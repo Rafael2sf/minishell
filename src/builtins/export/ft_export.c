@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 16:03:43 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/06 11:25:37 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/18 11:07:05 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,5 +94,5 @@ static void	env_to_export(char **env, int fd)
 	total = get_total(env_cpy);
 	sort_env_cpy(env_cpy, total);
 	print_export(env_cpy, fd, ptr);
-	ptr_ptr_free((void **) env_cpy);
+	ptr_ptr_free((void **)env_cpy);
 }

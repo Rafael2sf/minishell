@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 12:09:01 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/15 17:19:25 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/18 11:20:40 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ typedef struct s_mshell
 	char	*prompt;
 	t_ast	*tokens;
 	int		stat;
-	char	***env;
+	char	**env;
 	char	**paths;
 	bool	sig_call;
 }	t_mshell;
@@ -125,8 +125,9 @@ void	ptr_ptr_free(void **ptr);
 int		ptr_ptr_len(char **s);
 char	**ptr_ptr_dup(char **env);
 char	**ptr_ptr_join(char **a, char **b);
-char	*ft_getenv(char *env_var, char ***env);
+char	*ft_getenv(char *env_var, char **env);
 int		nbr_len(int n);
+void	ms_clean(t_mshell *shell);
 
 /* Debugging */
 void	ast_print(t_ast *root, int depth, int cmd_only);

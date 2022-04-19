@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 16:22:39 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/18 11:17:02 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/19 14:58:56 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,8 @@ static void	handle_signals_heredoc(int sig, siginfo_t *info, void *ucontext)
 		return ;
 	else if (sig == SIGINT)
 	{
-		//clear_history();
-		//write(STDOUT_FILENO, "\n", 1);
 		close(STDIN_FILENO);
 		write(STDOUT_FILENO, "> \n", 3);
-		//exit(1);
 	}
 }
 

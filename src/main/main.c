@@ -42,6 +42,8 @@ int	main(int argc, char **argv, char **envp)
 			(shell.prompt) = readline("\033[32m~\033[39m minishell $ ");
 		else
 			(shell.prompt) = readline("\033[31m~\033[39m minishell $ ");
+		if (call_sigact('i') == -1)
+			return (errno);
 		(shell.sig_call) = false;
 		if (!shell.prompt)
 		{

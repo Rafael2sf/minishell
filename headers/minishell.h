@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 12:09:01 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/18 11:20:40 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/19 11:13:24 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int		ms_parser(t_mshell *shell);
 int		ms_executor(t_mshell *shell);
 
 /* Utils */
-char	*ms_expand(char *str, t_mshell *shell);
+char	*ms_expand(char *str, t_mshell *shell, int ign_quotes);
 char	**ms_split(char const *s, char c);
 void	ms_exit(t_mshell *shell);
 void	ptr_ptr_free(void **ptr);

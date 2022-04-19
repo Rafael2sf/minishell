@@ -13,28 +13,6 @@
 #include "../../headers/minishell.h"
 #include "executor.h"
 
-/*
-int	ms_exec_builtin(t_ast *tk, t_mshell *shell)
-{
-	close((tk->p[0]));
-	if (ft_strncmp(((char **)(tk->data))[0], "exit", 5) == 0)
-		return (ft_exit((char **)(tk->data), (tk->p)[1], *(shell->env), &shell->stat));
-	else if (ft_strncmp(((char **)(tk->data))[0], "cd", 3) == 0)
-		return (ft_cd((char **)(tk->data), (tk->p)[1], (shell->env)));
-	else if (ft_strncmp(((char **)(tk->data))[0], "echo", 5) == 0)
-		return (ft_echo((char **)(tk->data), (tk->p)[1]));
-	else if (ft_strncmp(((char **)(tk->data))[0], "env", 4) == 0)
-		return (ft_env((char **)(tk->data), (tk->p)[1], *(shell->env)));
-	else if (ft_strncmp(((char **)(tk->data))[0], "export", 7) == 0)
-		return (ft_export((char **)(tk->data), (tk->p)[1], (shell->env)));
-	else if (ft_strncmp(((char **)(tk->data))[0], "unset", 6) == 0)
-		return (ft_unset((char **)(tk->data), (tk->p)[1], (shell->env)));
-	else if (ft_strncmp(((char **)(tk->data))[0], "pwd", 4) == 0)
-		return (ft_pwd((char **)(tk->data), (tk->p)[1], *(shell->env)));
-	return (-1);
-}
-*/
-
 static int	check_parameter(char **input)
 {
 	int	i;
@@ -118,7 +96,7 @@ int	tk_exec(t_ast *tk, void *p)
 		{
 			dup2((tk->p)[0], STDIN_FILENO);
 			dup2((tk->p)[1], STDOUT_FILENO);
-			ast_iter_pre(shell->tokens, tk_close_all, 0, NULL);
+			ast_iter_pre(shell->tokens, tk_close_all, 0, (void *)(shell));
 			execve(((char **)tk->data)[0], (char **)(tk->data), (shell->env));
 			ptr_ptr_free((void **)(shell->env));
 			ast_free(&shell->tokens);
@@ -164,14 +142,14 @@ int	ms_executor(t_mshell *shell)
 	{
 		printf("\n\t <-- PARSER --> \n");
 		ast_print(shell->tokens, 0, 1);
-		ast_iter_pre(shell->tokens, tk_close_all, 0, NULL);
+		ast_iter_pre(shell->tokens, tk_close_all, 0, (void *)(shell));
 	}
 	else
 	{
 		if (call_sigact('d') == -1)
 			return (errno);
 		ast_iter_in(shell->tokens, tk_exec, 0, (void *)(shell));
-		ast_iter_pre(shell->tokens, tk_close_all, 0, NULL);
+		ast_iter_pre(shell->tokens, tk_close_all, 0, (void *)(shell));
 		ast_iter_in(shell->tokens, tk_wait, 1, (void *)(shell));
 	}
 	return (0);

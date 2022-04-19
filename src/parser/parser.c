@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 16:53:18 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/18 11:03:09 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/19 14:23:54 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ int	ms_parser(t_mshell *shell)
 	(shell->paths) = ms_parse_paths(shell->env);
 	ret = ast_iter_in(shell->tokens, tk_set_rd, 0, (void *)(shell));
 	if (shell->paths)
+	{
+		printf("Here\n");
 		ptr_ptr_free((void **)(shell->paths));
+	}
 	if (ret == -1) // call tk_close_all
 		return (ms_parse_error(-1));
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 15:04:54 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/18 11:00:46 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/19 12:30:53 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,31 @@ int	ms_exec_builtin(t_ast *tk, t_mshell *shell)
 	return (-1);
 }
 */
+
+static int	check_parameter(char **input)
+{
+	int	i;
+
+	i = 0;
+	while (ft_is(input[1][i], " \t"))
+		i++;
+	if (ft_is(input[1][i], "-+"))
+		i++;
+	while (input[1][i] != '\0')
+	{
+		if (!ft_isdigit(input[1][i++]) || i == 20)
+			return (-1);
+	}
+	return (0);
+}
+
 int	ms_valid_exit(t_ast *tokens)
 {
 	char		**data;
 
 	data = (char **)(tokens->data);
 	return (tokens->type == E_CMD && data && ft_strncmp(data[0], "exit", 5) == 0
-		&& (!data[1] || (data[1] && !data[2])));
+		&& (!data[1] || (data[1] && !data[2]) || check_parameter(data) == -1));
 }
 
 int	tk_close_all(t_ast *tk, void *p)
@@ -72,9 +90,6 @@ int	tk_exec(t_ast *tk, void *p)
 			close((tk->p)[0]);
 			if (tk->prev)
 			{
-				// if valid exit free mem and exit
-				if (ms_valid_exit(tk))
-					ms_exit(shell);
 				// If command is not valid close pipe
 				if (tk->func == ft_cd || tk->func == ft_unset
 					|| tk->func == ft_exit || ((tk->func) == ft_export
@@ -84,6 +99,9 @@ int	tk_exec(t_ast *tk, void *p)
 					return (0);
 				}
 			}
+			// if valid exit free mem and exit
+			if (ms_valid_exit(tk))
+				ms_exit(shell);
 			// run valid function
 			(shell->stat) = (tk->func)((char **)(tk->data),
 					(tk->p)[1], &(shell->stat), &(shell->env));
@@ -104,6 +122,7 @@ int	tk_exec(t_ast *tk, void *p)
 			execve(((char **)tk->data)[0], (char **)(tk->data), (shell->env));
 			ptr_ptr_free((void **)(shell->env));
 			ast_free(&shell->tokens);
+			clear_history();
 			exit(0);
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 11:11:54 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/18 11:05:02 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/19 15:02:34 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ static void	child_hdoc(const char *delm, int dlen, int p[2], t_mshell *shell);
 
 int	ms_heredoc(const char *delimitir, t_mshell *shell)
 {
-	int					p[2];
-	int					dlen;
-	pid_t				pid;
+	int			p[2];
+	int			dlen;
+	pid_t		pid;
 
 	dlen = ft_strlen(delimitir);
 	if (dlen < 0)
@@ -34,9 +34,11 @@ int	ms_heredoc(const char *delimitir, t_mshell *shell)
 	waitpid(pid, &shell->stat, 0);
 	if ((shell->stat) == 256)
 	{
+		if (p[0] > 2)
+			close(p[0]);
 		(shell->sig_call) = true;
 		(shell->stat) = 1;
-		return (-2);
+		return (-1);
 	}
 	return (p[0]);
 }
@@ -53,12 +55,12 @@ static void	child_hdoc(const char *delm, int dlen, int p[2], t_mshell *shell)
 	}
 	close(p[0]);
 	ret = ms_read_hdoc(delm, dlen, p[1], shell);
-	//ms_clean(shell);
+	ms_clean(shell);
 	close(p[1]);
 	if (fstat(STDIN_FILENO, &st) == -1)
 		exit(1);
 	else if (ret == -1)
-		printf("\x1B[A> ");
+		printf("\x1B[A");
 	exit (0);
 }
 
@@ -72,7 +74,7 @@ static int	ms_read_hdoc(const char *dlimit, int dlen, int fd, t_mshell *shell)
 		line = readline("> ");
 		if (!line)
 			return (-1);
-		tmp = ms_expand(line, shell);
+		tmp = ms_expand(line, shell, 1);
 		if (tmp && line != tmp)
 		{
 			free(line);

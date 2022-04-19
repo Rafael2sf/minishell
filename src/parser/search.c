@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 10:24:23 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/13 12:32:56 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/19 14:36:37 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static int	ms_check_file(char *filepath, int check_dir)
 		{
 			write(STDERR_FILENO, "minishell: ", 11);
 			ft_putstr(STDERR_FILENO, filepath);
-			write(STDERR_FILENO, " : Is a directory\n", 18);
+			write(STDERR_FILENO, " : is a directory\n", 18);
 			return (1);
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 10:58:16 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/18 11:59:01 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/19 12:08:51 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int	main(int argc, char **argv, char **envp)
 			(shell.prompt) = readline("\033[32m~\033[39m minishell $ ");
 		else
 			(shell.prompt) = readline("\033[31m~\033[39m minishell $ ");
+		if (call_sigact('i') == -1)
+			return (errno);
 		(shell.sig_call) = false;
 		if (!shell.prompt)
 		{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 12:23:50 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/15 17:17:02 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/19 14:38:17 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,32 @@
 #include "../lexer/lexer.h"
 #include "parser.h"
 
-static void	ms_expand_str(char *s, char *buf, t_mshell *shell);
+static void	ms_expand_str(char *s, char *buf, t_mshell *shell, int ign_quotes);
 static char	*ms_get_env(char *s, char *buff, t_mshell *shell, t_pvars *v);
-static int	ms_expand_len(char *s, bool *req_expand, t_mshell *shell);
+static int	ms_expand_len(char *s, bool *req_expand, t_mshell *shell, int ign_quotes);
 static int	ms_get_env_len(char *s, int *i, t_mshell *shell);
 
-char	*ms_expand(char *str, t_mshell *shell)
+char	*ms_expand(char *str, t_mshell *shell, int ign_quotes)
 {
 	char	*buf;
 	int		len;
 	bool	req_expand;
 
 	req_expand = false;
-	len = ms_expand_len(str, &req_expand, shell);
+	len = ms_expand_len(str, &req_expand, shell, ign_quotes);
 	if (req_expand)
 	{
 		buf = malloc(sizeof(char) * (len + 1));
 		if (!buf)
 			return (NULL);
 		buf[len] = '\0';
-		ms_expand_str(str, buf, shell);
+		ms_expand_str(str, buf, shell, ign_quotes);
 		return (buf);
 	}
 	return (str);
 }
 
-static void	ms_expand_str(char *s, char *buf, t_mshell *shell)
+static void	ms_expand_str(char *s, char *buf, t_mshell *shell, int iq)
 {
 	t_pvars	v;
 
@@ -47,14 +47,16 @@ static void	ms_expand_str(char *s, char *buf, t_mshell *shell)
 	while (s[v.start])
 	{
 		ms_parse_quotes(s[v.start], &v);
-		if ((!v.quote && s[v.start] == '\"')
-			|| (!v.dquote && s[v.start] == '\''))
+		if (!iq && ((!v.quote && s[v.start] == '\"')
+			|| (!v.dquote && s[v.start] == '\'')))
 			;
-		else if (!v.quote && s[v.start] == '$')
+		else if ((!v.quote && s[v.start] == '$')
+				|| (iq && s[v.start] == '$'))
 		{
-			if (s[v.start + 1] != '\"' && s[v.start + 1])
+			if ((iq && s[v.start + 1] && !ft_is(s[v.start + 1], "\'\"/$ \t\n"))
+					|| (!iq && (s[v.start + 1] != '\"' && s[v.start + 1])))
 				ms_get_env(s, buf, shell, &v);
-			else if (v.dquote)
+			else if (iq || v.dquote)
 				buf[v.end++] = s[v.start];
 		}
 		else
@@ -93,7 +95,7 @@ static char	*ms_get_env(char *s, char *buff, t_mshell *shell, t_pvars *v)
 	return (tmp);
 }
 
-static int	ms_expand_len(char *s, bool *req_expand, t_mshell *shell)
+static int	ms_expand_len(char *s, bool *req_expand, t_mshell *shell, int iq)
 {
 	t_pvars	v;
 
@@ -101,17 +103,19 @@ static int	ms_expand_len(char *s, bool *req_expand, t_mshell *shell)
 	while (s[v.start])
 	{
 		ms_parse_quotes(s[v.start], &v);
-		if ((!v.quote && s[v.start] == '\"')
-			|| (!v.dquote && s[v.start] == '\''))
+		if (!iq && ((!v.quote && s[v.start] == '\"')
+			|| (!v.dquote && s[v.start] == '\'')))
 			(*req_expand) = true;
-		else if (!v.quote && s[v.start] == '$')
+		else if ((!v.quote && s[v.start] == '$')
+				|| (iq && s[v.start] == '$'))
 		{
-			if (s[v.start + 1] != '\"' && s[v.start + 1])
+			if ((iq && s[v.start + 1] && !ft_is(s[v.start + 1], "\'\"/$ \t\n"))
+					|| (!iq && (s[v.start + 1] != '\"' && s[v.start + 1])))
 			{
 				(*req_expand) = true;
 				(v.end) += ms_get_env_len(s, &v.start, shell);
 			}
-			else if (v.dquote)
+			else if (iq || v.dquote)
 				(v.end) += 1;
 		}
 		else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 16:03:52 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/13 11:43:11 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/18 18:47:22 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ int	ft_exit(char **input, int fd, int *stat, char ***env)
 	(void)(env);
 	close(fd);
 	ft_putendl_fd("exit", 1);
+	if (input[1] == NULL)
+		exit(*stat);
+	check_parameter(input);
 	if (input[1] != NULL && input[2] != NULL)
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", 2);
 		return (1);
 	}
-	if (input[1] == NULL)
-		exit(*stat);
-	check_parameter(input);
 	(*stat) = ft_atoi(input[1]);
 	free(input[1]);
 	exit(*stat);
@@ -49,6 +49,7 @@ static void	check_parameter(char **input)
 			ft_putstr_fd("minishell: exit: ", 2);
 			ft_putstr_fd(input[1], 2);
 			ft_putendl_fd(": numeric argument required", 2);
+			free(input[1]);
 			exit(-1);
 		}
 	}

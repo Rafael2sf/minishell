@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+         #
+#    By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 10:54:37 by rafernan          #+#    #+#              #
-#    Updated: 2022/04/18 11:03:19 by rafernan         ###   ########.fr        #
+#    Updated: 2022/04/19 14:26:26 by daalmeid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 

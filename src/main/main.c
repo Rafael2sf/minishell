@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 10:58:16 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/19 12:08:51 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/18 19:05:36 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static void	ms_init(t_mshell *shell, char **envp)
 	(shell->tokens) = NULL;
 	(shell->paths) = NULL;
 	(shell->sig_call) = false;
-	(shell->env)= ms_init_env(envp);
+	(shell->env) = ms_init_env(envp);
 	if (!shell->env)
 		exit (errno);
 }

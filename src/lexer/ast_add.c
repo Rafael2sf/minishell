@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   ast_add.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:35:43 by rafernan          #+#    #+#             */
 /*   Updated: 2022/04/19 12:21:05 by rafernan         ###   ########.fr       */

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handling.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 16:22:39 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/20 17:28:32 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/20 14:30:22 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,24 +40,24 @@ static void	handle_signals_heredoc(int sig, siginfo_t *info, void *ucontext)
 	}
 }
 
-static void	prep_act(struct sigaction *act, char ign_or_not)
+static void	prep_act(struct sigaction *act, char si_mode)
 {
 	ft_memset(act, '\0', sizeof(*act));
-	if (ign_or_not == 'i') // SM_IGN
+	act->sa_flags = SA_SIGINFO;
+	sigemptyset(&act->sa_mask);
+	if (si_mode == SI_IGN)
 		(act->sa_handler) = SIG_IGN;
-	else if (ign_or_not == '<') // SM_DOC
+	else if (si_mode == SI_HDOC)
 		(act->sa_sigaction) = handle_signals_heredoc;
-	else if (ign_or_not == 'h') // SM_INT
+	else if (si_mode == SI_RLINE)
 		(act->sa_sigaction) = handle_signals;
-	else if (ign_or_not == 'd') // SM_DEF
+	else if (si_mode == SI_DFL)
 		(act->sa_handler) = SIG_DFL;
 	else
 		return ;
-	act->sa_flags = SA_SIGINFO;
-	sigemptyset(&act->sa_mask);
 }
 
-int	call_sigact(char act_choice)
+void	call_sigact(char act_choice, t_mshell *shell)
 {
 	struct sigaction	act;
 
@@ -65,8 +65,8 @@ int	call_sigact(char act_choice)
 	if (sigaction(SIGQUIT, &act, NULL) == -1
 		|| sigaction(SIGINT, &act, NULL) == -1)
 	{
-		werror("sigaction");
-		return (-1);
+		werror("fatal");
+		ms_clean(shell);
+		exit(1);
 	}
-	return (0);
 }

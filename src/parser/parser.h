@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 17:29:51 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/19 11:14:54 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/19 16:53:07 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 int			ms_heredoc(const char *delimitir, t_mshell *shell);
 t_bultinf	ms_find_builtin(const char *s);
 
-int			ms_parse_error(int code);
+int			ms_parse_error(int code, t_mshell *shell);
 int			ms_parse_input(t_ast *cur, t_mshell *shell);
 int			ms_parse_output(t_ast *cur);
 char		**ms_parse_paths(char **env);

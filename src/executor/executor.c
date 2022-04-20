@@ -6,7 +6,7 @@
 /*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 15:04:54 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/19 12:30:53 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/20 14:31:39 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,7 @@ int	tk_wait(t_ast *tk, void *p)
 	t_mshell			*shell;
 
 	shell = (t_mshell *)p;
-	if (call_sigact('i') == -1)
-		return (errno);
+	call_sigact(SI_IGN, shell);
 	if (tk->type == E_CMD)
 	{
 		if (!tk->prev || (tk->prev->right == tk && !tk->prev->prev))
@@ -145,9 +144,8 @@ int	ms_executor(t_mshell *shell)
 		ast_iter_pre(shell->tokens, tk_close_all, 0, (void *)(shell));
 	}
 	else
-	{
-		if (call_sigact('d') == -1)
-			return (errno);
+	{	
+		call_sigact(SI_DFL, shell);
 		ast_iter_in(shell->tokens, tk_exec, 0, (void *)(shell));
 		ast_iter_pre(shell->tokens, tk_close_all, 0, (void *)(shell));
 		ast_iter_in(shell->tokens, tk_wait, 1, (void *)(shell));

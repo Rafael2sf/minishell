@@ -3,20 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 17:30:24 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/18 11:02:55 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/19 16:55:52 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
 #include "parser.h"
 
-int	ms_parse_error(int code)
+int	tk_close_all(t_ast *tk, void *p);
+
+int	ms_parse_error(int code, t_mshell *shell)
 {
-	perror("minishell: ");
-	return (code);
+	ast_iter_in(shell->tokens, tk_close_all, 0, (void *)(shell));
+	if (code == -1)
+		perror("minishell: ");
+	if (shell->paths)
+		ptr_ptr_free((void **)(shell->paths));
+	return (-1);
 }
 
 char	**ms_parse_paths(char **env)

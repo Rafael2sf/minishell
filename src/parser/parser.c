@@ -6,7 +6,7 @@
 /*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 16:53:18 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/19 14:56:44 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/19 17:03:51 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,27 +23,18 @@ int	ms_parser(t_mshell *shell)
 {
 	if (DEBUG)
 	{
-		printf("\t <-- LEXER -> \n");
+		printf("\t <-- LEXER --> \n");
 		ast_print(shell->tokens, 0, 0);
 	}
 	if (ast_iter_in(shell->tokens, tk_expand, 0, (void *)(shell)) == -1)
-		return (ms_parse_error(-1));
+		return (ms_parse_error(-1, shell));
 	if (ast_iter_pre(shell->tokens, tk_open_pipes, 0, (void *)(shell)) == -1)
-		return (ms_parse_error(-1)); // call tk_close_all
+		return (ms_parse_error(-1, shell));
 	if (ast_iter_in(shell->tokens, tk_hdoc, 0, (void *)(shell)) == -1)
-	{
-		// call tk close_all
-		if (shell->sig_call == false)
-			return (ms_parse_error(-1));
-		return (-1);
-	}
+		return (ms_parse_error(0, shell));
 	(shell->paths) = ms_parse_paths(shell->env);
 	if (ast_iter_in(shell->tokens, tk_set_rd, 0, (void *)(shell)) == -1)
-	{
-		// call tk_close_all
-		ptr_ptr_free((void **)(shell->paths));
-		return (ms_parse_error(-1));
-	}
+		return (ms_parse_error(-1, shell));
 	ptr_ptr_free((void **)(shell->paths));
 	return (0);
 }

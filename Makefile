@@ -6,7 +6,7 @@
 #    By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 10:54:37 by rafernan          #+#    #+#              #
-#    Updated: 2022/04/19 14:26:26 by daalmeid         ###   ########.fr        #
+#    Updated: 2022/04/20 15:40:00 by daalmeid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -89,7 +89,8 @@ SRCS_	=		\
 				utils/ms_exit.c \
 				utils/ft_getenv.c \
 				utils/nbr_len.c \
-				utils/errors.c
+				utils/errors.c \
+				utils/attr_functions.c
 
 SRCS	=		$(addprefix $(_SRC), $(SRCS_))
 OBJS	=		$(patsubst %.c, %.o,$(SRCS))

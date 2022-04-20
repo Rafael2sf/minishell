@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 10:52:11 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/18 11:06:42 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/20 14:19:16 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
+
+int	tk_close_all(t_ast *tk, void *p);
 
 void	ms_clean(t_mshell *shell)
 {
@@ -20,7 +22,10 @@ void	ms_clean(t_mshell *shell)
 		free(shell->prompt);
 	if (shell->env)
 		ptr_ptr_free((void **)(shell->env));
-	if (shell->tokens) // CLOSE FILES
+	if (shell->tokens)
+	{
+		ast_iter_pre(shell->tokens, tk_close_all, 0, (void *)(shell));
 		ast_free(&shell->tokens);
+	}
 	clear_history();
 }

@@ -6,7 +6,7 @@
 /*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 11:11:54 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/18 16:26:38 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/20 14:33:51 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,7 @@ static void	child_hdoc(const char *delm, int dlen, int p[2], t_mshell *shell)
 	int			ret;
 	struct stat	st;
 
-	if (call_sigact('<') == -1)
-	{
-		ms_clean(shell);
-		exit (errno);
-	}
+	call_sigact(SI_HDOC, shell);
 	close(p[0]);
 	ret = ms_read_hdoc(delm, dlen, p[1], shell);
 	ms_clean(shell);

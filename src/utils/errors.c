@@ -6,7 +6,7 @@
 /*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 10:52:11 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/20 14:19:16 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/20 11:38:33 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,15 @@ void	ms_clean(t_mshell *shell)
 		ast_free(&shell->tokens);
 	}
 	clear_history();
+}
+
+void	werror(char *s)
+{
+	if (s)
+	{
+		write(STDERR_FILENO, "minishell: ", 11);
+		perror(s);
+	}
+	else
+		perror("minishell");
 }

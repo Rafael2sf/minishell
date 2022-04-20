@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 14:57:47 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/04 17:42:34 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/20 11:29:22 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	**set_new_var(char **env, char *existing_var, int i, int j)
 	env[j] = malloc(sizeof(char) * (i + 1));
 	if (!env[j])
 	{
-		perror("Error allocating variable");
+		werror("export");
 		return (NULL);
 	}
 	return (env);

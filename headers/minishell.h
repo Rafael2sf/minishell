@@ -6,7 +6,7 @@
 /*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 12:09:01 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/20 15:38:01 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/20 12:23:33 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ char	**ptr_ptr_join(char **a, char **b);
 char	*ft_getenv(char *env_var, char **env);
 int		nbr_len(int n);
 void	ms_clean(t_mshell *shell);
+void	werror(char *s);
 
 /* Debugging */
 void	ast_print(t_ast *root, int depth, int cmd_only);

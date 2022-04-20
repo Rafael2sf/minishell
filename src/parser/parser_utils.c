@@ -19,7 +19,7 @@ int	ms_parse_error(int code, t_mshell *shell)
 {
 	ast_iter_in(shell->tokens, tk_close_all, 0, (void *)(shell));
 	if (code == -1)
-		perror("minishell: ");
+	  werror(NULL);
 	if (shell->paths)
 		ptr_ptr_free((void **)(shell->paths));
 	return (-1);

@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   hdoc.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 11:11:54 by rafernan          #+#    #+#             */
 /*   Updated: 2022/04/20 14:33:51 by daalmeid         ###   ########.fr       */
@@ -70,6 +70,8 @@ static int	ms_read_hdoc(const char *dlimit, int dlen, int fd, t_mshell *shell)
 		line = readline("> ");
 		if (!line)
 			return (-1);
+		if (ft_strncmp(line, dlimit, dlen) == 0 && line[dlen] == '\0')
+			break ;
 		tmp = ms_expand(line, shell, 1);
 		if (tmp && line != tmp)
 		{

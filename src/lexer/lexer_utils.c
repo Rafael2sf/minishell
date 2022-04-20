@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_utils.c                                      :+:      :+:    :+:   */
+/*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 11:12:09 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/06 11:21:24 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/20 11:18:59 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,11 @@ void	ms_parse_quotes(char c, t_pvars *v)
 int	ms_lexer_error(int code, char c, bool use_perror)
 {
 	if (use_perror)
-		perror("minishell: ");
+		werror(NULL);
 	else if (code != 0)
 	{
-		ft_putstr(STDERR_FILENO, "minishell: parse error near `");
+		ft_putstr(STDERR_FILENO, "minishell: ");
+		ft_putstr(STDERR_FILENO, "syntax error near unexpected token `");
 		ft_putchar(STDERR_FILENO, c);
 		ft_putstr(STDERR_FILENO, "\'\n");
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_add.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:35:43 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/19 12:21:05 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/20 17:15:41 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ static int	ast_add_rd_in(t_ast **root, t_ast *new_token)
 			((*root)->right) = tk_new_token(E_UNDEF, NULL);
 			if (!(*root)->right)
 				return (-1);
+			((*root)->right->prev) = (*root);
 		}
 		return (ast_add_left(&((*root)->right), new_token));
 	}

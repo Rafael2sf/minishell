@@ -65,7 +65,7 @@ void	call_sigact(char act_choice, t_mshell *shell)
 	if (sigaction(SIGQUIT, &act, NULL) == -1
 		|| sigaction(SIGINT, &act, NULL) == -1)
 	{
-		perror("Error in sigaction");
+		werror("fatal");
 		ms_clean(shell);
 		exit(1);
 	}

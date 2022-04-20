@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 14:59:46 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/19 11:52:47 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/20 17:02:40 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,7 @@ static int	ms_get_ofiles(t_ast *tmp, int o_fd, bool *error)
 			fd = open((char *)tmp->data, O_CREAT | O_WRONLY | O_APPEND, 0644);
 		if (fd == -1)
 		{
-			ft_putstr(2, "minishell: ");
-			perror((char *)(tmp->data));
+			werror((char *)(tmp->data));
 			(*error) = true;
 			return (-1);
 		}
@@ -68,3 +67,11 @@ static int	ms_get_ofiles(t_ast *tmp, int o_fd, bool *error)
 	}
 	return (o_fd);
 }
+
+/*
+
+		(P)
+	(P)		(CMD)
+(CMD) 	(CMD)
+
+*/

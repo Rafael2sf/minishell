@@ -3,7 +3,7 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+         #
+#    By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 10:54:37 by rafernan          #+#    #+#              #
 #    Updated: 2022/04/20 15:40:00 by daalmeid         ###   ########.fr        #
@@ -39,7 +39,7 @@ _LIB	=
 
 CC		=		cc
 AR		=		ar rcs
-CFLAGS	=		-Wall -Werror -Wextra -O2
+CFLAGS	=		-O2
 DBFLAGS	=		-g -Wall -Werror -Wextra -D DEBUG=1
 
 ################### FILES ###############
@@ -62,7 +62,10 @@ SRCS_	=		\
 				builtins/unset/ft_unset.c \
 				builtins/unset/parse_name_unset.c \
 				\
+				executor/e_utils.c \
 				executor/executor.c \
+				executor/run.c \
+				executor/wait.c \
 				\
 				lexer/ast_add.c \
 				lexer/ast.c \

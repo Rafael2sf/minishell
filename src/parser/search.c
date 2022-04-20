@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 10:24:23 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/19 14:36:37 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/20 11:25:06 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static char	*ms_find_file(char **cmd, char **paths)
 	if ((*cmd)[i] == '/')
 	{
 		ft_putstr(STDERR_FILENO, "minishell: ");
-		perror(*cmd);
+		werror(*cmd);
 		return (NULL);
 	}
 	return (ms_srchfp(*cmd, paths));

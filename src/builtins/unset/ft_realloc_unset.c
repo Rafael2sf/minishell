@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:41:36 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/04 17:42:26 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/20 11:15:19 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	**ft_realloc_unset(char ***ptr, size_t size, char *existing_var)
 	new_ptr = malloc(sizeof(char *) * size);
 	if (!new_ptr)
 	{
-		perror("Error allocating variable");
+		werror("unset");
 		return (NULL);
 	}
 	ft_rlc_unset_copy(*ptr, existing_var, &new_ptr);

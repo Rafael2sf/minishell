@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 16:53:18 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/19 14:56:44 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/20 17:16:15 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,7 @@ static int	tk_open_pipes(t_ast *tk, void *p)
 	if (tk->type == E_PIPE)
 	{
 		if (pipe(tk->p) == -1)
-		{
-			perror("minishell: ");
 			return (-1);
-		}
-		// set pipes
 		if (tk->left->type == E_CMD || tk->left->type == E_UNDEF)
 			(tk->left->p)[1] = (tk->p)[1];
 		else
@@ -127,13 +123,9 @@ static int	tk_set_rd(t_ast *tk, void *p)
 				close((tk->prev->prev->p)[1]);
 			return (ms_reset_tk(1, tk));
 		}
-		ast_free(&tk->left);
-		(tk->left) = NULL;
 		(tk->p)[1] = ms_parse_output(tk);
 		if (tk->p[1] == -1)
 			return (ms_reset_tk(1, tk));
-		ast_free(&tk->right);
-		(tk->right) = NULL;
 		if (tk->type == E_UNDEF)
 			return (0);
 		(tk->func) = ms_find_builtin(((char **)(tk->data))[0]);
@@ -173,7 +165,7 @@ static int	tk_hdoc(t_ast *tk, void *p)
 		if (shell->sig_call == true)
 			return (-1);
 		if (fd == -1)
-			perror("minishell: ");
+			werror(NULL);
 		if (tk->prev->type == E_CMD || tk->prev->type == E_UNDEF)
 		{
 			if ((tk->prev->p)[0] > 2)

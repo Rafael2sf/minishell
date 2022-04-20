@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 10:32:13 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/11 11:15:38 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/20 16:47:52 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ static void	tk_print(t_ast *tk, int depth, int cmd_only)
 		return ;
 	while (!cmd_only && depth--)
 		ft_putstr(STDERR_FILENO, "---");
+	if (!cmd_only)
+		ft_putnbr(STDERR_FILENO, (int)tk->type);
 	if (tk->type == E_CMD || tk->type == E_UNDEF)
 		tk_print_cmd((tk->data));
 	else if (tk->type == E_PIPE && !cmd_only)

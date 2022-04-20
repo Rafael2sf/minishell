@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 10:58:16 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/18 19:05:36 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/19 17:49:31 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ int	main(int argc, char **argv, char **envp)
 			tcsetattr(STDIN_FILENO, TCSANOW, &term2);
 			ms_exit(&shell);
 		}
-		ret = ms_lexer(&(shell.tokens), (shell.prompt));
-		if (shell.tokens && ret != -1)
+		if (shell.prompt && (*shell.prompt))
 			add_history(shell.prompt);
+		ret = ms_lexer(&(shell.tokens), (shell.prompt));
 		free(shell.prompt);
 		(shell.prompt) = NULL;
 		if (shell.tokens && ret != -1)

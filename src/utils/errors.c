@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 10:52:11 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/18 11:06:42 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/20 11:38:33 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,15 @@ void	ms_clean(t_mshell *shell)
 	if (shell->tokens) // CLOSE FILES
 		ast_free(&shell->tokens);
 	clear_history();
+}
+
+void	werror(char *s)
+{
+	if (s)
+	{
+		write(STDERR_FILENO, "minishell: ", 11);
+		perror(s);
+	}
+	else
+		perror("minishell");
 }

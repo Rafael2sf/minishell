@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:50:08 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/18 13:18:07 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/20 11:14:12 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int	change_pwd_vars(char *var_id, int fd, char ***env, char *buf)
 	pwd_change[2] = NULL;
 	if (!pwd_change[1])
 	{
-		perror("error allocating memory");
+		werror("pwd");
 		return (errno);
 	}
 	err_val = ft_export(pwd_change, fd, NULL, env);
@@ -79,7 +79,7 @@ static int	pwd_change(int fd, char ***env, char **input, bool null_input)
 		*input = NULL;
 	if (getcwd(buf, 1024) == NULL)
 	{
-		perror("getcwd failed");
+		werror("pwd");
 		return (errno);
 	}
 	err_val = change_pwd_vars("PWD=", fd, env, buf);
@@ -102,7 +102,7 @@ int	ft_cd(char **input, int fd, int *stat, char ***env)
 		return (0);
 	if (getcwd(buf, 1024) == NULL)
 	{
-		perror("getcwd failed");
+		werror("pwd");
 		return (errno);
 	}
 	if (chdir(input[1]) == -1)

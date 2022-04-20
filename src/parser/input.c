@@ -6,14 +6,13 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 11:08:28 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/19 14:31:32 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/20 16:29:39 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
 #include "parser.h"
 
-//static void	ms_get_llsr(t_ast *tmp, int *i_fd, bool *error, t_mshell *shell);
 static void	ms_get_lsr(t_ast *tmp, int *i_fd, bool *error);
 static int	fd_returner(t_ast *tmp, int fd, t_ast *cur);
 
@@ -48,34 +47,6 @@ static int	fd_returner(t_ast *tmp, int fd, t_ast *cur)
 	return (fd);
 }
 
-/*
-static void	ms_get_llsr(t_ast *tmp, int *i_fd, bool *error, t_mshell *shell)
-{
-	int	fd;
-
-	while (tmp->left)
-		tmp = (tmp->left);
-	while (tmp->type == E_LSR || tmp->type == E_LLSR)
-	{
-		if (tmp->type == E_LLSR)
-		{
-			fd = ms_heredoc((char *)tmp->data, shell);
-			if (fd == -1)
-			{
-				perror("minishell: ");
-				(*error) = true;
-			}
-			else if (fd == -2)
-				(*error) = true;
-			if (tmp->prev->type == E_CMD || tmp->prev->type == E_UNDEF)
-				(*i_fd) = fd;
-			else if (fd > 2)
-				close(fd);
-		}
-		tmp = (tmp->prev);
-	}
-}
-*/
 static void	ms_get_lsr(t_ast *tmp, int *i_fd, bool *error)
 {
 	int	fd;
@@ -90,12 +61,11 @@ static void	ms_get_lsr(t_ast *tmp, int *i_fd, bool *error)
 			if (fd == -1)
 			{
 				(*error) = true;
-				ft_putstr(2, "minishell: ");
-				perror((char *)tmp->data);
+				werror((char *)tmp->data);
 			}
 			if (tmp->prev->type == E_CMD || tmp->prev->type == E_UNDEF)
 			{
-				if ((tmp->prev->p)[0]> 2)
+				if ((tmp->prev->p)[0] > 2)
 					close((tmp->prev->p)[0]);
 				(*i_fd) = fd;
 			}

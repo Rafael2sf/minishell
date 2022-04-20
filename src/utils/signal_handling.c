@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 16:22:39 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/19 14:58:56 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/20 17:28:32 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	call_sigact(char act_choice)
 	if (sigaction(SIGQUIT, &act, NULL) == -1
 		|| sigaction(SIGINT, &act, NULL) == -1)
 	{
-		perror("Error in sigaction");
+		werror("sigaction");
 		return (-1);
 	}
 	return (0);

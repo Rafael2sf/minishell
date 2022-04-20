@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 17:30:24 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/18 11:02:55 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/20 11:23:24 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	ms_parse_error(int code)
 {
-	perror("minishell: ");
+	werror(NULL);
 	return (code);
 }
 

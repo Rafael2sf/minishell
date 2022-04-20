@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 16:26:10 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/15 15:52:21 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/20 11:20:55 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	**ms_init_env(char **envp)
 	env_cpy = ptr_ptr_dup(envp);
 	if (!env_cpy)
 	{
-		perror("minishell: error creating env");
+		werror("fatal");
 		return (NULL);
 	}
 	change_shlvl(&env_cpy);
@@ -79,7 +79,7 @@ static void	reset_oldpwd(char **env)
 			}
 			else
 			{
-				perror("");
+				werror("fatal");
 				return ;
 			}
 		}
@@ -106,7 +106,7 @@ static char	**change_shlvl(char ***env)
 	ptr = ft_itoa(lvl);
 	if (!ptr)
 	{
-		perror("error allocating SHLVL");
+		werror("fatal");
 		return (NULL);
 	}
 	(*env)[i] = alloc_new_lvl(ptr, (*env)[i]);
@@ -122,7 +122,7 @@ static char	*alloc_new_lvl(char *ptr, char *old_shlvl)
 	free(ptr);
 	if (!old_shlvl)
 	{
-		perror("error allocating SHLVL");
+		werror("fatal");
 		return (NULL);
 	}
 	return (old_shlvl);

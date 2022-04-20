@@ -6,7 +6,7 @@
 /*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 17:30:24 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/19 16:55:52 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/20 19:59:43 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ms_parse_error(int code, t_mshell *shell)
 {
 	ast_iter_in(shell->tokens, tk_close_all, 0, (void *)(shell));
 	if (code == -1)
-	  werror(NULL);
+		werror(NULL);
 	if (shell->paths)
 		ptr_ptr_free((void **)(shell->paths));
 	return (-1);

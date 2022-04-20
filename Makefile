@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+         #
+#    By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 10:54:37 by rafernan          #+#    #+#              #
-#    Updated: 2022/04/20 15:40:00 by daalmeid         ###   ########.fr        #
+#    Updated: 2022/04/20 19:37:16 by daalmeid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ _LIB	=
 
 CC		=		cc
 AR		=		ar rcs
-CFLAGS	=		-O2
+CFLAGS	=		-Wall -Werror -Wextra -O2
 DBFLAGS	=		-g -Wall -Werror -Wextra -D DEBUG=1
 
 ################### FILES ###############
@@ -83,6 +83,7 @@ SRCS_	=		\
 				parser/parser.c \
 				parser/parser_utils.c \
 				parser/search.c \
+				parser/tk_set_rd.c \
 				\
 				utils/ast_iter.c \
 				utils/ast_print.c \

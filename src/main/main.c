@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 10:58:16 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/20 15:42:19 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/20 19:45:30 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,11 @@ static void	ms_init(t_mshell *shell, char **envp, struct termios *term,
 	struct termios *term2)
 {
 	if (isatty(STDIN_FILENO) != 1)
-		exit(errno); //error here
-	prep_terms(term, term2);
+	{
+		werror("fatal");
+		exit(errno);
+	}
+	prep_terms(term, term2, shell);
 	(shell->stat) = S_OK;
 	(shell->prompt) = NULL;
 	(shell->tokens) = NULL;
@@ -74,7 +77,9 @@ static void	ms_actions(t_mshell *shell, struct termios *term2)
 		ret = ms_parser(shell);
 		attr_setting(term2, shell);
 		if (ret != -1)
+		{
 			ms_executor(shell);
+		}
 		else
 			(shell->stat) = errno;
 	}

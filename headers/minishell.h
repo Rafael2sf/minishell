@@ -6,7 +6,7 @@
 /*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 12:09:01 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/20 12:23:33 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/20 18:56:11 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,10 +142,11 @@ void	werror(char *s);
 void	ast_print(t_ast *root, int depth, int cmd_only);
 
 /* Signal handling */
-void		call_sigact(char act_choice, t_mshell *shell);
+void	call_sigact(char act_choice, t_mshell *shell);
 
 /* TTY Attributes */
-void	prep_terms(struct termios *term, struct termios *term2);
+void	prep_terms(struct termios *term, struct termios *term2,
+			t_mshell *shell);
 void	attr_setting(struct termios *term, t_mshell *shell);
 
 #endif

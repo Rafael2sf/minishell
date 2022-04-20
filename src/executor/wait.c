@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wait.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 10:41:53 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/20 10:54:01 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/20 18:40:00 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ int	tk_wait(t_ast *tk, void *p)
 	t_mshell	*shell;
 
 	shell = (t_mshell *)p;
-	if (call_sigact('i') == -1)
-		return (errno);
+	call_sigact(SI_IGN, shell);
 	if (tk->type == E_CMD)
 	{
 		if (!tk->prev || (tk->prev->right == tk && !tk->prev->prev))

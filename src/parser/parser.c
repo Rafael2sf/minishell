@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 16:53:18 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/19 17:03:51 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/20 19:58:33 by daalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 #include "parser.h"
 
 static int	tk_expand(t_ast *tk, void *shell_ptr);
-static int	ms_reset_tk(int code, t_ast *tk);
 static int	tk_open_pipes(t_ast *tk, void *p);
-static int	tk_set_rd(t_ast *tk, void *p);
 static int	tk_hdoc(t_ast *tk, void *p);
 
 int	ms_parser(t_mshell *shell)
@@ -36,35 +34,42 @@ int	ms_parser(t_mshell *shell)
 	if (ast_iter_in(shell->tokens, tk_set_rd, 0, (void *)(shell)) == -1)
 		return (ms_parse_error(-1, shell));
 	ptr_ptr_free((void **)(shell->paths));
+	(shell->paths) = NULL;
+	return (0);
+}
+
+static int	e_cmd_tk_expand(t_mshell *shell, t_ast *tk)
+{
+	int			i;
+	char		**ref;
+	char		*tmp;
+
+	i = -1;
+	ref = (char **)(tk->data);
+	while (ref && ref[++i])
+	{
+		tmp = ms_expand(ref[i], shell, 0);
+		if (!tmp)
+			return (-1);
+		if (tmp != ref[i])
+		{
+			free(ref[i]);
+			ref[i] = tmp;
+		}
+	}
 	return (0);
 }
 
 static int	tk_expand(t_ast *tk, void *p)
 {
-	char		**ref;
 	char		*tmp;
-	int			i;
 	t_mshell	*shell;
 
 	shell = (t_mshell *)p;
 	if (!tk)
 		return (0);
 	if (tk->type == E_CMD)
-	{
-		i = -1;
-		ref = (char **)(tk->data);
-		while (ref && ref[++i])
-		{
-			tmp = ms_expand(ref[i], shell, 0);
-			if (!tmp)
-				return (-1);
-			if (tmp != ref[i])
-			{
-				free(ref[i]);
-				ref[i] = tmp;
-			}
-		}
-	}
+		return (e_cmd_tk_expand(shell, tk) == -1);
 	else if (tk->type == E_LSR || tk->type == E_LLSR
 		|| tk->type == E_GRT || tk->type == E_GGRT)
 	{
@@ -94,50 +99,6 @@ static int	tk_open_pipes(t_ast *tk, void *p)
 		(tk->right->p[0]) = (tk->p)[0];
 	}
 	return (0);
-}
-
-static int	tk_set_rd(t_ast *tk, void *p)
-{
-	t_mshell	*shell;
-
-	shell = (t_mshell *)(p);
-	if (!tk)
-		return (0);
-	if (tk->type == E_CMD || tk->type == E_UNDEF)
-	{
-		(tk->p)[0] = ms_parse_input(tk, shell);
-		if ((tk->p[0]) == -1)
-		{
-			if (tk->prev && tk->prev->left == tk)
-				close((tk->prev->p)[1]);
-			else if (tk->prev && tk->prev->prev)
-				close((tk->prev->prev->p)[1]);
-			return (ms_reset_tk(1, tk));
-		}
-		(tk->p)[1] = ms_parse_output(tk);
-		if (tk->p[1] == -1)
-			return (ms_reset_tk(1, tk));
-		if (tk->type == E_UNDEF)
-			return (0);
-		(tk->func) = ms_find_builtin(((char **)(tk->data))[0]);
-		if (tk->func)
-			return (0);
-		if (!ms_parse_cmd(&((char **)tk->data)[0], shell->paths))
-		{
-			if (!tk->prev)
-				(shell->stat) = 127;
-			return (ms_reset_tk(1, tk));
-		}
-	}
-	return (0);
-}
-
-static int	ms_reset_tk(int code, t_ast *tk)
-{
-	ptr_ptr_free((void **)tk->data);
-	(tk->data) = NULL;
-	(tk->type) = E_UNDEF;
-	return (code);
 }
 
 static int	tk_hdoc(t_ast *tk, void *p)

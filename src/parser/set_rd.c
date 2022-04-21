@@ -1,16 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tk_set_rd.c                                        :+:      :+:    :+:   */
+/*   set_rd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 19:33:47 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/20 19:38:25 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/21 18:04:08 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/minishell.h"
 #include "parser.h"
 
 static int	ms_reset_tk(int code, t_ast *tk);
@@ -47,18 +46,14 @@ static int	tk_set_rd_actions(t_ast *tk, t_mshell *shell)
 	(tk->func) = ms_find_builtin(((char **)(tk->data))[0]);
 	if (tk->func)
 		return (0);
-	if (!ms_parse_cmd(&((char **)tk->data)[0], shell->paths))
-	{
-		if (!tk->prev)
-			(shell->stat) = 127;
+	if (!ms_parse_cmd(&((char **)tk->data)[0], (tk->prev), shell))
 		return (ms_reset_tk(1, tk));
-	}
 	return (0);
 }
 
 static int	ms_reset_tk(int code, t_ast *tk)
 {
-	ptr_ptr_free((void **)tk->data);
+	ptr_ptr_free((char **)tk->data);
 	(tk->data) = NULL;
 	(tk->type) = E_UNDEF;
 	return (code);

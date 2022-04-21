@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 15:34:36 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/05 10:31:31 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/21 17:24:26 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,16 @@
 
 void	ft_putstr_fd(char *s, int fd)
 {
-	int	i;
+	char	*ptr;
 
-	if (s == 0)
+	if (!s)
 		return ;
-	i = 0;
-	while (s[i] != '\0')
-	{
-		ft_putchar_fd(s[i], fd);
-		i++;
-	}
+	ptr = ((char *)(s));
+	while (*ptr)
+		ptr++;
+	write(fd, s, ptr - s);
 }
+
 /*
 int	main(void)
 {

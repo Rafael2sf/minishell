@@ -21,6 +21,7 @@ MKD		=		mkdir
 PRT		=		printf
 MKE		=		make
 CPY		=		cp
+NRM		=		norminette
 
 ################### COLORS ##############
 
@@ -38,7 +39,7 @@ _LIB	=
 
 CC		=		gcc
 AR		=		ar rcs
-CF		=		-Wall -Werror -Wextra
+CFLAGS	=		-Wall -Werror -Wextra
 
 ################### FILES ###############
 
@@ -75,7 +76,6 @@ SRCS_	=		\
 				ft_putchar.c \
 				ft_putnbr.c \
 				ft_putnbr_b.c \
-				ft_putstr.c \
 				ft_putunbr_b.c \
 				ft_split.c \
 				ft_strchr.c \
@@ -104,7 +104,8 @@ OBJS	=		$(patsubst $(_SRC)%.c,$(_OBJ)%.o,$(SRCS))
 all: $(NAME)
 
 $(_OBJ)%.o: $(_SRC)%.c
-	$(CC) $(CF) -c $< -o $@
+	@$(CC) $(CF) -c $< -o $@
+	@$(NRM) $<
 
 $(NAME): $(_OBJ) $(OBJS)
 	$(AR) $@ $(OBJS)

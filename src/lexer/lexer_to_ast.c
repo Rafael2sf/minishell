@@ -6,11 +6,10 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 16:26:10 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/20 16:41:55 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/21 18:02:04 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/minishell.h"
 #include "lexer.h"
 
 static t_ast	*ms_create_token_cmd(t_ast **root, char *s, int size, char c);
@@ -91,7 +90,7 @@ static int	tk_merge(t_ast *root, char *ref, int size, char c)
 	tmp = ptr_ptr_join((char **)root->data, new);
 	if (!tmp)
 	{
-		ptr_ptr_free((void **)new);
+		ptr_ptr_free(new);
 		return (-1);
 	}
 	(root->data) = tmp;

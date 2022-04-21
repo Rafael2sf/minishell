@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 16:03:52 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/18 18:47:22 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/21 17:13:43 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,15 @@ static void	check_parameter(char **input);
 int	ft_exit(char **input, int fd, int *stat, char ***env)
 {
 	(void)(env);
-	close(fd);
-	ft_putendl_fd("exit", 1);
+	if (fd > 2)
+		close(fd);
+	ft_putendl_fd("exit", STDOUT_FILENO);
 	if (input[1] == NULL)
 		exit(*stat);
 	check_parameter(input);
 	if (input[1] != NULL && input[2] != NULL)
 	{
-		ft_putendl_fd("minishell: exit: too many arguments", 2);
+		ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
 		return (1);
 	}
 	(*stat) = ft_atoi(input[1]);
@@ -46,9 +47,9 @@ static void	check_parameter(char **input)
 	{
 		if (!ft_isdigit(input[1][i++]) || i == 20)
 		{
-			ft_putstr_fd("minishell: exit: ", 2);
-			ft_putstr_fd(input[1], 2);
-			ft_putendl_fd(": numeric argument required", 2);
+			ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
+			ft_putstr_fd(input[1], STDERR_FILENO);
+			ft_putendl_fd(": numeric argument required", STDERR_FILENO);
 			free(input[1]);
 			exit(-1);
 		}

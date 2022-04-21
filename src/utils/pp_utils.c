@@ -6,13 +6,13 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 16:28:35 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/18 11:07:54 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/21 12:44:04 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
 
-void	ptr_ptr_free(void **ptr)
+void	ptr_ptr_free(char **ptr)
 {
 	int	i;
 
@@ -46,7 +46,7 @@ char	**ptr_ptr_join(char **a, char **b)
 	if (!a && !b)
 		return (NULL);
 	len = ptr_ptr_len(a) + ptr_ptr_len(b);
-	new = malloc(sizeof(char *) * len + 1);
+	new = malloc(sizeof(char *) * (len + 1));
 	if (!new)
 		return (NULL);
 	i = 0;
@@ -83,7 +83,7 @@ char	**ptr_ptr_dup(char **env)
 		{
 			while (--i > 0)
 				free(env_cpy[i]);
-			ptr_ptr_free((void **)env_cpy);
+			ptr_ptr_free(env_cpy);
 			return (NULL);
 		}
 		ft_strlcpy(env_cpy[i], env[i], ft_strlen(env[i]) + 1);

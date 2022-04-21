@@ -6,11 +6,10 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 17:30:00 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/19 10:14:45 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/21 18:03:38 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/minishell.h"
 #include "parser.h"
 
 t_bultinf	ms_find_builtin(const char *s)

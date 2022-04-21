@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 09:48:40 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/12 17:24:11 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/21 10:40:16 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	set_var_unset(char ***env, char **input);
 int	ft_unset(char **input, int fd, int *stat, char ***env)
 {
 	(void)(stat);
-	if (fd != 1)
+	if (fd > 2)
 		close(fd);
 	if (!*env)
 	{

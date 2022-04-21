@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wait.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 10:41:53 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/20 18:40:00 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/21 18:26:08 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,10 @@ int	tk_wait(t_ast *tk, void *p)
 	call_sigact(SI_IGN, shell);
 	if (tk->type == E_CMD)
 	{
-		if (!tk->prev || (tk->prev->right == tk && !tk->prev->prev))
+		if ((!tk->prev || (tk->prev && !tk->prev->prev)) && !tk->func)
 		{
-			waitpid(tk->pid, &(shell->stat), 0);
+			if (tk->pid != -1)
+				waitpid(tk->pid, &(shell->stat), 0);
 			if (WIFSIGNALED(shell->stat))
 			{
 				(shell->stat) += 128;
@@ -34,7 +35,7 @@ int	tk_wait(t_ast *tk, void *p)
 			else
 				(shell->stat) = WEXITSTATUS(shell->stat);
 		}
-		else
+		else if (tk->pid != -1 && !tk->func)
 			waitpid(tk->pid, NULL, 0);
 	}
 	return (0);

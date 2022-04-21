@@ -6,12 +6,14 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 16:52:37 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/10 17:35:59 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/21 18:28:40 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_H
 # define LEXER_H
+
+# include "../../headers/minishell.h"
 
 void	pvars_init(t_pvars *v);
 int		tk_is_rd(t_type type);

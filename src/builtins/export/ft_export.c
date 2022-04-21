@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 16:03:43 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/18 11:07:05 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/21 17:12:31 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,13 @@ int	ft_export(char **input, int fd, int *stat, char ***env)
 	int	i;
 	int	err_val;
 
+	if (fd < 2)
+		return (1);
 	(void)(stat);
 	i = 1;
 	if (!*env)
 	{
-		ft_putendl_fd("error: env does not exist", 2);
+		ft_putendl_fd("minishell: export: ENV is empty", STDERR_FILENO);
 		return (1);
 	}
 	while (input[i] != NULL)
@@ -94,5 +96,5 @@ static void	env_to_export(char **env, int fd)
 	total = get_total(env_cpy);
 	sort_env_cpy(env_cpy, total);
 	print_export(env_cpy, fd, ptr);
-	ptr_ptr_free((void **)env_cpy);
+	ptr_ptr_free(env_cpy);
 }

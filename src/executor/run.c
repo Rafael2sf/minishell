@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 10:39:56 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/20 12:35:30 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/21 18:29:06 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,21 @@ int	tk_exec(t_ast *tk, void *p)
 
 static int	ms_exec_builtin(t_ast *tk, t_mshell *shell)
 {
-	close((tk->p)[0]);
+	if ((tk->p)[0] > 2)
+		close((tk->p)[0]);
 	if (tk->prev)
 	{
 		if (tk->func == ft_cd || tk->func == ft_unset
 			|| tk->func == ft_exit || ((tk->func) == ft_export
 				&& ((char **)(tk->data))[1] != NULL))
 		{
-			close((tk->p)[1]);
+			if ((tk->p)[1] > 2)
+				close((tk->p)[1]);
+			(shell->stat) = 1;
 			return (0);
 		}
-		(tk->func)((char **)(tk->data),
-			(tk->p)[1], &(shell->stat), &(shell->env));
+		(shell->stat) = (tk->func)((char **)(tk->data),
+				(tk->p)[1], &(shell->stat), &(shell->env));
 		return (0);
 	}
 	if (ms_valid_exit(tk))

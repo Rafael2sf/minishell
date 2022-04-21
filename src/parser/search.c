@@ -6,35 +6,37 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 10:24:23 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/20 11:25:06 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/21 18:04:05 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/minishell.h"
 #include "parser.h"
 
-static char	*ms_find_file(char **cmd, char **paths);
-static int	ms_check_file(char *filepath, int check_dir);
-static char	*ms_srchfp(char *fname, char **paths);
+static char	*ms_find_file(char **cmd, t_ast *prev, t_mshell *shell);
+static int	ms_check_file(char *filepath, int check_dir,
+				t_ast *prev, t_mshell *shell);
+static char	*ms_srchfp(char *fname, t_ast *prev, t_mshell *shell);
 static char	*ms_strpath(char *path, const char *file);
 
-char	*ms_parse_cmd(char **cmd, char **paths)
+char	*ms_parse_cmd(char **cmd, t_ast *prev, t_mshell *shell)
 {
 	char	*fp;
 
 	fp = NULL;
 	if (!cmd || !*cmd || !**cmd)
 	{
-		ft_putstr(STDERR_FILENO, "command not found\n");
+		ft_putstr_fd("command not found\n", STDERR_FILENO);
 		return (NULL);
 	}
 	if ((*cmd)[0] == '.' && !(*cmd)[1])
 	{
-		ft_putstr(STDERR_FILENO, "minishell: .: filename argument required\n \
-.: usage: . filename [arguments]\n");
+		ft_putstr_fd("minishell: .: filename argument required\n \
+.: usage: . filename [arguments]\n", STDERR_FILENO);
+		if (!prev)
+			(shell->stat) = 2;
 		return (NULL);
 	}
-	fp = ms_find_file(cmd, paths);
+	fp = ms_find_file(cmd, prev, shell);
 	if (!fp)
 		return (NULL);
 	if (*cmd != fp)
@@ -43,7 +45,7 @@ char	*ms_parse_cmd(char **cmd, char **paths)
 	return (*cmd);
 }
 
-static char	*ms_find_file(char **cmd, char **paths)
+static char	*ms_find_file(char **cmd, t_ast *prev, t_mshell *shell)
 {
 	int		i;
 	int		v;
@@ -51,21 +53,23 @@ static char	*ms_find_file(char **cmd, char **paths)
 	i = 0;
 	while ((*cmd)[i] && (*cmd)[i] != '/')
 		i++;
-	v = ms_check_file(*cmd, 1);
+	v = ms_check_file(*cmd, 1, prev, shell);
 	if (v == 1)
 		return (NULL);
 	if (v == 0)
 		return (*cmd);
 	if ((*cmd)[i] == '/')
 	{
-		ft_putstr(STDERR_FILENO, "minishell: ");
 		werror(*cmd);
+		if (!prev)
+			(shell->stat) = 127;
 		return (NULL);
 	}
-	return (ms_srchfp(*cmd, paths));
+	return (ms_srchfp(*cmd, prev, shell));
 }
 
-static int	ms_check_file(char *filepath, int check_dir)
+static int	ms_check_file(char *filepath, int check_dir,
+	t_ast *prev, t_mshell *shell)
 {
 	struct stat	file_stat;
 
@@ -77,8 +81,10 @@ static int	ms_check_file(char *filepath, int check_dir)
 		if (check_dir && S_ISREG(file_stat.st_mode) == 0)
 		{
 			write(STDERR_FILENO, "minishell: ", 11);
-			ft_putstr(STDERR_FILENO, filepath);
+			ft_putstr_fd(filepath, STDERR_FILENO);
 			write(STDERR_FILENO, " : is a directory\n", 18);
+			if (!prev)
+				(shell->stat) = 126;
 			return (1);
 		}
 	}
@@ -87,24 +93,26 @@ static int	ms_check_file(char *filepath, int check_dir)
 	return (0);
 }
 
-static char	*ms_srchfp(char *fname, char **paths)
+static char	*ms_srchfp(char *fname, t_ast *prev, t_mshell *shell)
 {
 	char	*fp;
 	int		i;
 
 	i = 0;
-	while (paths && paths[i])
+	while ((shell->paths) && (shell->paths)[i])
 	{
-		fp = ms_strpath(paths[i], fname);
-		if (ms_check_file(fp, 0) == 0)
+		fp = ms_strpath((shell->paths)[i], fname);
+		if (ms_check_file(fp, 0, prev, shell) == 0)
 			return (fp);
 		if (fp)
 			free(fp);
 		i++;
 	}
-	ft_putstr(STDERR_FILENO, "minishell: ");
-	ft_putstr(STDERR_FILENO, fname);
-	ft_putstr(STDERR_FILENO, ": command not found\n");
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(fname, STDERR_FILENO);
+	ft_putstr_fd(": command not found\n", STDERR_FILENO);
+	if (!prev)
+		(shell->stat) = 127;
 	return (NULL);
 }
 

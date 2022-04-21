@@ -6,11 +6,10 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 14:59:46 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/20 17:02:40 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/21 18:03:53 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/minishell.h"
 #include "parser.h"
 
 static int	ms_get_ofiles(t_ast *tmp, int o_fd, bool *error);

@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 15:01:22 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/19 14:32:34 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/21 18:04:28 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 /*
 	Recursively iterate the tree
 */
-
 int	ast_iter_pre(t_ast *root, int (*f)(t_ast *, void *), bool rev, void *ptr)
 {
 	t_mshell	*shell;

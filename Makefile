@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+         #
+#    By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 10:54:37 by rafernan          #+#    #+#              #
-#    Updated: 2022/04/20 19:37:16 by daalmeid         ###   ########.fr        #
+#    Updated: 2022/04/21 18:31:37 by rafernan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,8 +39,7 @@ _LIB	=
 
 CC		=		cc
 AR		=		ar rcs
-CFLAGS	=		-Wall -Werror -Wextra -O2
-DBFLAGS	=		-g -Wall -Werror -Wextra -D DEBUG=1
+CFLAGS	=		-Wall -Werror -Wextra
 
 ################### FILES ###############
 
@@ -83,10 +82,9 @@ SRCS_	=		\
 				parser/parser.c \
 				parser/parser_utils.c \
 				parser/search.c \
-				parser/tk_set_rd.c \
+				parser/set_rd.c \
 				\
 				utils/ast_iter.c \
-				utils/ast_print.c \
 				utils/ms_split.c \
 				utils/pp_utils.c \
 				utils/signal_handling.c \
@@ -110,11 +108,8 @@ LKNS	=		-L ./libft -L ~/.brew/opt/readline/lib
 all: $(NAME)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
-#	$(NRM) $<
-
-debug:
-	$(MAKE) $(NAME) CFLAGS="$(DBFLAGS)"
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(NRM) $<
 
 $(NAME): $(DEPS) $(OBJS)
 	$(CC) $(CFLAGS) $(LIBS) $(OBJS) -o $(NAME) $(INCS) $(LKNS) $(DEPS)
@@ -145,4 +140,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all debug clean fclean re force
+.PHONY: all clean fclean re force

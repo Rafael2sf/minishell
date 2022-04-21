@@ -6,11 +6,10 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 11:08:28 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/20 16:29:39 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/21 18:03:50 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/minishell.h"
 #include "parser.h"
 
 static void	ms_get_lsr(t_ast *tmp, int *i_fd, bool *error);

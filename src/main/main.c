@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 10:58:16 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/20 19:45:30 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/21 18:03:23 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/minishell.h"
 #include "../parser/parser.h"
 #include "main.h"
 
@@ -70,18 +69,15 @@ static void	ms_actions(t_mshell *shell, struct termios *term2)
 {
 	int	ret;
 
+	if (shell->prompt && *(shell->prompt))
+		add_history(shell->prompt);
 	ret = ms_lexer(&(shell->tokens), (shell->prompt));
 	if (shell->tokens && ret != -1)
 	{
-		add_history(shell->prompt);
 		ret = ms_parser(shell);
 		attr_setting(term2, shell);
 		if (ret != -1)
-		{
 			ms_executor(shell);
-		}
-		else
-			(shell->stat) = errno;
 	}
 	else if (ret == -1)
 		(shell->stat) = 258;

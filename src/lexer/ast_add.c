@@ -6,11 +6,10 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:35:43 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/20 17:15:41 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/21 18:02:17 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/minishell.h"
 #include "lexer.h"
 
 static int	ast_add_cmd(t_ast **root, t_ast *new_token);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 15:11:42 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/20 15:15:10 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/21 11:26:23 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	ms_exit(t_mshell *shell)
 		cmd[1] = NULL;
 	}
 	clear_history();
-	ptr_ptr_free((void **)(shell->env));
+	ptr_ptr_free((shell->env));
 	ast_free(&(shell->tokens));
 	ft_exit(cmd, -1, &val, NULL);
 }

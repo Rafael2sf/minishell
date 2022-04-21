@@ -6,11 +6,10 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 11:12:09 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/20 11:18:59 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/21 18:01:36 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/minishell.h"
 #include "lexer.h"
 
 void	pvars_init(t_pvars *v)
@@ -51,10 +50,10 @@ int	ms_lexer_error(int code, char c, bool use_perror)
 		werror(NULL);
 	else if (code != 0)
 	{
-		ft_putstr(STDERR_FILENO, "minishell: ");
-		ft_putstr(STDERR_FILENO, "syntax error near unexpected token `");
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd("syntax error near unexpected token `", STDERR_FILENO);
 		ft_putchar(STDERR_FILENO, c);
-		ft_putstr(STDERR_FILENO, "\'\n");
+		ft_putstr_fd("\'\n", STDERR_FILENO);
 	}
 	return (code);
 }

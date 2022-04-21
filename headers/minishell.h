@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 12:09:01 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/20 18:56:11 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/21 18:01:12 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,10 @@
 # include <string.h>
 # include <sys/ioctl.h>
 # include <termios.h>
-# include <curses.h>
-# include <term.h>
 # include <errno.h>
 # include <stdbool.h>
 
 # include "../libft/libft.h"
-
-# ifndef DEBUG
-#  define DEBUG 0
-# endif
 
 typedef int	(*t_bultinf) (char **, int, int *, char ***);
 
@@ -129,7 +123,7 @@ int		ms_executor(t_mshell *shell);
 char	*ms_expand(char *str, t_mshell *shell, int ign_quotes);
 char	**ms_split(char const *s, char c);
 void	ms_exit(t_mshell *shell);
-void	ptr_ptr_free(void **ptr);
+void	ptr_ptr_free(char **ptr);
 int		ptr_ptr_len(char **s);
 char	**ptr_ptr_dup(char **env);
 char	**ptr_ptr_join(char **a, char **b);
@@ -137,9 +131,6 @@ char	*ft_getenv(char *env_var, char **env);
 int		nbr_len(int n);
 void	ms_clean(t_mshell *shell);
 void	werror(char *s);
-
-/* Debugging */
-void	ast_print(t_ast *root, int depth, int cmd_only);
 
 /* Signal handling */
 void	call_sigact(char act_choice, t_mshell *shell);

@@ -6,11 +6,10 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 16:26:10 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/20 11:20:55 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/21 18:03:28 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/minishell.h"
 #include "main.h"
 
 static char	**export_at_start_process(char ***env);

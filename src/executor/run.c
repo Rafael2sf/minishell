@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 10:39:56 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/21 18:29:06 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/22 10:31:17 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,15 @@ static int	ms_exec_builtin(t_ast *tk, t_mshell *shell)
 			(shell->stat) = 1;
 			return (0);
 		}
-		(shell->stat) = (tk->func)((char **)(tk->data),
-				(tk->p)[1], &(shell->stat), &(shell->env));
-		return (0);
 	}
 	if (ms_valid_exit(tk))
 		ms_exit(shell);
-	(shell->stat) = (tk->func)((char **)(tk->data),
-			(tk->p)[1], &(shell->stat), &(shell->env));
+	if (tk_is_last(tk))
+		(shell->stat) = (tk->func)((char **)(tk->data),
+				(tk->p)[1], &(shell->stat), &(shell->env));
+	else
+		(tk->func)((char **)(tk->data),
+				(tk->p)[1], &(shell->stat), &(shell->env));
 	return (0);
 }
 

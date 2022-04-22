@@ -6,7 +6,7 @@
 #    By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 10:54:37 by rafernan          #+#    #+#              #
-#    Updated: 2022/04/21 18:31:37 by rafernan         ###   ########.fr        #
+#    Updated: 2022/04/22 13:05:34 by rafernan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -90,7 +90,7 @@ SRCS_	=		\
 				utils/signal_handling.c \
 				utils/ms_exit.c \
 				utils/ft_getenv.c \
-				utils/nbr_len.c \
+				utils/misc.c \
 				utils/errors.c \
 				utils/attr_functions.c
 

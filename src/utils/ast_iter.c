@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 15:01:22 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/21 18:04:28 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/22 11:48:04 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ int	ast_iter_pre(t_ast *root, int (*f)(t_ast *, void *), bool rev, void *ptr)
 	shell = (t_mshell *)(ptr);
 	if (!root)
 		return (0);
-	else if (shell && shell->sig_call == true)
-		return (-1);
 	else if (rev)
 	{
 		if (f(root, ptr) == -1)
@@ -49,8 +47,6 @@ int	ast_iter_in(t_ast *root, int (*f)(t_ast *, void *), bool rev, void *ptr)
 	shell = (t_mshell *)(ptr);
 	if (!root)
 		return (0);
-	else if (shell && shell->sig_call == true)
-		return (-1);
 	else if (rev)
 	{
 		ast_iter_in(root->right, f, rev, ptr);
@@ -75,8 +71,6 @@ int	ast_iter_pos(t_ast *root, int (*f)(t_ast *, void *), bool rev, void *ptr)
 	shell = (t_mshell *)(ptr);
 	if (!root)
 		return (0);
-	else if (shell && shell->sig_call == true)
-		return (-1);
 	else if (rev)
 	{
 		ast_iter_pos(root->right, f, rev, ptr);

@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 12:09:01 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/21 18:01:12 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/22 11:04:25 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,6 @@ typedef enum e_type
 	E_GRT,
 	E_GGRT
 }	t_type;
-
-enum
-{
-	S_OK = 0
-};
 
 enum
 {
@@ -129,6 +124,7 @@ char	**ptr_ptr_dup(char **env);
 char	**ptr_ptr_join(char **a, char **b);
 char	*ft_getenv(char *env_var, char **env);
 int		nbr_len(int n);
+int		tk_is_last(t_ast *tk);
 void	ms_clean(t_mshell *shell);
 void	werror(char *s);
 

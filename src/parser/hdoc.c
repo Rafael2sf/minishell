@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 11:11:54 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/21 18:03:47 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/22 13:09:46 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static int	ms_read_hdoc(const char *dlimit, int dlen, int fd, t_mshell *shell);
 static void	child_hdoc(const char *delm, int dlen, int p[2], t_mshell *shell);
+static int	ms_hdoc_prep(int *p, int *pid);
 
 int	ms_heredoc(const char *delimitir, t_mshell *shell)
 {
@@ -24,9 +25,8 @@ int	ms_heredoc(const char *delimitir, t_mshell *shell)
 	dlen = ft_strlen(delimitir);
 	if (dlen < 0)
 		return (-1);
-	if (pipe(p) < 0)
+	if (ms_hdoc_prep(p, &pid) == -1)
 		return (-1);
-	pid = fork();
 	if (pid == 0)
 		child_hdoc(delimitir, dlen, p, shell);
 	close(p[1]);
@@ -54,8 +54,8 @@ static void	child_hdoc(const char *delm, int dlen, int p[2], t_mshell *shell)
 	close(p[1]);
 	if (fstat(STDIN_FILENO, &st) == -1)
 		exit(1);
-	else if (ret == -1)
-		printf("\x1B[A");
+	if (ret == -1)
+		printf("\x1b[A");
 	exit (0);
 }
 
@@ -85,5 +85,19 @@ static int	ms_read_hdoc(const char *dlimit, int dlen, int fd, t_mshell *shell)
 		free(line);
 	}
 	free(line);
+	return (0);
+}
+
+static int	ms_hdoc_prep(int *p, int *pid)
+{
+	if (pipe(p) < 0)
+		return (-1);
+	(*pid) = fork();
+	if (*pid == -1)
+	{
+		close(p[0]);
+		close(p[1]);
+		return (-1);
+	}
 	return (0);
 }

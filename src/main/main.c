@@ -6,12 +6,13 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 10:58:16 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/21 18:03:23 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/22 11:50:57 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parser/parser.h"
 #include "main.h"
+#include "../executor/executor.h"
 
 static void	ms_init(t_mshell *shell, char **envp, struct termios *term,
 				struct termios *term2);
@@ -55,7 +56,7 @@ static void	ms_init(t_mshell *shell, char **envp, struct termios *term,
 		exit(errno);
 	}
 	prep_terms(term, term2, shell);
-	(shell->stat) = S_OK;
+	(shell->stat) = 0;
 	(shell->prompt) = NULL;
 	(shell->tokens) = NULL;
 	(shell->paths) = NULL;
@@ -82,7 +83,7 @@ static void	ms_actions(t_mshell *shell, struct termios *term2)
 	else if (ret == -1)
 		(shell->stat) = 258;
 	else
-		(shell->stat) = S_OK;
+		(shell->stat) = 0;
 	attr_setting(term2, shell);
 	ast_free(&(shell->tokens));
 	(shell->tokens) = NULL;

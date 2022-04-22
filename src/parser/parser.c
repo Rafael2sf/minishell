@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 16:53:18 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/21 18:03:58 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/22 12:28:30 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int	ms_parser(t_mshell *shell)
 	if (ast_iter_pre(shell->tokens, tk_open_pipes, 0, (void *)(shell)) == -1)
 		return (ms_parse_error(-1, shell));
 	if (ast_iter_in(shell->tokens, tk_hdoc, 0, (void *)(shell)) == -1)
+		return (ms_parse_error(0, shell));
+	if (shell->sig_call)
 		return (ms_parse_error(0, shell));
 	(shell->paths) = ms_parse_paths(shell->env);
 	if (ast_iter_in(shell->tokens, tk_set_rd, 0, (void *)(shell)) == -1)

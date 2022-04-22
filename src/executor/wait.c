@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 10:41:53 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/21 18:26:08 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/22 13:11:20 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	tk_wait(t_ast *tk, void *p)
 	call_sigact(SI_IGN, shell);
 	if (tk->type == E_CMD)
 	{
-		if ((!tk->prev || (tk->prev && !tk->prev->prev)) && !tk->func)
+		if (tk_is_last(tk) && !tk->func)
 		{
 			if (tk->pid != -1)
 				waitpid(tk->pid, &(shell->stat), 0);

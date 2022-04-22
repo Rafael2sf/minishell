@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   nbr_len.c                                          :+:      :+:    :+:   */
+/*   misc.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daalmeid <daalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 17:17:22 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/15 17:17:27 by daalmeid         ###   ########.fr       */
+/*   Updated: 2022/04/22 10:13:35 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,9 @@ int	nbr_len(int n)
 		i++;
 	}
 	return (i);
+}
+
+int	tk_is_last(t_ast *tk)
+{
+	return (!tk->prev || (tk->prev->right == tk && !tk->prev->prev));
 }

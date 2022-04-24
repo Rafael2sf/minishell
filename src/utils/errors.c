@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 10:52:11 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/21 11:26:23 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/24 21:13:57 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,5 @@ void	werror(char *s)
 		perror(s);
 	}
 	else
-		perror("minishell");
+		perror("baby-sh");
 }

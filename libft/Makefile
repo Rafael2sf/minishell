@@ -37,7 +37,7 @@ _LIB	=
 
 ################### COMPILER ############
 
-CC		=		gcc
+CC		=		cc
 AR		=		ar rcs
 CFLAGS	=		-Wall -Werror -Wextra
 
@@ -104,8 +104,7 @@ OBJS	=		$(patsubst $(_SRC)%.c,$(_OBJ)%.o,$(SRCS))
 all: $(NAME)
 
 $(_OBJ)%.o: $(_SRC)%.c
-	@$(CC) $(CF) -c $< -o $@
-	@$(NRM) $<
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(_OBJ) $(OBJS)
 	$(AR) $@ $(OBJS)

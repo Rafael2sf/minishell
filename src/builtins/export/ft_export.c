@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 16:03:43 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/21 17:12:31 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/24 21:14:53 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_export(char **input, int fd, int *stat, char ***env)
 	i = 1;
 	if (!*env)
 	{
-		ft_putendl_fd("minishell: export: ENV is empty", STDERR_FILENO);
+		ft_putendl_fd("baby-sh: export: ENV is empty", STDERR_FILENO);
 		return (1);
 	}
 	while (input[i] != NULL)

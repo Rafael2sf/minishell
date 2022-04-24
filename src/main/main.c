@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 10:58:16 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/22 11:50:57 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/24 21:12:00 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ int	main(int argc, char **argv, char **envp)
 		call_sigact(SI_RLINE, &shell);
 		attr_setting(&term, &shell);
 		if (shell.stat == 0)
-			(shell.prompt) = readline("\033[32m~\033[39m minishell $ ");
+			(shell.prompt) = readline("\033[32m~\033[39m baby-sh $ ");
 		else
-			(shell.prompt) = readline("\033[31m~\033[39m minishell $ ");
+			(shell.prompt) = readline("\033[31m~\033[39m baby-sh $ ");
 		call_sigact(SI_IGN, &shell);
 		(shell.sig_call) = false;
 		if (!shell.prompt)

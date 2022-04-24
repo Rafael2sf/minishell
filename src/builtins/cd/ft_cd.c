@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:50:08 by daalmeid          #+#    #+#             */
-/*   Updated: 2022/04/21 18:08:48 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/24 21:14:53 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 static void	error_message(char *input)
 {
-	ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
+	ft_putstr_fd("baby-sh: cd: ", STDERR_FILENO);
 	ft_putstr_fd(input, STDERR_FILENO);
 	ft_putstr_fd(": ", STDERR_FILENO);
 	ft_putendl_fd(strerror(errno), STDERR_FILENO);
@@ -40,7 +40,7 @@ static int	null_input_check(char **input, char **env, bool *null_input)
 		}
 		if (env[i] == NULL)
 		{
-			ft_putendl_fd("minishell: cd: HOME not set", 2);
+			ft_putendl_fd("baby-sh: cd: HOME not set", 2);
 			return (0);
 		}
 	}

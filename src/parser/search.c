@@ -6,7 +6,7 @@
 /*   By: rafernan <rafernan@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 10:24:23 by rafernan          #+#    #+#             */
-/*   Updated: 2022/04/22 10:26:17 by rafernan         ###   ########.fr       */
+/*   Updated: 2022/04/24 21:14:43 by rafernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ char	*ms_parse_cmd(char **cmd, t_ast *tk, t_mshell *shell)
 	fp = NULL;
 	if (!cmd || !*cmd || !**cmd)
 	{
-		ft_putstr_fd("minishell: command not found\n", STDERR_FILENO);
+		ft_putstr_fd("baby-sh: command not found\n", STDERR_FILENO);
 		if (tk_is_last(tk))
 			(shell->stat) = 127;
 		return (NULL);
 	}
 	if ((*cmd)[0] == '.' && !(*cmd)[1])
 	{
-		ft_putstr_fd("minishell: .: filename argument required\n \
+		ft_putstr_fd("baby-sh: .: filename argument required\n \
 .: usage: . filename [arguments]\n", STDERR_FILENO);
 		if (tk_is_last(tk))
 			(shell->stat) = 2;
@@ -110,7 +110,7 @@ static char	*ms_srchfp(char *fname, t_ast *tk, t_mshell *shell)
 			free(fp);
 		i++;
 	}
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd("baby-sh: ", STDERR_FILENO);
 	ft_putstr_fd(fname, STDERR_FILENO);
 	ft_putstr_fd(": command not found\n", STDERR_FILENO);
 	if (tk_is_last(tk))

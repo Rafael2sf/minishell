@@ -25,6 +25,8 @@ This project brings together all the knowledge acquired in previous projects and
 
 Note: This project makes use of termios structure and signal handling to manage some of the behavior.
 
+![alt text](https://github.com/Rafael2sf/minishell/blob/main/.images/screenshot-1)
+![alt text](https://github.com/Rafael2sf/minishell/blob/main/.images/screenshot-2)
 
 #
 ## ℹ️   - Usage
